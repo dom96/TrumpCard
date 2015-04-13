@@ -53,6 +53,7 @@ public class GameLoop extends AnimationTimer {
         this.graphicsContext = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
 
+        // Create a Vertical Box to hold the main menu buttons.
         VBox vb = new VBox();
         vb.setLayoutX(width / 2 - 100);
         vb.setLayoutY(250);
@@ -69,8 +70,8 @@ public class GameLoop extends AnimationTimer {
         result.setText(text);
         result.getStyleClass().add("menuBtn");
         result.setFont(this.menuFont);
+        // Set some padding on the buttons, and set their width to 200px.
         result.setPadding(new Insets(5, 10, 5, 10));
-
         result.setPrefWidth(200);
         // Make sure all buttons are the same size.
         result.setMaxWidth(Double.MAX_VALUE);
@@ -79,13 +80,14 @@ public class GameLoop extends AnimationTimer {
 
     @Override
     public void handle(long now) {
+        // Fill whole screen with a dark blue color.
         graphicsContext.setFill(Color.web("#0D267A"));
         graphicsContext.fillRect(0, 0, width, height);
 
+        // Draw title text.
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.setFont(this.titleFont);
         graphicsContext.setTextAlign(TextAlignment.CENTER);
-
         graphicsContext.fillText("TRUMP\nCARDS", width / 2, 70);
 
         // Draw title screen images on the left and right of the screen.

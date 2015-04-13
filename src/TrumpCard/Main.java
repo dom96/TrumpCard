@@ -40,7 +40,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Trump Card");
+        primaryStage.setTitle("Trump Cards");
         primaryStage.setWidth(screenWidth);
         primaryStage.setHeight(screenHeight);
         primaryStage.setResizable(false);
