@@ -1,0 +1,9 @@
+.menuBtn {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(92, 92, 92, 0.6);
+    -fx-min-width: 100;
+}
+
+.menuBtn:hover {
+    -fx-background-color: rgba(92, 92, 92, 1);
+}
