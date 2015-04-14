@@ -1,55 +1,54 @@
 package TrumpCard;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.awt.image.BufferedImage;
-import java.nio.file.Paths;
 
-
-public class GameLoop extends AnimationTimer {
+public class MainMenu extends AnimationTimer {
 
     private GraphicsContext graphicsContext;
     private double width;
     private double height;
     private Stage stage;
-    private Group root;
 
     private Image titleLeft;
     private Image titleRight;
-    private Image titleBg;
     private Font titleFont;
     private Font menuFont;
-    GameLoop(double width, double height, Stage stage, Group root)
+    MainMenu(double width, double height, Stage stage)
     {
         this.stage = stage;
-        this.root = root;
         this.width = width;
         this.height = height;
 
         this.titleLeft = new Image("file:images/title_left_small.jpg");
         this.titleRight = new Image("file:images/title_right_small.jpg");
-        this.titleBg = new Image("file:images/title_bg_sized.jpg");
+        if (this.titleLeft.isError() || this.titleRight.isError())
+        {
+            UIUtils.showErrorDialog("Could not load title images.", "Error");
+            System.exit(1);
+        }
 
-        this.titleFont = Font.loadFont("file:fonts/HAGANE.TTF", 60);
-        this.menuFont = Font.loadFont("file:fonts/cour.TTF", 40);
+        this.titleFont = Font.font("HAGANE", 60);
+        this.menuFont = Font.font("Courier New", 40);
 
+        Group root = new Group();
+        stage.setScene(new Scene(root));
+
+        // Create canvas to draw things onto.
         Canvas canvas = new Canvas(width, height);
-
         this.graphicsContext = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
 
@@ -59,11 +58,27 @@ public class GameLoop extends AnimationTimer {
         vb.setLayoutY(250);
         vb.setSpacing(20);
         vb.setPadding(new Insets(0, 0, 0, 0));
-        vb.getChildren().add(createButton("START"));
-        vb.getChildren().add(createButton("EXIT"));
+
+        Button startBtn = createButton("START");
+        startBtn.setOnAction(this::onStartBtnAction);
+        vb.getChildren().add(startBtn);
+
+        Button exitBtn = createButton("EXIT");
+        exitBtn.setOnAction(this::onExitBtnAction);
+        vb.getChildren().add(exitBtn);
         root.getChildren().add(vb);
     }
 
+    private void onStartBtnAction(ActionEvent event) {
+        CharacterSelection cs = new CharacterSelection(width, height);
+        cs.show(stage);
+        cs.start();
+
+    }
+
+    private void onExitBtnAction(ActionEvent event) {
+        System.exit(0);
+    }
     private Button createButton(String text)
     {
         Button result = new Button();
