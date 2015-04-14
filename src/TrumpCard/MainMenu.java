@@ -46,6 +46,7 @@ public class MainMenu extends AnimationTimer {
 
         Group root = new Group();
         stage.setScene(new Scene(root));
+        stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
 
         // Create canvas to draw things onto.
         Canvas canvas = new Canvas(width, height);
@@ -59,11 +60,11 @@ public class MainMenu extends AnimationTimer {
         vb.setSpacing(20);
         vb.setPadding(new Insets(0, 0, 0, 0));
 
-        Button startBtn = createButton("START");
+        Button startBtn = UIUtils.createButton("START", this.menuFont, "menuBtn");
         startBtn.setOnAction(this::onStartBtnAction);
         vb.getChildren().add(startBtn);
 
-        Button exitBtn = createButton("EXIT");
+        Button exitBtn = UIUtils.createButton("EXIT", this.menuFont, "menuBtn");
         exitBtn.setOnAction(this::onExitBtnAction);
         vb.getChildren().add(exitBtn);
         root.getChildren().add(vb);
@@ -78,19 +79,6 @@ public class MainMenu extends AnimationTimer {
 
     private void onExitBtnAction(ActionEvent event) {
         System.exit(0);
-    }
-    private Button createButton(String text)
-    {
-        Button result = new Button();
-        result.setText(text);
-        result.getStyleClass().add("menuBtn");
-        result.setFont(this.menuFont);
-        // Set some padding on the buttons, and set their width to 200px.
-        result.setPadding(new Insets(5, 10, 5, 10));
-        result.setPrefWidth(200);
-        // Make sure all buttons are the same size.
-        result.setMaxWidth(Double.MAX_VALUE);
-        return result;
     }
 
     @Override

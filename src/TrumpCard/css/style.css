@@ -7,3 +7,14 @@
 .menuBtn:hover {
     -fx-background-color: rgba(92, 92, 92, 1);
 }
+
+.playBtn {
+    -fx-text-fill: white;
+    -fx-background-color: #009102;
+    -fx-min-width: 100;
+}
+
+.playBtn:hover {
+    -fx-background-color: #00B700;
+
+}

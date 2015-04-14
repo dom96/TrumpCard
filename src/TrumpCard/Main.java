@@ -31,7 +31,6 @@ public class Main extends Application {
 
         MainMenu mainMenu = new MainMenu(screenWidth, screenHeight, primaryStage);
         mainMenu.start();
-        primaryStage.getScene().getStylesheets().add("TrumpCard/css/style.css");
         primaryStage.show();
     }
 

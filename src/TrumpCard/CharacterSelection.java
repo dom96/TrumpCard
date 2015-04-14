@@ -1,10 +1,12 @@
 package TrumpCard;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,10 +36,12 @@ public class CharacterSelection extends AnimationTimer {
 
     private CharacterName hoverSelection;
     private CharacterName currentSelection;
+    private boolean selectionLocked;
 
     private ColorAdjust blackAndWhite;
     private ArrayList<ImageView> characterBtns;
 
+    private Button playBtn;
 
     CharacterSelection(double width, double height)
     {
@@ -61,11 +65,18 @@ public class CharacterSelection extends AnimationTimer {
     {
         Group root = new Group();
         stage.setScene(new Scene(root));
+        stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
 
         // Create canvas to draw things onto.
         Canvas canvas = new Canvas(width, height);
         this.graphicsContext = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
+
+        // Create play button
+        this.playBtn = UIUtils.createButton("CHOOSE", Font.font("Courier New", 25), "playBtn");
+        UIUtils.addAt(root, this.playBtn, width / 2 - 100, 600);
+        this.playBtn.setOnAction(this::onPlayBtnClicked);
+        this.playBtn.setVisible(false);
 
         addCharacters(root, 20, 160, new CharacterName[]{CharacterName.Ultron,
                 CharacterName.Joker, CharacterName.GreenGoblin});
@@ -75,8 +86,22 @@ public class CharacterSelection extends AnimationTimer {
                 CharacterName.Batman, CharacterName.Spiderman});
     }
 
+    private void onPlayBtnClicked(ActionEvent ev)
+    {
+        this.selectionLocked = true;
+        this.playBtn.setText("PLAY");
+
+    }
+
     private void onCharacterImageMouseClicked(MouseEvent ev, CharacterName character)
     {
+        if (this.selectionLocked)
+        {
+            // We don't want the user to be able to select a different character after they
+            // already chose one.
+            return;
+        }
+
         // Loop through all the buttons to deselect them.
         for (ImageView view : characterBtns)
         {
@@ -87,6 +112,10 @@ public class CharacterSelection extends AnimationTimer {
         view.setEffect(null);
 
         currentSelection = character;
+
+        // Show play button so the user can move to the next stage.
+        // At this point the button text is "CHOOSE".
+        this.playBtn.setVisible(true);
     }
 
     private void onCharacterImageMouseEnter(MouseEvent ev, CharacterName character)
@@ -170,17 +199,19 @@ public class CharacterSelection extends AnimationTimer {
 
         graphicsContext.fillText(name + " - " + alignment, width / 2, 380);
 
-        graphicsContext.setFont(Font.font("Courier New", 18));
-        graphicsContext.setTextAlign(TextAlignment.LEFT);
-        graphicsContext.fillText(CharacterName.getDescription(selection),
-                20, 410);
+        if (!selectionLocked) {
+            graphicsContext.setFont(Font.font("Courier New", 18));
+            graphicsContext.setTextAlign(TextAlignment.LEFT);
+            graphicsContext.fillText(CharacterName.getDescription(selection),
+                    20, 410);
 
-        graphicsContext.fillText("Strength: " + CharacterName.getStrength(selection),
-                width / 2 - 140, 410);
-        graphicsContext.fillText("Intelligence: " + CharacterName.getIntelligence(selection),
-                width / 2 - 140, 430);
-        graphicsContext.fillText("Durability: " + CharacterName.getDurability(selection),
-                width / 2 - 140, 450);
+            graphicsContext.fillText("Strength: " + CharacterName.getStrength(selection),
+                    width / 2 - 140, 410);
+            graphicsContext.fillText("Intelligence: " + CharacterName.getIntelligence(selection),
+                    width / 2 - 140, 430);
+            graphicsContext.fillText("Durability: " + CharacterName.getDurability(selection),
+                    width / 2 - 140, 450);
+        }
     }
 
     @Override
