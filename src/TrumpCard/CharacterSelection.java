@@ -160,6 +160,29 @@ public class CharacterSelection extends AnimationTimer {
         return new ImagePattern(background);
     }
 
+    private void drawInfo(CharacterName selection)
+    {
+        String alignment = CharacterName.getAlignment(selection);
+        String name = CharacterName.getFriendlyName(selection);
+
+        graphicsContext.setFont(Font.font("Courier New", 20));
+        graphicsContext.setTextAlign(TextAlignment.CENTER);
+
+        graphicsContext.fillText(name + " - " + alignment, width / 2, 380);
+
+        graphicsContext.setFont(Font.font("Courier New", 18));
+        graphicsContext.setTextAlign(TextAlignment.LEFT);
+        graphicsContext.fillText(CharacterName.getDescription(selection),
+                20, 410);
+
+        graphicsContext.fillText("Strength: " + CharacterName.getStrength(selection),
+                width / 2 - 140, 410);
+        graphicsContext.fillText("Intelligence: " + CharacterName.getIntelligence(selection),
+                width / 2 - 140, 430);
+        graphicsContext.fillText("Durability: " + CharacterName.getDurability(selection),
+                width / 2 - 140, 450);
+    }
+
     @Override
     public void handle(long now) {
         // Fill whole screen with a background corresponding to the character choice.
@@ -190,12 +213,20 @@ public class CharacterSelection extends AnimationTimer {
         graphicsContext.fillText("Villains", 200, 140);
 
         // Draw humans
-        graphicsContext.setFont(Font.font("Courier New", 40));
         graphicsContext.fillText("Humans", width / 2, 140);
 
         // Draw heroes
-        graphicsContext.setFont(Font.font("Courier New", 40));
         graphicsContext.fillText("Heroes", width - 200, 140);
+
+
+        if (hoverSelection != null)
+        {
+            drawInfo(hoverSelection);
+        }
+        else if (currentSelection != null)
+        {
+            drawInfo(currentSelection);
+        }
 
     }
 
