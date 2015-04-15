@@ -18,3 +18,11 @@
     -fx-background-color: #00B700;
 
 }
+
+.label {
+    -fx-text-fill: white;
+}
+
+.error {
+    -fx-text-fill: red;
+}

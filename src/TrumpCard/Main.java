@@ -29,8 +29,15 @@ public class Main extends Application {
             System.exit(1);
         }
 
+        /*
         MainMenu mainMenu = new MainMenu(screenWidth, screenHeight, primaryStage);
         mainMenu.start();
+        */
+        // TODO: Testing
+        GameScreen game = new GameScreen(screenWidth, screenHeight, CharacterName.Ultron, "Dom", "Belfast");
+        game.show(primaryStage);
+        game.start();
+
         primaryStage.show();
     }
 

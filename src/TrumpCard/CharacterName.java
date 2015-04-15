@@ -1,5 +1,7 @@
 package TrumpCard;
 
+import javafx.scene.image.Image;
+
 public enum CharacterName {
     IronMan, Batman, Spiderman,
     TonyStark, BruceWayne, PeterParker,
@@ -159,5 +161,16 @@ public enum CharacterName {
                         "Thus creating the Iron Man.";
         }
         return "";
+    }
+
+    public static Image loadImage(CharacterName name)
+    {
+        Image result = new Image("file:images/character_" + name.name().toLowerCase() + ".jpg");
+        if (result.isError())
+        {
+            UIUtils.showErrorDialog("Unable to load image for " + name.name(), "Error");
+            System.exit(1);
+        }
+        return result;
     }
 }

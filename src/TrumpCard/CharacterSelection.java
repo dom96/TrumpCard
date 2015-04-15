@@ -2,15 +2,19 @@ package TrumpCard;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -24,6 +28,7 @@ public class CharacterSelection extends AnimationTimer {
 
     private final double width;
     private final double height;
+    private Stage stage;
 
     private GraphicsContext graphicsContext;
 
@@ -42,6 +47,7 @@ public class CharacterSelection extends AnimationTimer {
     private ArrayList<ImageView> characterBtns;
 
     private Button playBtn;
+    private VBox inputControls;
 
     CharacterSelection(double width, double height)
     {
@@ -64,6 +70,7 @@ public class CharacterSelection extends AnimationTimer {
     public void show(Stage stage)
     {
         Group root = new Group();
+        this.stage = stage;
         stage.setScene(new Scene(root));
         stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
 
@@ -78,6 +85,40 @@ public class CharacterSelection extends AnimationTimer {
         this.playBtn.setOnAction(this::onPlayBtnClicked);
         this.playBtn.setVisible(false);
 
+        // Create Vertical Box to hold input fields and labels.
+        this.inputControls = new VBox();
+        inputControls.setLayoutX(width / 2 - 100);
+        inputControls.setLayoutY(400);
+        inputControls.setSpacing(10);
+        inputControls.setVisible(false);
+        root.getChildren().add(inputControls);
+
+        // -- Name
+        Label nameLbl = new Label("Your Name");
+        nameLbl.setFont(Font.font("Courier New", 20));
+        inputControls.getChildren().add(nameLbl);
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("e.g. Bob");
+        inputControls.getChildren().add(nameField);
+
+        // -- Address
+        Label addressLbl = new Label("Character hideout");
+        addressLbl.setFont(Font.font("Courier New", 20));
+        inputControls.getChildren().add(addressLbl);
+
+        TextField addressField = new TextField();
+        addressField.setPromptText("e.g. BT71NN or London");
+        inputControls.getChildren().add(addressField);
+
+        // -- Error label
+        Label errorLbl = new Label();
+        errorLbl.getStyleClass().add("error");
+        errorLbl.setFont(Font.font("Courier New", 13));
+        errorLbl.setVisible(false);
+        inputControls.getChildren().add(errorLbl);
+
+        // Add character images.
         addCharacters(root, 20, 160, new CharacterName[]{CharacterName.Ultron,
                 CharacterName.Joker, CharacterName.GreenGoblin});
         addCharacters(root, 440, 160, new CharacterName[]{CharacterName.TonyStark,
@@ -88,8 +129,30 @@ public class CharacterSelection extends AnimationTimer {
 
     private void onPlayBtnClicked(ActionEvent ev)
     {
-        this.selectionLocked = true;
-        this.playBtn.setText("PLAY");
+        if (!selectionLocked) {
+            this.selectionLocked = true;
+            this.playBtn.setText("PLAY");
+            this.inputControls.setVisible(true);
+        }
+        else
+        {
+            Label errorLbl = (Label)inputControls.getChildren().get(4);
+            String userName = ((TextField)inputControls.getChildren().get(1)).getText();
+            String characterHideout = ((TextField)inputControls.getChildren().get(3)).getText();
+
+            // Make sure the name is specified. Character hideout does not need to be specified.
+            if (userName.isEmpty())
+            {
+                errorLbl.setText("Please specify your name.");
+                errorLbl.setVisible(true);
+                return;
+            }
+
+            // If the required data is valid we can move onto the game screen.
+            GameScreen game = new GameScreen(width, height, currentSelection, userName, characterHideout);
+            game.show(stage);
+            game.start();
+        }
 
     }
 
@@ -230,7 +293,6 @@ public class CharacterSelection extends AnimationTimer {
         }
 
         graphicsContext.setFill(bgPattern);
-
         graphicsContext.fillRect(0, 0, width, height);
 
         // Draw title text.
