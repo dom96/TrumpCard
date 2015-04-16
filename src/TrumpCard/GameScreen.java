@@ -6,16 +6,18 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class GameScreen extends AnimationTimer {
 
@@ -26,6 +28,7 @@ public class GameScreen extends AnimationTimer {
     private GameState state;
 
     private Image background;
+    private Image map;
 
     private long time;
     private double glowIntensity;
@@ -38,7 +41,25 @@ public class GameScreen extends AnimationTimer {
 
         this.background = new Image("file:images/background2.jpg");
 
-        this.state = new GameState(new Character(name, userName, characterHideout));
+        this.state = new GameState(new Character(name, userName,
+                characterHideout.isEmpty() ? "Belfast" : characterHideout));
+
+        try
+        {
+            String darkBlueStyle = "feature:all|element:all|invert_lightness:true|" +
+                    "saturation:10|lightness:-30|gamma:0.5|hue:0x0043FF";
+            String googleMapsUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" +
+                    URLEncoder.encode(characterHideout, "UTF-8") + "&zoom=14&size=485x190&scale=2&format=png" +
+                    "&style=" + URLEncoder.encode(darkBlueStyle, "UTF-8");
+
+            this.map = new Image(googleMapsUrl);
+        }
+        catch (IOException exception)
+        {
+            // TODO: Use an offline map instead and show a warning.
+            UIUtils.showErrorDialog("Could not load image from Google Maps.", "Error");
+            System.exit(1);
+        }
     }
 
     public void show(Stage stage)
@@ -82,12 +103,6 @@ public class GameScreen extends AnimationTimer {
         graphicsContext.drawImage(background, 0, 0, width, height);
 
         // Draw name badge
-        DropShadow shadow = new DropShadow();
-        shadow.setColor(Color.web("#ff0000"));
-        shadow.setWidth(20);
-        shadow.setHeight(20);
-        shadow.setRadius(110);
-        shadow.setSpread(0.96);
         BoxBlur blur = new BoxBlur();
         blur.setWidth(100);
         blur.setHeight(50);
@@ -106,6 +121,8 @@ public class GameScreen extends AnimationTimer {
         //graphicsContext.setEffect(new Glow(glowIntensity*0.4));
         graphicsContext.drawImage(state.getCharacter().getImage(), 20, 20, 250, 380);
 
+        // Draw map
+        graphicsContext.drawImage(this.map, 290, 20, 970, 380);
 
     }
 }
