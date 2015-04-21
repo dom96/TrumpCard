@@ -27,8 +27,10 @@ public class GameScreen extends AnimationTimer {
 
     private GameState state;
 
+    private Group root;
     private Image background;
     private Image map;
+    private Image crimeIcon;
 
     private long time;
     private double glowIntensity;
@@ -40,6 +42,7 @@ public class GameScreen extends AnimationTimer {
         this.height = height;
 
         this.background = new Image("file:images/background2.jpg");
+        this.crimeIcon = new Image("file:images/crime32.png");
 
         this.state = new GameState(new Character(name, userName,
                 characterHideout.isEmpty() ? "Belfast" : characterHideout));
@@ -64,7 +67,7 @@ public class GameScreen extends AnimationTimer {
 
     public void show(Stage stage)
     {
-        Group root = new Group();
+        this.root = new Group();
         stage.setScene(new Scene(root));
         stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
 
@@ -124,5 +127,8 @@ public class GameScreen extends AnimationTimer {
         // Draw map
         graphicsContext.drawImage(this.map, 290, 20, 970, 380);
 
+
+        // Advance game
+        this.state.poll(root, crimeIcon, now);
     }
 }
