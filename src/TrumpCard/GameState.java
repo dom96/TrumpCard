@@ -1,7 +1,10 @@
 package TrumpCard;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -52,6 +55,15 @@ public class GameState {
         return result;
     }
 
+    private void moveCrimeBoxes() {
+        for (int i = 0; i < this.crimes.size(); i++)
+        {
+            double x = 290 + (i*227.5) + (i*20);
+            this.crimes.get(i).translateBox(x);
+        }
+
+    }
+
     public void poll(Group root, Image crimeIcon, long now) {
         // Decide whether a new crime/opportunity should be generated. Check only every 2 seconds.
         if (now - lastCrimeCheck >= 2e9) {
@@ -73,6 +85,8 @@ public class GameState {
         // Check crimes for expiry.
 
 
+        // Move crime boxes.
+        moveCrimeBoxes();
     }
 
 }

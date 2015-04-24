@@ -26,3 +26,14 @@
 .error {
     -fx-text-fill: red;
 }
+
+.crimeBox {
+    -fx-border-color: #040D33;
+    -fx-border-width: 5;
+    -fx-padding: 5 10 5 10;
+    -fx-background-color: rgba(11, 33, 130, 0.3);
+}
+
+.crimeBox .label {
+    -fx-text-fill: #A5BDE2;
+}

@@ -1,10 +1,14 @@
 package TrumpCard;
 
 import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -14,6 +18,8 @@ public class Crime {
     private double expires;
 
     private ImageView crimeImageView;
+    private HBox box;
+    private TranslateTransition move;
 
 
     Crime(CrimeInfo info, Image crimeIcon, Group root, double expires)
@@ -35,6 +41,19 @@ public class Crime {
         scale.setByX(-0.70f);
         scale.setByY(-0.70f);
         scale.play();
+
+        this.box = new HBox();
+        box.setLayoutX(1000);
+        box.setLayoutY(420);
+        box.setPrefWidth(227.5);
+        box.setPrefHeight(200);
+        box.getStyleClass().add("crimeBox");
+        root.getChildren().add(this.box);
+
+        Label crimeDesc = new Label(info.getDescription());
+        crimeDesc.setFont(Font.font("Courier New", 16));
+        box.getChildren().add(crimeDesc);
+
     }
 
     public enum CrimeLocation {
@@ -46,6 +65,20 @@ public class Crime {
      */
     public double getExpires() {
         return expires;
+    }
+
+    /**
+     * Translates this crime's box to location `x`.
+     * @param x
+     */
+    public void translateBox(double x) {
+        if (move == null)
+        {
+            move = new TranslateTransition(Duration.millis(1400), box);
+            move.setByX(x - box.getLayoutX() - box.getTranslateX());
+            move.play();
+            move.setOnFinished(event -> move = null);
+        }
     }
 
     public static class CrimeInfo {
