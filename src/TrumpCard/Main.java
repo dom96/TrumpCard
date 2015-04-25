@@ -23,9 +23,9 @@ public class Main extends Application {
             UIUtils.showErrorDialog("./fonts/HAGANE.TTF not found.", "Error");
             System.exit(1);
         }
-        if (Font.loadFont("file:fonts/cour.TTF", 60) == null)
+        if (Font.loadFont("file:fonts/cour.ttf", 60) == null)
         {
-            UIUtils.showErrorDialog("./fonts/cour.TTF not found.", "Error");
+            UIUtils.showErrorDialog("./fonts/cour.ttf not found.", "Error");
             System.exit(1);
         }
 
