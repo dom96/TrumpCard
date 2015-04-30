@@ -17,12 +17,18 @@ public class GameState {
     private long lastCrimeGen;
     private long lastCrimeCheck;
 
-    private final int MAX_CRIMES = 10; // Max amount of crimes at the same time.
+    private final int MAX_CRIMES = 4; // Max amount of crimes at the same time.
+
+    private Image crimeIcon;
+    private Image crimeIconHover;
 
     GameState(Character character)
     {
         this.currentCharacter = character;
         this.crimes = new ArrayList<Crime>();
+
+        crimeIcon = new Image("file:images/crime32.png");
+        crimeIconHover = new Image("file:images/crime32_hover.png");
     }
 
     public Character getCharacter()
@@ -32,6 +38,14 @@ public class GameState {
 
     public ArrayList<Crime> getCrimes() {
         return this.crimes;
+    }
+
+    public Image getCrimeIcon() {
+        return crimeIcon;
+    }
+
+    public Image getCrimeIconHover() {
+        return crimeIconHover;
     }
 
     /**
@@ -64,7 +78,7 @@ public class GameState {
 
     }
 
-    public void poll(Group root, Image crimeIcon, long now) {
+    public void poll(Group root, long now) {
         // Decide whether a new crime/opportunity should be generated. Check only every 2 seconds.
         if (now - lastCrimeCheck >= 2e9) {
             lastCrimeCheck = now;
@@ -74,10 +88,9 @@ public class GameState {
             double randDouble = rand.nextDouble();
             System.out.println(likelihood + "%" + ", " + randDouble);
 
-
             if (randDouble < likelihood / 100.f && this.crimes.size() < MAX_CRIMES) {
                 Crime.CrimeInfo info = Crime.genCrime();
-                Crime crime = new Crime(info, crimeIcon, root, now + 10e9);
+                Crime crime = new Crime(info, this, root, now + 10e9);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;
             }

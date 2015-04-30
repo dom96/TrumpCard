@@ -42,7 +42,6 @@ public class GameScreen extends AnimationTimer {
         this.height = height;
 
         this.background = new Image("file:images/background2.jpg");
-        this.crimeIcon = new Image("file:images/crime32.png");
 
         this.state = new GameState(new Character(name, userName,
                 characterHideout.isEmpty() ? "Belfast" : characterHideout));
@@ -129,6 +128,6 @@ public class GameScreen extends AnimationTimer {
 
 
         // Advance game
-        this.state.poll(root, crimeIcon, now);
+        this.state.poll(root, now);
     }
 }

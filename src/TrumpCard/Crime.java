@@ -2,12 +2,17 @@ package TrumpCard;
 
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -18,17 +23,21 @@ public class Crime {
     private double expires;
 
     private ImageView crimeImageView;
-    private HBox box;
+    private VBox box;
     private TranslateTransition move;
 
 
-    Crime(CrimeInfo info, Image crimeIcon, Group root, double expires)
+    private Button leftBtn;
+    private Button rightBtn;
+    private Button ignoreBtn;
+
+    Crime(CrimeInfo info, GameState state, Group root, double expires)
     {
         this.info = info;
 
         this.expires = expires;
 
-        this.crimeImageView = new ImageView(crimeIcon);
+        this.crimeImageView = new ImageView(state.getCrimeIcon());
         this.crimeImageView.setFitWidth(100);
         this.crimeImageView.setPreserveRatio(true);
         this.crimeImageView.setLayoutX(this.info.getX() + 290);
@@ -42,8 +51,8 @@ public class Crime {
         scale.setByY(-0.70f);
         scale.play();
 
-        this.box = new HBox();
-        box.setLayoutX(1000);
+        this.box = new VBox();
+        box.setLayoutX(1280);
         box.setLayoutY(420);
         box.setPrefWidth(227.5);
         box.setPrefHeight(200);
@@ -53,6 +62,55 @@ public class Crime {
         Label crimeDesc = new Label(info.getDescription());
         crimeDesc.setFont(Font.font("Courier New", 16));
         box.getChildren().add(crimeDesc);
+
+        Label energyUseDesc = new Label("Energy Use: " + info.getEnergyUse());
+        energyUseDesc.setFont(Font.font("Courier New", 14));
+        box.getChildren().add(energyUseDesc);
+
+        HBox buttonBox = new HBox(0);
+        buttonBox.setPadding(new Insets(90, 0, 0, 0));
+        box.getChildren().add(buttonBox);
+
+        leftBtn = new Button("Commit");
+        rightBtn = new Button("Fight");
+        ignoreBtn = new Button("Ignore");
+        buttonBox.getChildren().addAll(leftBtn, rightBtn, ignoreBtn);
+        if (CharacterName.isVillain(state.getCharacter().getName()))
+        {
+            leftBtn.setVisible(true);
+            rightBtn.setVisible(false);
+        }
+        else if (CharacterName.isHuman(state.getCharacter().getName()))
+        {
+            leftBtn.setVisible(true);
+            rightBtn.setVisible(true);
+        }
+        else if (CharacterName.isHuman(state.getCharacter().getName()))
+        {
+            leftBtn.setVisible(false);
+            rightBtn.setVisible(true);
+        }
+
+
+        // Event handling
+        // Change color of crime box when hovering over crime image on map.
+        this.crimeImageView.setOnMouseEntered(
+                event -> {
+                    box.getStyleClass().add("crimeHover");
+                    crimeImageView.setImage(state.getCrimeIconHover());
+                });
+        this.crimeImageView.setOnMouseExited(
+                event -> {
+                    box.getStyleClass().remove("crimeHover");
+                    crimeImageView.setImage(state.getCrimeIcon());
+                });
+        // Change color of crime image on map when hovering over crime box.
+        box.setOnMouseEntered(
+                event -> crimeImageView.setImage(state.getCrimeIconHover()));
+        box.setOnMouseExited(
+                event -> crimeImageView.setImage(state.getCrimeIcon()));
+
+
 
     }
 

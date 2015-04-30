@@ -34,6 +34,10 @@
     -fx-background-color: rgba(11, 33, 130, 0.3);
 }
 
+.crimeBox:hover, .crimeHover {
+    -fx-border-color: #FFB600;
+}
+
 .crimeBox .label {
     -fx-text-fill: #A5BDE2;
 }
