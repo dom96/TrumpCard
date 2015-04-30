@@ -74,21 +74,18 @@ public class Crime {
         leftBtn = new Button("Commit");
         rightBtn = new Button("Fight");
         ignoreBtn = new Button("Ignore");
-        buttonBox.getChildren().addAll(leftBtn, rightBtn, ignoreBtn);
+
         if (CharacterName.isVillain(state.getCharacter().getName()))
         {
-            leftBtn.setVisible(true);
-            rightBtn.setVisible(false);
+            buttonBox.getChildren().addAll(leftBtn, ignoreBtn);
         }
         else if (CharacterName.isHuman(state.getCharacter().getName()))
         {
-            leftBtn.setVisible(true);
-            rightBtn.setVisible(true);
+            buttonBox.getChildren().addAll(leftBtn, rightBtn, ignoreBtn);
         }
         else if (CharacterName.isHuman(state.getCharacter().getName()))
         {
-            leftBtn.setVisible(false);
-            rightBtn.setVisible(true);
+            buttonBox.getChildren().addAll(rightBtn, ignoreBtn);
         }
 
 
