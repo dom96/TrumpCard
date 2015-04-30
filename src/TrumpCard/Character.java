@@ -3,8 +3,8 @@ package TrumpCard;
 import javafx.scene.image.Image;
 
 public class Character {
-    protected int actions; // Percentage
-    protected int energy; // Percentage
+    protected double actions; // Percentage
+    protected double energy; // Percentage
 
     protected CharacterName name;
     protected String userName;
@@ -19,13 +19,28 @@ public class Character {
         this.hideout = hideout;
 
         this.image = CharacterName.loadImage(this.name);
+
+        if (CharacterName.isVillain(name))
+        {
+            this.actions = 25.0;
+        }
+        if (CharacterName.isHuman(name))
+        {
+            this.actions = 50.0;
+        }
+        if (CharacterName.isHero(name))
+        {
+            this.actions = 75.0;
+        }
+
+        this.energy = 100;
     }
 
-    public int getActions() {
+    public double getActions() {
         return actions;
     }
 
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 

@@ -41,3 +41,7 @@
 .crimeBox .label {
     -fx-text-fill: #A5BDE2;
 }
+
+.statusBox .statusFieldName {
+    -fx-text-fill: #A5BDE2;
+}

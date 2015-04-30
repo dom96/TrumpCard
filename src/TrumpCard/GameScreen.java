@@ -1,16 +1,26 @@
 package TrumpCard;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Box;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
@@ -24,6 +34,9 @@ public class GameScreen extends AnimationTimer {
     private double width;
     private double height;
     private GraphicsContext graphicsContext;
+    private Label statusLabel;
+    private ProgressBar actionsBar;
+    private ProgressBar energyBar;
 
     private GameState state;
 
@@ -64,6 +77,51 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
+    private void createBoldLabel(Pane box, String text, Node right, Font font)
+    {
+        Label boldLbl = new Label(text);
+        boldLbl.setFont(font);
+        boldLbl.getStyleClass().add("statusFieldName");
+
+        box.getChildren().addAll(boldLbl, right);
+    }
+
+    private void updateStatusLabel()
+    {
+        double actions = state.getCharacter().getActions();
+        if (actions <= 100)
+        {
+            statusLabel.setText("Super hero");
+        }
+
+        if (actions <= 90)
+        {
+            statusLabel.setText("Hero");
+        }
+
+        if (actions <= 60)
+        {
+            statusLabel.setText("Human");
+        }
+
+        if (actions <= 40)
+        {
+            statusLabel.setText("Villain");
+        }
+
+        if (actions <= 10)
+        {
+            statusLabel.setText("Super villain");
+        }
+    }
+
+    private void updateStatusBox()
+    {
+        updateStatusLabel();
+        actionsBar.setProgress(state.getCharacter().getActions() / 100);
+        energyBar.setProgress(state.getCharacter().getEnergy() / 100);
+    }
+
     public void show(Stage stage)
     {
         this.root = new Group();
@@ -74,6 +132,33 @@ public class GameScreen extends AnimationTimer {
         Canvas canvas = new Canvas(width, height);
         this.graphicsContext = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
+
+        // Create widgets for showing the status
+        TilePane statusBox = new TilePane();
+        statusBox.setTileAlignment(Pos.CENTER_LEFT);
+        statusBox.setVgap(5);
+        statusBox.setPrefColumns(2);
+        statusBox.setLayoutX(20);
+        statusBox.setLayoutY(450);
+        statusBox.getStyleClass().add("statusBox");
+        root.getChildren().add(statusBox);
+
+        statusLabel = new Label();
+        Font statusFont = Font.font("Courier New", 18);
+        statusLabel.setFont(statusFont);
+        createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
+        updateStatusLabel();
+
+        actionsBar = new ProgressBar();
+        actionsBar.setPrefWidth(125);
+        actionsBar.setPrefHeight(20);
+        createBoldLabel(statusBox, "Actions: ", actionsBar, statusFont);
+
+        energyBar = new ProgressBar();
+        energyBar.setPrefWidth(125);
+        energyBar.setPrefHeight(20);
+        createBoldLabel(statusBox, "Energy: ", energyBar, statusFont);
+        updateStatusBox();
     }
 
     @Override
@@ -111,7 +196,7 @@ public class GameScreen extends AnimationTimer {
         blur.setIterations(3);
         graphicsContext.setEffect(blur);
         graphicsContext.setFill(Color.web("#ff0000"));
-        graphicsContext.fillRect(80, 390, 130, 35);
+        graphicsContext.fillRect(80, 370 + (20*glowIntensity), 130, 35);
 
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.setEffect(null);
