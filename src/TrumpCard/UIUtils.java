@@ -5,6 +5,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
@@ -48,5 +49,14 @@ public class UIUtils {
         // Make sure all buttons are the same size.
         result.setMaxWidth(Double.MAX_VALUE);
         return result;
+    }
+
+    public static void createBoldLabel(Pane box, String text, Node right, Font font)
+    {
+        Label boldLbl = new Label(text);
+        boldLbl.setFont(font);
+        boldLbl.getStyleClass().add("statusFieldName");
+
+        box.getChildren().addAll(boldLbl, right);
     }
 }

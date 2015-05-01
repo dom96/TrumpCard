@@ -69,13 +69,22 @@ public class GameState {
         return result;
     }
 
-    private void moveCrimeBoxes() {
+    private void updateCrimes(Group root, long now) {
+        ArrayList<Crime> newCrimes = new ArrayList<Crime>();
         for (int i = 0; i < this.crimes.size(); i++)
         {
             double x = 290 + (i*227.5) + (i*20);
             this.crimes.get(i).translateBox(x);
+            if (!this.crimes.get(i).update(now))
+            {
+                newCrimes.add(crimes.get(i));
+            }
+            else
+            {
+                this.crimes.get(i).destroy(root);
+            }
         }
-
+        crimes = newCrimes;
     }
 
     public void poll(Group root, long now) {
@@ -90,16 +99,14 @@ public class GameState {
 
             if (randDouble < likelihood / 100.f && this.crimes.size() < MAX_CRIMES) {
                 Crime.CrimeInfo info = Crime.genCrime();
-                Crime crime = new Crime(info, this, root, now + 10e9);
+                Crime crime = new Crime(info, now + (long)10e9);
+                crime.show(this, root);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;
             }
         }
-        // Check crimes for expiry.
-
-
-        // Move crime boxes.
-        moveCrimeBoxes();
+        // Move crime boxes and check crimes for expiry.
+        updateCrimes(root, now);
     }
 
 }

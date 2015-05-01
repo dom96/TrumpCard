@@ -12,6 +12,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -20,23 +21,26 @@ import java.util.Random;
 
 public class Crime {
     private CrimeInfo info;
-    private double expires;
+    private long expires;
 
     private ImageView crimeImageView;
     private VBox box;
     private TranslateTransition move;
 
-
     private Button leftBtn;
     private Button rightBtn;
     private Button ignoreBtn;
 
-    Crime(CrimeInfo info, GameState state, Group root, double expires)
+    private Label expiresInDesc;
+
+    Crime(CrimeInfo info, long expires)
     {
         this.info = info;
 
         this.expires = expires;
+    }
 
+    public void show(GameState state, Group root) {
         this.crimeImageView = new ImageView(state.getCrimeIcon());
         this.crimeImageView.setFitWidth(100);
         this.crimeImageView.setPreserveRatio(true);
@@ -63,11 +67,23 @@ public class Crime {
         crimeDesc.setFont(Font.font("Courier New", 16));
         box.getChildren().add(crimeDesc);
 
-        Label energyUseDesc = new Label("Energy Use: " + info.getEnergyUse());
-        energyUseDesc.setFont(Font.font("Courier New", 14));
-        box.getChildren().add(energyUseDesc);
+        // Create the widgets to show properties of the crime.
+        TilePane crimeFieldsBox = new TilePane();
+        crimeFieldsBox.setTileAlignment(Pos.CENTER_LEFT);
+        crimeFieldsBox.setPrefColumns(2);
+        box.getChildren().add(crimeFieldsBox);
 
-        HBox buttonBox = new HBox(0);
+        Font crimeFieldsFont = Font.font("Courier New", 14);
+
+        Label energyUseDesc = new Label(Integer.toString(info.getEnergyUse()));
+        energyUseDesc.setFont(crimeFieldsFont);
+        UIUtils.createBoldLabel(crimeFieldsBox, "Energy Use: ", energyUseDesc, crimeFieldsFont);
+
+        expiresInDesc = new Label("10 seconds");
+        expiresInDesc.setFont(crimeFieldsFont);
+        UIUtils.createBoldLabel(crimeFieldsBox, "Expires in: ", expiresInDesc, crimeFieldsFont);
+
+        HBox buttonBox = new HBox();
         buttonBox.setPadding(new Insets(90, 0, 0, 0));
         box.getChildren().add(buttonBox);
 
@@ -88,7 +104,6 @@ public class Crime {
             buttonBox.getChildren().addAll(rightBtn, ignoreBtn);
         }
 
-
         // Event handling
         // Change color of crime box when hovering over crime image on map.
         this.crimeImageView.setOnMouseEntered(
@@ -107,19 +122,10 @@ public class Crime {
         box.setOnMouseExited(
                 event -> crimeImageView.setImage(state.getCrimeIcon()));
 
-
-
     }
 
     public enum CrimeLocation {
         TrainStation, River, RailWay, Street, Home, NonSpecific
-    }
-
-    /**
-     * The time (in nanoseconds, relative to the animation timer) when this crime expires.
-     */
-    public double getExpires() {
-        return expires;
     }
 
     /**
@@ -134,6 +140,22 @@ public class Crime {
             move.play();
             move.setOnFinished(event -> move = null);
         }
+    }
+
+    /**
+     * Updates the expiration label.
+     * @return whether this crime has expired
+     */
+    public boolean update(long now) {
+        int seconds = (int)Math.round((expires - now) / 1.0e9);
+        expiresInDesc.setText(seconds + " seconds");
+        return seconds <= 0;
+    }
+
+    public void destroy(Group root) {
+        root.getChildren().remove(box);
+        root.getChildren().remove(crimeImageView);
+
     }
 
     public static class CrimeInfo {

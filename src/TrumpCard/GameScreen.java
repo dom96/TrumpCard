@@ -77,15 +77,6 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
-    private void createBoldLabel(Pane box, String text, Node right, Font font)
-    {
-        Label boldLbl = new Label(text);
-        boldLbl.setFont(font);
-        boldLbl.getStyleClass().add("statusFieldName");
-
-        box.getChildren().addAll(boldLbl, right);
-    }
-
     private void updateStatusLabel()
     {
         double actions = state.getCharacter().getActions();
@@ -136,7 +127,6 @@ public class GameScreen extends AnimationTimer {
         // Create widgets for showing the status
         TilePane statusBox = new TilePane();
         statusBox.setTileAlignment(Pos.CENTER_LEFT);
-        statusBox.setVgap(5);
         statusBox.setPrefColumns(2);
         statusBox.setLayoutX(20);
         statusBox.setLayoutY(450);
@@ -146,18 +136,18 @@ public class GameScreen extends AnimationTimer {
         statusLabel = new Label();
         Font statusFont = Font.font("Courier New", 18);
         statusLabel.setFont(statusFont);
-        createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
+        UIUtils.createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
         updateStatusLabel();
 
         actionsBar = new ProgressBar();
         actionsBar.setPrefWidth(125);
         actionsBar.setPrefHeight(20);
-        createBoldLabel(statusBox, "Actions: ", actionsBar, statusFont);
+        UIUtils.createBoldLabel(statusBox, "Actions: ", actionsBar, statusFont);
 
         energyBar = new ProgressBar();
         energyBar.setPrefWidth(125);
         energyBar.setPrefHeight(20);
-        createBoldLabel(statusBox, "Energy: ", energyBar, statusFont);
+        UIUtils.createBoldLabel(statusBox, "Energy: ", energyBar, statusFont);
         updateStatusBox();
     }
 
