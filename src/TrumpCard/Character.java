@@ -56,11 +56,24 @@ public class Character {
         return hideout;
     }
 
+    public void setEnergy(double energy) {
+        this.energy = energy;
+    }
+
+    public void setActions(double actions) {
+        this.actions = actions;
+    }
+
     public Image getImage() {
         return image;
     }
 
     public String getFriendlyName() {
         return CharacterName.getFriendlyName(name);
+    }
+
+    public enum CharacterStatus {
+        Sleeping, Moving, Still
+
     }
 }

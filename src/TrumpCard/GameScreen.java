@@ -137,7 +137,6 @@ public class GameScreen extends AnimationTimer {
         Font statusFont = Font.font("Courier New", 18);
         statusLabel.setFont(statusFont);
         UIUtils.createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
-        updateStatusLabel();
 
         actionsBar = new ProgressBar();
         actionsBar.setPrefWidth(125);
@@ -148,6 +147,8 @@ public class GameScreen extends AnimationTimer {
         energyBar.setPrefWidth(125);
         energyBar.setPrefHeight(20);
         UIUtils.createBoldLabel(statusBox, "Energy: ", energyBar, statusFont);
+
+        // Set text of statusLabel, actionsBar and energyBar.
         updateStatusBox();
     }
 
@@ -201,8 +202,11 @@ public class GameScreen extends AnimationTimer {
         // Draw map
         graphicsContext.drawImage(this.map, 290, 20, 970, 380);
 
-
         // Advance game
         this.state.poll(root, now);
+
+        // Update status label, energy bar and actions bar.
+        updateStatusBox();
+
     }
 }

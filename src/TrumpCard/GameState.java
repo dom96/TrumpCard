@@ -14,13 +14,17 @@ public class GameState {
     private Character currentCharacter;
     private ArrayList<Crime> crimes;
 
-    private long lastCrimeGen;
-    private long lastCrimeCheck;
+    private long lastCrimeGen; // Time when last crime was generated.
+    private long lastCrimeCheck; // Time when it was last checked whether crime should be generated.
+
+    private long lastCharacterUpdate; // Last time character stats were updated.
 
     private final int MAX_CRIMES = 4; // Max amount of crimes at the same time.
 
     private Image crimeIcon;
     private Image crimeIconHover;
+
+    private Character.CharacterStatus characterStatus; // Determines what character is doing.
 
     GameState(Character character)
     {
@@ -29,6 +33,8 @@ public class GameState {
 
         crimeIcon = new Image("file:images/crime32.png");
         crimeIconHover = new Image("file:images/crime32_hover.png");
+
+        characterStatus = Character.CharacterStatus.Still;
     }
 
     public Character getCharacter()
@@ -87,6 +93,31 @@ public class GameState {
         crimes = newCrimes;
     }
 
+    private void updateCharacter(long now) {
+        // Only update the character stats every 200 miliseconds.
+        if (now - lastCharacterUpdate < 200e6)
+        {
+            return;
+        }
+        lastCharacterUpdate = now;
+        double newEnergy = currentCharacter.getEnergy();
+        switch (characterStatus) {
+            case Moving:
+                // When the character is moving energy depletes faster.
+                newEnergy -= 0.5;
+                break;
+            case Still:
+                // Some energy depletes.
+                newEnergy -= 0.1;
+                break;
+            case Sleeping:
+                // Energy is restored when sleeping.
+                newEnergy += 0.6;
+                break;
+        }
+        currentCharacter.setEnergy(newEnergy);
+    }
+
     public void poll(Group root, long now) {
         // Decide whether a new crime/opportunity should be generated. Check only every 2 seconds.
         if (now - lastCrimeCheck >= 2e9) {
@@ -107,6 +138,9 @@ public class GameState {
         }
         // Move crime boxes and check crimes for expiry.
         updateCrimes(root, now);
+
+        // Update character stats.
+        updateCharacter(now);
     }
 
 }

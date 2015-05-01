@@ -7,7 +7,7 @@
 - [ ] Basic gameplay
   - [ ] Character hideout
   - [ ] Movement from hideout to crime locations
-  - [ ] Depletion of energy
+  - [x] Depletion of energy
   - [x] Crime expiration
   - [ ] Commiting crimes
   - [ ] Ignoring crimes
