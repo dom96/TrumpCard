@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -46,6 +47,17 @@ public class Crime {
 
     private Point2D getWindowPos() {
         return new Point2D(this.info.getX() + 290, this.info.getY() + 20);
+    }
+
+    private void onCrimeImageClicked(MouseEvent event, GameState state)
+    {
+        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping)
+        {
+            UIUtils.showMessageDialog("Cannot move whilst sleeping.");
+            return;
+        }
+
+        state.getCharacter().moveTo(getWindowPos());
     }
 
     public void show(GameState state, Group root) {
@@ -132,8 +144,8 @@ public class Crime {
                 event -> crimeImageView.setImage(state.getCrimeIcon()));
         // When crime image on map is clicked we want our character to go there.
         crimeImageView.setOnMouseClicked(
-                event -> state.getCharacter().moveTo(getWindowPos())
-            );
+                event -> onCrimeImageClicked(event, state)
+        );
     }
 
     public enum CrimeLocation {

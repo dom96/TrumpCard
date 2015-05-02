@@ -10,11 +10,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -40,6 +42,7 @@ public class GameScreen extends AnimationTimer {
     private Label statusLabel;
     private ProgressBar actionsBar;
     private ProgressBar energyBar;
+    private Button sleepBtn;
 
     private GameState state;
 
@@ -119,6 +122,39 @@ public class GameScreen extends AnimationTimer {
         energyBar.setProgress(state.getCharacter().getEnergy() / 100);
     }
 
+    private void updateLeftButtons()
+    {
+        // Check whether we can sleep.
+        if (state.getCharacter().isAtHome())
+        {
+            sleepBtn.getStyleClass().remove("disabledBtn");
+        }
+        else if (!sleepBtn.getStyleClass().contains("disabledBtn"))
+        {
+            sleepBtn.getStyleClass().add("disabledBtn");
+        }
+    }
+
+    private void onSleepBtnClicked(MouseEvent event)
+    {
+        if (!state.getCharacter().isAtHome())
+        {
+            UIUtils.showMessageDialog("You can only sleep at home.");
+            return;
+        }
+
+        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping)
+        {
+            state.getCharacter().setStatus(Character.CharacterStatus.Still);
+            sleepBtn.setText("Sleep");
+        }
+        else
+        {
+            state.getCharacter().setStatus(Character.CharacterStatus.Sleeping);
+            sleepBtn.setText("Wake up");
+        }
+    }
+
     public void show(Stage stage)
     {
         this.root = new Group();
@@ -167,6 +203,23 @@ public class GameScreen extends AnimationTimer {
 
         // Set text of statusLabel, actionsBar and energyBar.
         updateStatusBox();
+
+        // Create buttons below status box
+        VBox buttonBox = new VBox();
+        buttonBox.setLayoutX(20);
+        buttonBox.setLayoutY(550);
+        root.getChildren().add(buttonBox);
+
+        // Sleep button
+        ImageView sleepIcon = new ImageView(new Image("file:images/sleep.png"));
+        sleepIcon.setPreserveRatio(true);
+        sleepIcon.setFitWidth(30);
+        sleepBtn = new Button("Sleep", sleepIcon);
+        sleepBtn.setCursor(Cursor.HAND);
+        sleepBtn.getStyleClass().add("sleepBtn");
+        sleepBtn.setOnMouseClicked(this::onSleepBtnClicked);
+        buttonBox.getChildren().add(sleepBtn);
+
     }
 
     @Override
@@ -230,5 +283,7 @@ public class GameScreen extends AnimationTimer {
         // Update status label, energy bar and actions bar.
         updateStatusBox();
 
+        // Update buttons on the left of the screen.
+        updateLeftButtons();
     }
 }

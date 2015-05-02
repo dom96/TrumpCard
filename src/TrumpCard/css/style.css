@@ -45,3 +45,22 @@
 .statusBox .statusFieldName {
     -fx-text-fill: #A5BDE2;
 }
+
+.sleepBtn {
+     -fx-text-fill: white;
+     -fx-background-color: #009102;
+     -fx-min-width: 250;
+     -fx-font-size: 18;
+}
+
+.sleepBtn:hover {
+     -fx-background-color: #00A000;
+}
+
+.disabledBtn {
+    -fx-background-color: #1d1d1d;
+}
+
+.disabledBtn:hover {
+    -fx-background-color: #2d2d2d;
+}

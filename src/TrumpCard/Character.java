@@ -19,7 +19,7 @@ public class Character {
 
     protected Image image;
 
-    private CharacterStatus status; // Determines what character is doing.
+    protected CharacterStatus status; // Determines what character is doing.
 
     Character(CharacterName name, String userName, String hideout)
     {
@@ -81,6 +81,10 @@ public class Character {
 
     public CharacterStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(CharacterStatus status) {
+        this.status = status;
     }
 
     public double getActions() {

@@ -37,6 +37,13 @@ public class UIUtils {
                 title, JOptionPane.ERROR_MESSAGE);
     }
 
+    public static void showMessageDialog(String message)
+    {
+        JFrame frame = new JFrame("Message");
+        JOptionPane.showMessageDialog(frame, message,
+                "Message", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public static Button createButton(String text, Font font, String cssClass)
     {
         Button result = new Button();

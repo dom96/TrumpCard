@@ -9,10 +9,14 @@
   - [x] Movement from hideout to crime locations
   - [x] Depletion of energy
   - [x] Crime expiration
+  - [x] Sleeping
   - [ ] Commiting crimes
   - [ ] Ignoring crimes
 - [ ] End of game condition
 - [ ] Shop (Challenges CSC1012)
+- [ ] Difficulty levels
+- [ ] Other character images
+- [ ] Use native message dialogs instead of Swing ones.
 
 ## Additional features
 
