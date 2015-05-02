@@ -26,7 +26,8 @@ import java.util.Random;
 
 public class Crime {
     private CrimeInfo info;
-    private long expires;
+    private int countdown;
+    private double expiresTimer;
 
     private ImageView crimeImageView;
     private VBox box;
@@ -38,11 +39,11 @@ public class Crime {
 
     private Label expiresInDesc;
 
-    Crime(CrimeInfo info, long expires)
+    Crime(CrimeInfo info)
     {
         this.info = info;
 
-        this.expires = expires;
+        this.countdown = 10;
     }
 
     private Point2D getWindowPos() {
@@ -171,9 +172,14 @@ public class Crime {
      * @return whether this crime has expired
      */
     public boolean update(long now) {
-        int seconds = (int)Math.round((expires - now) / 1.0e9);
-        expiresInDesc.setText(seconds + " seconds");
-        return seconds <= 0;
+        if (now - expiresTimer >= 1.0e9)
+        {
+            countdown--;
+            expiresTimer = now;
+            expiresInDesc.setText(countdown + " seconds");
+            return countdown <= 0;
+        }
+        return false;
     }
 
     public void destroy(Group root) {

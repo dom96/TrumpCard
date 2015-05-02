@@ -126,7 +126,7 @@ public class GameState {
 
             if (randDouble < likelihood / 100.f && this.crimes.size() < MAX_CRIMES) {
                 Crime.CrimeInfo info = Crime.genCrime();
-                Crime crime = new Crime(info, now + (long)10e9);
+                Crime crime = new Crime(info);
                 crime.show(this, root);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;
