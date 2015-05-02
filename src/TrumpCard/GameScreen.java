@@ -264,11 +264,11 @@ public class GameScreen extends AnimationTimer {
         pausePane.getChildren().add(menuBox);
 
         // Resume button
-        sleepBtn = new Button("Resume");
-        sleepBtn.setCursor(Cursor.HAND);
-        sleepBtn.getStyleClass().add("resumeBtn");
-        sleepBtn.setOnMouseClicked(this::onResumeBtnClicked);
-        menuBox.getChildren().add(sleepBtn);
+        Button resumeBtn = new Button("Resume");
+        resumeBtn.setCursor(Cursor.HAND);
+        resumeBtn.getStyleClass().add("resumeBtn");
+        resumeBtn.setOnMouseClicked(this::onResumeBtnClicked);
+        menuBox.getChildren().add(resumeBtn);
     }
 
     @Override
