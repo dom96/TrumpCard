@@ -50,6 +50,14 @@ public class GameState {
         return crimeIconHover;
     }
 
+    public void pause() {
+        currentCharacter.pause();
+    }
+
+    public void resume() {
+        currentCharacter.resume();
+    }
+
     /**
      * Likelihood of a crime being generated as a percentage. 100% doesn't guarantee that one will be generated!
      */

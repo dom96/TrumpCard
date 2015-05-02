@@ -161,11 +161,13 @@ public class GameScreen extends AnimationTimer {
     {
         pausePane.setVisible(true);
         pausePane.toFront();
+        state.pause();
     }
 
     private void onResumeBtnClicked(MouseEvent event)
     {
         pausePane.setVisible(false);
+        state.resume();
     }
 
     public void show(Stage stage)

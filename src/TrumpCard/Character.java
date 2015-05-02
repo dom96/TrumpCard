@@ -75,6 +75,20 @@ public class Character {
         movement.play();
     }
 
+    public void pause() {
+        if (movement != null && movement.getStatus() == Animation.Status.RUNNING)
+        {
+            movement.pause();
+        }
+    }
+
+    public void resume() {
+        if (movement != null && movement.getStatus() == Animation.Status.PAUSED)
+        {
+            movement.play();
+        }
+    }
+
     public Point2D getHomePos() {
         return new Point2D(775, 210);
     }
