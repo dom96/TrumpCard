@@ -56,6 +56,8 @@ public class GameScreen extends AnimationTimer {
     private double glowIntensity;
     private boolean glowDecreasing;
 
+    private Pane pausePane;
+
     GameScreen(double width, double height, CharacterName name, String userName, String characterHideout)
     {
         this.width = width;
@@ -155,6 +157,17 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
+    private void onPauseMenuBtnClicked(MouseEvent event)
+    {
+        pausePane.setVisible(true);
+        pausePane.toFront();
+    }
+
+    private void onResumeBtnClicked(MouseEvent event)
+    {
+        pausePane.setVisible(false);
+    }
+
     public void show(Stage stage)
     {
         this.root = new Group();
@@ -186,16 +199,19 @@ public class GameScreen extends AnimationTimer {
         statusBox.getStyleClass().add("statusBox");
         root.getChildren().add(statusBox);
 
+        // Status of character (villain, hero, human).
         statusLabel = new Label();
         Font statusFont = Font.font("Courier New", 18);
         statusLabel.setFont(statusFont);
         UIUtils.createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
 
+        // Actions progress bar (0-10: Super villain, 10 - 40: Villain ...)
         actionsBar = new ProgressBar();
         actionsBar.setPrefWidth(125);
         actionsBar.setPrefHeight(20);
         UIUtils.createBoldLabel(statusBox, "Actions: ", actionsBar, statusFont);
 
+        // Energy progress bar (shows how much energy hero has)
         energyBar = new ProgressBar();
         energyBar.setPrefWidth(125);
         energyBar.setPrefHeight(20);
@@ -205,7 +221,7 @@ public class GameScreen extends AnimationTimer {
         updateStatusBox();
 
         // Create buttons below status box
-        VBox buttonBox = new VBox();
+        VBox buttonBox = new VBox(5);
         buttonBox.setLayoutX(20);
         buttonBox.setLayoutY(550);
         root.getChildren().add(buttonBox);
@@ -220,6 +236,39 @@ public class GameScreen extends AnimationTimer {
         sleepBtn.setOnMouseClicked(this::onSleepBtnClicked);
         buttonBox.getChildren().add(sleepBtn);
 
+        // Pause menu button
+        Button pauseMenuBtn = new Button("Pause Menu");
+        pauseMenuBtn.setCursor(Cursor.HAND);
+        pauseMenuBtn.getStyleClass().add("pauseMenuBtn");
+        pauseMenuBtn.setOnMouseClicked(this::onPauseMenuBtnClicked);
+        buttonBox.getChildren().add(pauseMenuBtn);
+
+        // Create pause pane
+        createPauseMenu();
+    }
+
+    private void createPauseMenu() {
+        // Create the pane which will darken the whole screen.
+        pausePane = new Pane();
+        pausePane.setMinWidth(width);
+        pausePane.setMinHeight(height);
+        pausePane.getStyleClass().add("pausePane");
+        pausePane.setVisible(false);
+        pausePane.setLayoutX(0);
+        pausePane.setLayoutY(0);
+        root.getChildren().add(pausePane);
+
+        VBox menuBox = new VBox(10);
+        menuBox.setLayoutX(590);
+        menuBox.setLayoutY(300);
+        pausePane.getChildren().add(menuBox);
+
+        // Resume button
+        sleepBtn = new Button("Resume");
+        sleepBtn.setCursor(Cursor.HAND);
+        sleepBtn.getStyleClass().add("resumeBtn");
+        sleepBtn.setOnMouseClicked(this::onResumeBtnClicked);
+        menuBox.getChildren().add(sleepBtn);
     }
 
     @Override
@@ -277,13 +326,16 @@ public class GameScreen extends AnimationTimer {
             final Point2D characterPos = state.getCharacter().getPos();
             graphicsContext.drawImage(this.characterIcon, characterPos.getX(), characterPos.getY(), 30, 32);
         }
-        // Advance game
-        this.state.poll(root, now);
 
-        // Update status label, energy bar and actions bar.
-        updateStatusBox();
+        if (!pausePane.isVisible()) {
+            // Advance game
+            this.state.poll(root, now);
 
-        // Update buttons on the left of the screen.
-        updateLeftButtons();
+            // Update status label, energy bar and actions bar.
+            updateStatusBox();
+
+            // Update buttons on the left of the screen.
+            updateLeftButtons();
+        }
     }
 }

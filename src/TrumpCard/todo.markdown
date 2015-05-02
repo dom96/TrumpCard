@@ -17,6 +17,7 @@
 - [ ] Difficulty levels
 - [ ] Other character images
 - [ ] Use native message dialogs instead of Swing ones.
+- [x] Pause game
 
 ## Additional features
 

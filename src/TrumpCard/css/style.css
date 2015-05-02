@@ -46,14 +46,14 @@
     -fx-text-fill: #A5BDE2;
 }
 
-.sleepBtn {
+.sleepBtn, .resumeBtn {
      -fx-text-fill: white;
      -fx-background-color: #009102;
      -fx-min-width: 250;
      -fx-font-size: 18;
 }
 
-.sleepBtn:hover {
+.sleepBtn:hover, .resumeBtn {
      -fx-background-color: #00A000;
 }
 
@@ -63,4 +63,19 @@
 
 .disabledBtn:hover {
     -fx-background-color: #2d2d2d;
+}
+
+.pauseMenuBtn {
+     -fx-text-fill: white;
+     -fx-background-color: #8E0002;
+     -fx-min-width: 250;
+     -fx-font-size: 18;
+}
+
+.pauseMenuBtn:hover {
+     -fx-background-color: #9E0000;
+}
+
+.pausePane {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
 }
