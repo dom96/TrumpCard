@@ -18,7 +18,7 @@
 - [ ] Other character images
 - [ ] Use native message dialogs instead of Swing ones.
 - [x] Pause game
-- [ ] Better character movement.
+- [x] Better character movement.
 
 ## Additional features
 

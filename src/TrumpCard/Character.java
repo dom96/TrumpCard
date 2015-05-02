@@ -12,6 +12,7 @@ public class Character {
     protected double energy; // Percentage
 
     protected Point2D pos; // Character position on the screen.
+    protected Transition movement;
 
     protected CharacterName name;
     protected String userName;
@@ -51,11 +52,14 @@ public class Character {
     }
 
     public void moveTo(Point2D newPos) {
-        final Animation characterMove = new Transition() {
+        double distance = pos.distance(newPos);
+        // TODO: Tweak this based on difficulty.
+        double timeToDest = distance * 5;
+        movement = new Transition() {
             private double fromX, fromY;
 
             {
-                setCycleDuration(Duration.millis(1400));
+                setCycleDuration(Duration.millis(timeToDest));
                 fromX = pos.getX();
                 fromY = pos.getY();
             }
@@ -67,8 +71,8 @@ public class Character {
             }
         };
         status = CharacterStatus.Moving;
-        characterMove.setOnFinished(event -> status = CharacterStatus.Still);
-        characterMove.play();
+        movement.setOnFinished(event -> status = CharacterStatus.Still);
+        movement.play();
     }
 
     public Point2D getHomePos() {
