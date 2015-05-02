@@ -5,8 +5,8 @@
 - [ ] Ability to save the game
 - [ ] Ability to load the game
 - [ ] Basic gameplay
-  - [ ] Character hideout
-  - [ ] Movement from hideout to crime locations
+  - [x] Character hideout
+  - [x] Movement from hideout to crime locations
   - [x] Depletion of energy
   - [x] Crime expiration
   - [ ] Commiting crimes

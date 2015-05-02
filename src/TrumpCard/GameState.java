@@ -1,6 +1,7 @@
 package TrumpCard;
 
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -8,7 +9,6 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 
 public class GameState {
     private Character currentCharacter;
@@ -24,8 +24,6 @@ public class GameState {
     private Image crimeIcon;
     private Image crimeIconHover;
 
-    private Character.CharacterStatus characterStatus; // Determines what character is doing.
-
     GameState(Character character)
     {
         this.currentCharacter = character;
@@ -33,8 +31,6 @@ public class GameState {
 
         crimeIcon = new Image("file:images/crime32.png");
         crimeIconHover = new Image("file:images/crime32_hover.png");
-
-        characterStatus = Character.CharacterStatus.Still;
     }
 
     public Character getCharacter()
@@ -101,7 +97,7 @@ public class GameState {
         }
         lastCharacterUpdate = now;
         double newEnergy = currentCharacter.getEnergy();
-        switch (characterStatus) {
+        switch (currentCharacter.getStatus()) {
             case Moving:
                 // When the character is moving energy depletes faster.
                 newEnergy -= 0.5;

@@ -1,8 +1,10 @@
 package TrumpCard;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -12,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -43,7 +46,8 @@ public class GameScreen extends AnimationTimer {
     private Group root;
     private Image background;
     private Image map;
-    private Image crimeIcon;
+    private Image characterIcon;
+    private Image homeIcon;
 
     private long time;
     private double glowIntensity;
@@ -55,6 +59,8 @@ public class GameScreen extends AnimationTimer {
         this.height = height;
 
         this.background = new Image("file:images/background2.jpg");
+        this.characterIcon = new Image("file:images/character.png");
+        this.homeIcon = new Image("file:images/home.png");
 
         this.state = new GameState(new Character(name, userName,
                 characterHideout.isEmpty() ? "Belfast" : characterHideout));
@@ -123,6 +129,17 @@ public class GameScreen extends AnimationTimer {
         Canvas canvas = new Canvas(width, height);
         this.graphicsContext = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
+
+        // Create home icon on map
+        ImageView homeImage = new ImageView(homeIcon);
+        homeImage.setFitWidth(30);
+        homeImage.setFitHeight(28.4);
+        homeImage.setLayoutX(775);
+        homeImage.setLayoutY(210);
+        homeImage.setCursor(Cursor.HAND);
+        homeImage.setOnMouseClicked(
+                event -> state.getCharacter().moveTo(state.getCharacter().getHomePos()));
+        root.getChildren().add(homeImage);
 
         // Create widgets for showing the status
         TilePane statusBox = new TilePane();
@@ -202,6 +219,11 @@ public class GameScreen extends AnimationTimer {
         // Draw map
         graphicsContext.drawImage(this.map, 290, 20, 970, 380);
 
+        // Draw character on map
+        if (!state.getCharacter().isAtHome()) {
+            final Point2D characterPos = state.getCharacter().getPos();
+            graphicsContext.drawImage(this.characterIcon, characterPos.getX(), characterPos.getY(), 30, 32);
+        }
         // Advance game
         this.state.poll(root, now);
 

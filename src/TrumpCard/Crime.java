@@ -1,11 +1,15 @@
 package TrumpCard;
 
+import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
@@ -40,12 +44,17 @@ public class Crime {
         this.expires = expires;
     }
 
+    private Point2D getWindowPos() {
+        return new Point2D(this.info.getX() + 290, this.info.getY() + 20);
+    }
+
     public void show(GameState state, Group root) {
         this.crimeImageView = new ImageView(state.getCrimeIcon());
         this.crimeImageView.setFitWidth(100);
         this.crimeImageView.setPreserveRatio(true);
-        this.crimeImageView.setLayoutX(this.info.getX() + 290);
-        this.crimeImageView.setLayoutY(this.info.getY() + 20);
+        final Point2D windowPos = getWindowPos();
+        this.crimeImageView.setLayoutX(windowPos.getX() - 35);
+        this.crimeImageView.setLayoutY(windowPos.getY() - 35);
         this.crimeImageView.setSmooth(true);
 
         root.getChildren().add(this.crimeImageView);
@@ -121,7 +130,10 @@ public class Crime {
                 event -> crimeImageView.setImage(state.getCrimeIconHover()));
         box.setOnMouseExited(
                 event -> crimeImageView.setImage(state.getCrimeIcon()));
-
+        // When crime image on map is clicked we want our character to go there.
+        crimeImageView.setOnMouseClicked(
+                event -> state.getCharacter().moveTo(getWindowPos())
+            );
     }
 
     public enum CrimeLocation {
@@ -178,7 +190,7 @@ public class Crime {
          *
          * @return X coordinates (on the map) of the crime's location.
          */
-        public double getX() {
+        public int getX() {
             return x;
         }
 
@@ -186,7 +198,7 @@ public class Crime {
          *
          * @return Y coordinates (on the map) of the crime's location.
          */
-        public double getY() {
+        public int getY() {
             return y;
         }
 
