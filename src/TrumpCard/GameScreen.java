@@ -67,8 +67,9 @@ public class GameScreen extends AnimationTimer {
         this.characterIcon = new Image("file:images/character.png");
         this.homeIcon = new Image("file:images/home.png");
 
+        // TODO: Difficulty
         this.state = new GameState(new Character(name, userName,
-                characterHideout.isEmpty() ? "Belfast" : characterHideout));
+                characterHideout.isEmpty() ? "Belfast" : characterHideout), GameState.Difficulty.Hard);
 
         try
         {

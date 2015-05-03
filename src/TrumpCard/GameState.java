@@ -24,13 +24,20 @@ public class GameState {
     private Image crimeIcon;
     private Image crimeIconHover;
 
-    GameState(Character character)
+    private long gameAge; // Time this game has been running in miliseconds.
+    private long lastPoll;
+
+    Difficulty difficulty;
+
+    GameState(Character character, Difficulty difficulty)
     {
         this.currentCharacter = character;
         this.crimes = new ArrayList<Crime>();
 
         crimeIcon = new Image("file:images/crime32.png");
         crimeIconHover = new Image("file:images/crime32_hover.png");
+
+        this.difficulty = difficulty;
     }
 
     public Character getCharacter()
@@ -124,10 +131,24 @@ public class GameState {
         if (crimeNumber == 0) {
             result += 40;
         }
-        else
-        {
-            long secsSinceLastCrime = (now - this.lastCrimeGen) / (long)1e9;
-            result += secsSinceLastCrime * (crimeNumber/25.0);
+        else {
+            long secsSinceLastCrime = (now - this.lastCrimeGen) / (long) 1e9;
+            result += secsSinceLastCrime * (crimeNumber / 25.0);
+            // Make game progressively harder by increasing the likelihood throughout the game.
+            double ageFactor = 30;
+            switch (difficulty)
+            {
+                case Easy:
+                    ageFactor = 30;
+                    break;
+                case Medium:
+                    ageFactor = 3;
+                    break;
+                case Hard:
+                    ageFactor = 0.3;
+                    break;
+            }
+            result += gameAge / 1000 / ageFactor;
         }
         return result;
     }
@@ -203,6 +224,16 @@ public class GameState {
 
         // Update character stats.
         updateCharacter(now);
+
+        // Update game age
+        if (lastPoll != 0) {
+            gameAge += Math.round((now - lastPoll) / 1.0e6);
+        }
+        lastPoll = now;
+    }
+
+    public enum Difficulty {
+        Easy, Medium, Hard
     }
 
 }
