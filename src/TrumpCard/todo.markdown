@@ -10,7 +10,7 @@
   - [x] Depletion of energy
   - [x] Crime expiration
   - [x] Sleeping
-  - [ ] Commiting crimes
+  - [x] Commiting crimes
   - [ ] Ignoring crimes
 - [ ] End of game condition
 - [ ] Shop (Challenges CSC1012)
@@ -19,6 +19,7 @@
 - [ ] Use native message dialogs instead of Swing ones.
 - [x] Pause game
 - [x] Better character movement.
+- [ ] Add more crime descriptions.
 
 ## Additional features
 

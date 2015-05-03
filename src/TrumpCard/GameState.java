@@ -59,6 +59,51 @@ public class GameState {
     }
 
     /**
+     * If the character is at a crime location then returns the Crime on which the character is at.
+     * If not then returns ``null``!
+     */
+    public Crime getCrimeAtCharacterPos() {
+        for (Crime crime : crimes)
+        {
+            if (crime.getWindowPos().equals(currentCharacter.getPos()))
+            {
+                return crime;
+            }
+        }
+        return null;
+    }
+
+    public void commitCrime(Crime crime, Group root) {
+        // Decrease the actions because we are doing an evil thing.
+        double newActions = currentCharacter.getActions() - 1;
+        currentCharacter.setActions(newActions);
+
+        // Decrease energy.
+        // TODO: Adjust based on items/difficulty.
+        double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse() / 4);
+        currentCharacter.setEnergy(newEnergy);
+
+        crime.destroy(root);
+    }
+
+    public void ignoreCrime(Crime crime, Group root)
+    {
+        // Normalise actions towards human, i.e. increase if < 50, decrease if > 50.
+        double newActions = currentCharacter.getActions();
+        if (newActions >= 50)
+        {
+            newActions -= 1;
+        }
+        else
+        {
+            newActions += 1;
+        }
+        currentCharacter.setActions(newActions);
+
+        crime.destroy(root);
+    }
+
+    /**
      * Likelihood of a crime being generated as a percentage. 100% doesn't guarantee that one will be generated!
      */
     private double crimeLikelihood(long now)
@@ -84,14 +129,17 @@ public class GameState {
         for (int i = 0; i < this.crimes.size(); i++)
         {
             double x = 290 + (i*227.5) + (i*20);
-            this.crimes.get(i).translateBox(x);
-            if (!this.crimes.get(i).update(now))
+            Crime crime = this.crimes.get(i);
+            crime.translateBox(x);
+            if (!crime.update(now))
             {
-                newCrimes.add(crimes.get(i));
+                if (!crime.isDestroyed()) {
+                    newCrimes.add(crime);
+                }
             }
             else
             {
-                this.crimes.get(i).destroy(root);
+                ignoreCrime(crime, root);
             }
         }
         crimes = newCrimes;
@@ -119,6 +167,8 @@ public class GameState {
                 newEnergy += 0.6;
                 break;
         }
+        newEnergy = Math.max(0, newEnergy);
+        newEnergy = Math.min(100, newEnergy);
         currentCharacter.setEnergy(newEnergy);
     }
 

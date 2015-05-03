@@ -28,6 +28,8 @@ public class Crime {
     private CrimeInfo info;
     private int countdown;
     private double expiresTimer;
+    private boolean enabled;
+    private boolean destroyed;
 
     private ImageView crimeImageView;
     private VBox box;
@@ -39,26 +41,60 @@ public class Crime {
 
     private Label expiresInDesc;
 
-    Crime(CrimeInfo info)
-    {
+    Crime(CrimeInfo info) {
         this.info = info;
 
         this.countdown = 10;
     }
 
-    private Point2D getWindowPos() {
+    public Point2D getWindowPos() {
         return new Point2D(this.info.getX() + 290, this.info.getY() + 20);
     }
 
-    private void onCrimeImageClicked(MouseEvent event, GameState state)
-    {
-        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping)
-        {
+    public int getEnergyUse() {
+        return info.energyUse;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
+    public void enable() {
+        enabled = true;
+
+        // Enable all the buttons.
+        leftBtn.getStyleClass().remove("disabledBtn");
+        rightBtn.getStyleClass().remove("disabledBtn");
+        ignoreBtn.getStyleClass().remove("disabledBtn");
+    }
+
+    public void disable() {
+        if (enabled) {
+            enabled = false;
+            leftBtn.getStyleClass().add("disabledBtn");
+            rightBtn.getStyleClass().add("disabledBtn");
+            ignoreBtn.getStyleClass().add("disabledBtn");
+        }
+    }
+
+    private void onCrimeImageClicked(MouseEvent event, GameState state) {
+        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping) {
             UIUtils.showMessageDialog("Cannot move whilst sleeping.");
             return;
         }
 
         state.getCharacter().moveTo(getWindowPos());
+    }
+
+    private void onCommitBtnClicked(MouseEvent event, GameState state, Group root)
+    {
+        if (!enabled)
+        {
+            UIUtils.showMessageDialog("Your character must be at the location of the crime.");
+            return;
+        }
+
+        state.commitCrime(this, root);
     }
 
     public void show(GameState state, Group root) {
@@ -105,13 +141,18 @@ public class Crime {
         expiresInDesc.setFont(crimeFieldsFont);
         UIUtils.createBoldLabel(crimeFieldsBox, "Expires in: ", expiresInDesc, crimeFieldsFont);
 
-        HBox buttonBox = new HBox();
-        buttonBox.setPadding(new Insets(90, 0, 0, 0));
+        HBox buttonBox = new HBox(5);
+        buttonBox.setPadding(new Insets(80, 0, 0, 0));
+        buttonBox.setAlignment(Pos.CENTER);
         box.getChildren().add(buttonBox);
 
         leftBtn = new Button("Commit");
+        leftBtn.getStyleClass().addAll("commitBtn", "disabledBtn");
+        leftBtn.setOnMouseClicked(event -> onCommitBtnClicked(event, state, root));
         rightBtn = new Button("Fight");
+        rightBtn.getStyleClass().addAll("fightBtn", "disabledBtn");
         ignoreBtn = new Button("Ignore");
+        ignoreBtn.getStyleClass().addAll("ignoreBtn", "disabledBtn");
 
         if (CharacterName.isVillain(state.getCharacter().getName()))
         {
@@ -185,7 +226,7 @@ public class Crime {
     public void destroy(Group root) {
         root.getChildren().remove(box);
         root.getChildren().remove(crimeImageView);
-
+        destroyed = true;
     }
 
     public static class CrimeInfo {

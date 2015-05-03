@@ -53,16 +53,16 @@
      -fx-font-size: 18;
 }
 
-.sleepBtn:hover, .resumeBtn {
+.sleepBtn:hover, .resumeBtn:hover, .crimeBox .fightBtn:hover {
      -fx-background-color: #00A000;
 }
 
 .disabledBtn {
-    -fx-background-color: #1d1d1d;
+    -fx-background-color: #1d1d1d !important;
 }
 
 .disabledBtn:hover {
-    -fx-background-color: #2d2d2d;
+    -fx-background-color: #2d2d2d !important;
 }
 
 .pauseMenuBtn {
@@ -72,10 +72,32 @@
      -fx-font-size: 18;
 }
 
-.pauseMenuBtn:hover {
+.pauseMenuBtn:hover, .crimeBox .commitBtn:hover {
      -fx-background-color: #9E0000;
 }
 
 .pausePane {
     -fx-background-color: rgba(0, 0, 0, 0.8);
+}
+
+.crimeBox .button {
+     -fx-text-fill: white;
+     -fx-min-width: 40;
+     -fx-font-size: 14;
+}
+
+.crimeBox .commitBtn {
+    -fx-background-color: #8E0002;
+}
+
+.crimeBox .fightBtn {
+    -fx-background-color: #009102;
+}
+
+.crimeBox .ignoreBtn {
+    -fx-background-color: #005489;
+}
+
+.crimeBox .ignoreBtn:hover {
+    -fx-background-color: #005E99;
 }

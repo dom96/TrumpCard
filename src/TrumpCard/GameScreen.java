@@ -137,6 +137,21 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
+    private void updateCrimes()
+    {
+        for (Crime crime : state.getCrimes())
+        {
+            if (crime.getWindowPos().equals(state.getCharacter().getPos()))
+            {
+                crime.enable();
+            }
+            else
+            {
+                crime.disable();
+            }
+        }
+    }
+
     private void onSleepBtnClicked(MouseEvent event)
     {
         if (!state.getCharacter().isAtHome())
@@ -324,7 +339,7 @@ public class GameScreen extends AnimationTimer {
         graphicsContext.drawImage(this.map, 290, 20, 970, 380);
 
         // Draw character on map
-        if (!state.getCharacter().isAtHome()) {
+        if (!state.getCharacter().isAtHome() && state.getCrimeAtCharacterPos() == null) {
             final Point2D characterPos = state.getCharacter().getPos();
             graphicsContext.drawImage(this.characterIcon, characterPos.getX(), characterPos.getY(), 30, 32);
         }
@@ -338,6 +353,9 @@ public class GameScreen extends AnimationTimer {
 
             // Update buttons on the left of the screen.
             updateLeftButtons();
+
+            // Update buttons in crime boxes.
+            updateCrimes();
         }
     }
 }
