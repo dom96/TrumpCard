@@ -35,7 +35,8 @@
 }
 
 .crimeBox:hover, .crimeHover {
-    -fx-border-color: #FFB600;
+    -fx-border-color: #051244;
+    -fx-background-color: rgba(11, 33, 130, 0.4);
 }
 
 .crimeBox .label {

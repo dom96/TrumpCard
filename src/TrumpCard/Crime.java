@@ -134,7 +134,7 @@ public class Crime {
         crimeFieldsBox.setPrefColumns(2);
         box.getChildren().add(crimeFieldsBox);
 
-        Font crimeFieldsFont = Font.font("Courier New", 14);
+        Font crimeFieldsFont = Font.font("Courier New", 13);
 
         Label energyUseDesc = new Label(Integer.toString(info.getEnergyUse()));
         energyUseDesc.setFont(crimeFieldsFont);
