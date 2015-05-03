@@ -213,24 +213,26 @@ public class GameScreen extends AnimationTimer {
         statusBox.setPrefColumns(2);
         statusBox.setLayoutX(20);
         statusBox.setLayoutY(450);
+        statusBox.setVgap(5);
+        statusBox.setHgap(-70);
         statusBox.getStyleClass().add("statusBox");
         root.getChildren().add(statusBox);
 
         // Status of character (villain, hero, human).
         statusLabel = new Label();
-        Font statusFont = Font.font("Courier New", 18);
+        Font statusFont = Font.font("Courier New", 16);
         statusLabel.setFont(statusFont);
         UIUtils.createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
 
         // Actions progress bar (0-10: Super villain, 10 - 40: Villain ...)
         actionsBar = new ProgressBar();
-        actionsBar.setPrefWidth(125);
+        actionsBar.setPrefWidth(160);
         actionsBar.setPrefHeight(20);
         UIUtils.createBoldLabel(statusBox, "Actions: ", actionsBar, statusFont);
 
         // Energy progress bar (shows how much energy hero has)
         energyBar = new ProgressBar();
-        energyBar.setPrefWidth(125);
+        energyBar.setPrefWidth(160);
         energyBar.setPrefHeight(20);
         UIUtils.createBoldLabel(statusBox, "Energy: ", energyBar, statusFont);
 

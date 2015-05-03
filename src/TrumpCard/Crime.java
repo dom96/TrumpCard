@@ -162,7 +162,7 @@ public class Crime {
         {
             buttonBox.getChildren().addAll(leftBtn, rightBtn, ignoreBtn);
         }
-        else if (CharacterName.isHuman(state.getCharacter().getName()))
+        else if (CharacterName.isHero(state.getCharacter().getName()))
         {
             buttonBox.getChildren().addAll(rightBtn, ignoreBtn);
         }
