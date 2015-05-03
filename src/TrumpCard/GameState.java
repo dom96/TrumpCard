@@ -52,10 +52,18 @@ public class GameState {
 
     public void pause() {
         currentCharacter.pause();
+        for (Crime c : crimes)
+        {
+            c.pause();
+        }
     }
 
     public void resume() {
         currentCharacter.resume();
+        for (Crime c : crimes)
+        {
+            c.resume();
+        }
     }
 
     /**

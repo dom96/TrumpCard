@@ -1,9 +1,6 @@
 package TrumpCard;
 
-import javafx.animation.Animation;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Transition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -30,6 +27,7 @@ public class Crime {
     private double expiresTimer;
     private boolean enabled;
     private boolean destroyed;
+    private boolean paused;
 
     private ImageView crimeImageView;
     private VBox box;
@@ -72,6 +70,21 @@ public class Crime {
             enabled = false;
             leftBtn.getStyleClass().add("disabledBtn");
             rightBtn.getStyleClass().add("disabledBtn");
+        }
+    }
+
+    public void pause() {
+        paused = true;
+        if (move != null && move.getStatus().equals(Animation.Status.RUNNING)) {
+            move.pause();
+        }
+    }
+
+    public void resume() {
+        paused = false;
+        if (move != null && move.getStatus().equals(Animation.Status.PAUSED))
+        {
+            move.play();
         }
     }
 
@@ -203,13 +216,18 @@ public class Crime {
      * @param x
      */
     public void translateBox(double x) {
-        if (move == null)
+        if (move != null)
         {
-            move = new TranslateTransition(Duration.millis(1400), box);
-            move.setByX(x - box.getLayoutX() - box.getTranslateX());
-            move.play();
-            move.setOnFinished(event -> move = null);
+            // If a transition exists, make sure it is stopped.
+            move.stop();
         }
+        double distance = x - box.getLayoutX() - box.getTranslateX();
+        double time = Math.abs(distance) * 1.3;
+        move = new TranslateTransition(Duration.millis(time), box);
+        move.setInterpolator(Interpolator.LINEAR);
+        move.setByX(distance);
+        move.play();
+        move.setOnFinished(event -> move = null);
     }
 
     /**
