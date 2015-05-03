@@ -11,7 +11,7 @@
   - [x] Crime expiration
   - [x] Sleeping
   - [x] Commiting crimes
-  - [ ] Ignoring crimes
+  - [x] Ignoring crimes
 - [ ] End of game condition
 - [ ] Shop (Challenges CSC1012)
 - [ ] Difficulty levels

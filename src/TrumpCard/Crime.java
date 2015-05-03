@@ -65,7 +65,6 @@ public class Crime {
         // Enable all the buttons.
         leftBtn.getStyleClass().remove("disabledBtn");
         rightBtn.getStyleClass().remove("disabledBtn");
-        ignoreBtn.getStyleClass().remove("disabledBtn");
     }
 
     public void disable() {
@@ -73,7 +72,6 @@ public class Crime {
             enabled = false;
             leftBtn.getStyleClass().add("disabledBtn");
             rightBtn.getStyleClass().add("disabledBtn");
-            ignoreBtn.getStyleClass().add("disabledBtn");
         }
     }
 
@@ -95,6 +93,11 @@ public class Crime {
         }
 
         state.commitCrime(this, root);
+    }
+
+    private void onIgnoreBtnClicked(MouseEvent event, GameState state, Group root)
+    {
+        state.ignoreCrime(this, root);
     }
 
     public void show(GameState state, Group root) {
@@ -152,7 +155,8 @@ public class Crime {
         rightBtn = new Button("Fight");
         rightBtn.getStyleClass().addAll("fightBtn", "disabledBtn");
         ignoreBtn = new Button("Ignore");
-        ignoreBtn.getStyleClass().addAll("ignoreBtn", "disabledBtn");
+        ignoreBtn.getStyleClass().addAll("ignoreBtn");
+        ignoreBtn.setOnMouseClicked(event -> onIgnoreBtnClicked(event, state, root));
 
         if (CharacterName.isVillain(state.getCharacter().getName()))
         {
