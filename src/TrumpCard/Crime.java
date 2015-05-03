@@ -24,6 +24,7 @@ import java.util.Random;
 public class Crime {
     private CrimeInfo info;
     private int countdown;
+    private Point2D pos; // Coordinates of this crime on the map.
     private double expiresTimer;
     private boolean enabled;
     private boolean destroyed;
@@ -39,14 +40,15 @@ public class Crime {
 
     private Label expiresInDesc;
 
-    Crime(CrimeInfo info) {
+    Crime(CrimeInfo info, Point2D pos) {
         this.info = info;
+        this.pos = pos;
 
         this.countdown = 10;
     }
 
     public Point2D getWindowPos() {
-        return new Point2D(this.info.getX() + 290, this.info.getY() + 20);
+        return new Point2D(pos.getX() + 290, pos.getY() + 20);
     }
 
     public int getEnergyUse() {
@@ -255,7 +257,6 @@ public class Crime {
         private String description;
         private int energyUse;
         private CrimeLocation location;
-        private int x, y;
 
         public CrimeInfo(String description, int energyUse, CrimeLocation location) {
             this.description = description;
@@ -265,22 +266,6 @@ public class Crime {
 
         public int getEnergyUse() {
             return energyUse;
-        }
-
-        /**
-         *
-         * @return X coordinates (on the map) of the crime's location.
-         */
-        public int getX() {
-            return x;
-        }
-
-        /**
-         *
-         * @return Y coordinates (on the map) of the crime's location.
-         */
-        public int getY() {
-            return y;
         }
 
         /**
@@ -297,14 +282,6 @@ public class Crime {
         public String getDescription() {
             return description;
         }
-
-        public void setX(int x) {
-            this.x = x;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
     }
 
     private static CrimeInfo[] crimes = new CrimeInfo[]{
@@ -318,13 +295,11 @@ public class Crime {
 
     };
 
-    public static CrimeInfo genCrime() {
+    public static Crime genCrime() {
         Random rand = new Random();
-        CrimeInfo result = crimes[rand.nextInt(crimes.length)];
+        CrimeInfo info = crimes[rand.nextInt(crimes.length)];
         // TODO: Use Google's Places API to determine better locations for these.
-        result.setX(rand.nextInt(940));
-        result.setY(rand.nextInt(340));
-        return result;
+        return new Crime(info, new Point2D(rand.nextInt(940), rand.nextInt(340)));
     }
 
 }

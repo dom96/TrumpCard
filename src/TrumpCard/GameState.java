@@ -212,8 +212,7 @@ public class GameState {
             System.out.println(likelihood + "%" + ", " + randDouble);
 
             if (randDouble < likelihood / 100.f && this.crimes.size() < MAX_CRIMES) {
-                Crime.CrimeInfo info = Crime.genCrime();
-                Crime crime = new Crime(info);
+                Crime crime = Crime.genCrime();
                 crime.show(this, root);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;
