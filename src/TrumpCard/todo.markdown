@@ -4,7 +4,7 @@
 - [ ] Escape menu
 - [ ] Ability to save the game
 - [ ] Ability to load the game
-- [ ] Basic gameplay
+- [x] Basic gameplay
   - [x] Character hideout
   - [x] Movement from hideout to crime locations
   - [x] Depletion of energy
@@ -12,6 +12,7 @@
   - [x] Sleeping
   - [x] Commiting crimes
   - [x] Ignoring crimes
+- [ ] Message when trying to commit crime when not having enough energy.
 - [ ] End of game condition
 - [ ] Shop (Challenges CSC1012)
 - [ ] Difficulty levels

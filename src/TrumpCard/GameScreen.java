@@ -41,7 +41,9 @@ public class GameScreen extends AnimationTimer {
     private GraphicsContext graphicsContext;
     private Label statusLabel;
     private ProgressBar actionsBar;
+    private Label actionsBarLabel;
     private ProgressBar energyBar;
+    private Label energyBarLabel;
     private Button sleepBtn;
 
     private GameState state;
@@ -121,8 +123,12 @@ public class GameScreen extends AnimationTimer {
     private void updateStatusBox()
     {
         updateStatusLabel();
-        actionsBar.setProgress(state.getCharacter().getActions() / 100);
-        energyBar.setProgress(state.getCharacter().getEnergy() / 100);
+        double actions = state.getCharacter().getActions();
+        actionsBar.setProgress(actions / 100);
+        actionsBarLabel.setText(String.format("%04.1f%%", actions));
+        double energy = state.getCharacter().getEnergy();
+        energyBar.setProgress(energy / 100);
+        energyBarLabel.setText(String.format("%04.1f%%", energy));
     }
 
     private void updateLeftButtons()
@@ -226,16 +232,32 @@ public class GameScreen extends AnimationTimer {
         UIUtils.createBoldLabel(statusBox, "Status: ", statusLabel, statusFont);
 
         // Actions progress bar (0-10: Super villain, 10 - 40: Villain ...)
+        HBox actionsBox = new HBox(5);
+
+        actionsBarLabel = new Label();
+        actionsBarLabel.setAlignment(Pos.BOTTOM_CENTER);
+        actionsBarLabel.setFont(Font.font("Courier New", 13));
+        actionsBox.getChildren().add(actionsBarLabel);
+
         actionsBar = new ProgressBar();
-        actionsBar.setPrefWidth(160);
+        actionsBar.setPrefWidth(115);
         actionsBar.setPrefHeight(20);
-        UIUtils.createBoldLabel(statusBox, "Actions: ", actionsBar, statusFont);
+        actionsBox.getChildren().add(actionsBar);
+        UIUtils.createBoldLabel(statusBox, "Actions: ", actionsBox, statusFont);
 
         // Energy progress bar (shows how much energy hero has)
+        HBox energyBox = new HBox(5);
+
+        energyBarLabel = new Label();
+        energyBarLabel.setAlignment(Pos.BOTTOM_CENTER);
+        energyBarLabel.setFont(Font.font("Courier New", 13));
+        energyBox.getChildren().add(energyBarLabel);
+
         energyBar = new ProgressBar();
-        energyBar.setPrefWidth(160);
+        energyBar.setPrefWidth(115);
         energyBar.setPrefHeight(20);
-        UIUtils.createBoldLabel(statusBox, "Energy: ", energyBar, statusFont);
+        energyBox.getChildren().add(energyBar);
+        UIUtils.createBoldLabel(statusBox, "Energy: ", energyBox, statusFont);
 
         // Set text of statusLabel, actionsBar and energyBar.
         updateStatusBox();
