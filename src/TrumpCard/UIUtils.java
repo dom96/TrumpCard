@@ -1,13 +1,16 @@
 package TrumpCard;
 
+import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import javax.swing.*;
 
@@ -42,6 +45,19 @@ public class UIUtils {
         JFrame frame = new JFrame("Message");
         JOptionPane.showMessageDialog(frame, message,
                 "Message", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void showErrorLabel(Label errorLabel, String message)
+    {
+        errorLabel.setVisible(true);
+        errorLabel.setText(message);
+        FadeTransition fade = new FadeTransition(Duration.millis(600), errorLabel);
+        fade.setFromValue(1.0);
+        fade.setToValue(0.4);
+        fade.setCycleCount(10);
+        fade.setAutoReverse(true);
+        fade.play();
+        fade.setOnFinished(event -> errorLabel.setVisible(false));
     }
 
     public static Button createButton(String text, Font font, String cssClass)

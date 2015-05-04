@@ -90,20 +90,20 @@ public class Crime {
         }
     }
 
-    private void onCrimeImageClicked(MouseEvent event, GameState state) {
+    private void onCrimeImageClicked(MouseEvent event, GameState state, Label errorLabel) {
         if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping) {
-            UIUtils.showMessageDialog("Cannot move whilst sleeping.");
+            UIUtils.showErrorLabel(errorLabel, "Cannot move whilst sleeping.");
             return;
         }
 
         state.getCharacter().moveTo(getWindowPos());
     }
 
-    private void onCommitBtnClicked(MouseEvent event, GameState state, Group root)
+    private void onCommitBtnClicked(MouseEvent event, GameState state, Group root, Label errorLabel)
     {
         if (!enabled)
         {
-            UIUtils.showMessageDialog("Your character must be at the location of the crime.");
+            UIUtils.showErrorLabel(errorLabel, "Your character must be at the location of the crime.");
             return;
         }
 
@@ -115,7 +115,7 @@ public class Crime {
         state.ignoreCrime(this, root);
     }
 
-    public void show(GameState state, Group root) {
+    public void show(GameState state, Group root, Label errorLabel) {
         this.crimeImageView = new ImageView(state.getCrimeIcon());
         this.crimeImageView.setFitWidth(100);
         this.crimeImageView.setPreserveRatio(true);
@@ -166,7 +166,7 @@ public class Crime {
 
         leftBtn = new Button("Commit");
         leftBtn.getStyleClass().addAll("commitBtn", "disabledBtn");
-        leftBtn.setOnMouseClicked(event -> onCommitBtnClicked(event, state, root));
+        leftBtn.setOnMouseClicked(event -> onCommitBtnClicked(event, state, root, errorLabel));
         rightBtn = new Button("Fight");
         rightBtn.getStyleClass().addAll("fightBtn", "disabledBtn");
         ignoreBtn = new Button("Ignore");
@@ -205,7 +205,7 @@ public class Crime {
                 event -> crimeImageView.setImage(state.getCrimeIcon()));
         // When crime image on map is clicked we want our character to go there.
         crimeImageView.setOnMouseClicked(
-                event -> onCrimeImageClicked(event, state)
+                event -> onCrimeImageClicked(event, state, errorLabel)
         );
     }
 

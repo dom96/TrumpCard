@@ -18,7 +18,7 @@
 - [ ] Shop (Challenges CSC1012)
 - [ ] Difficulty levels
 - [ ] Other character images
-- [ ] Use native message dialogs instead of Swing ones.
+- [x] Less intrusive error message.
 - [x] Pause game
 - [x] Better character movement.
 - [ ] Add more crime descriptions.

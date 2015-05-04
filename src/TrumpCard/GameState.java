@@ -3,6 +3,7 @@ package TrumpCard;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
@@ -205,7 +206,7 @@ public class GameState {
         currentCharacter.setEnergy(newEnergy);
     }
 
-    public void poll(Group root, long now) {
+    public void poll(Group root, long now, Label errorLabel) {
         // Decide whether a new crime/opportunity should be generated. Check only every 2 seconds.
         if (now - lastCrimeCheck >= 2e9) {
             lastCrimeCheck = now;
@@ -217,7 +218,7 @@ public class GameState {
 
             if (randDouble < likelihood / 100.f && this.crimes.size() < MAX_CRIMES) {
                 Crime crime = Crime.genCrime();
-                crime.show(this, root);
+                crime.show(this, root, errorLabel);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;
             }

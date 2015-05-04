@@ -48,6 +48,8 @@ public class GameScreen extends AnimationTimer {
 
     private Button sleepBtn;
 
+    private Label errorLabel; // Shown at bottom of screen if user tries to do something forbidden.
+
     private GameState state;
 
     private Group root;
@@ -166,7 +168,7 @@ public class GameScreen extends AnimationTimer {
     {
         if (!state.getCharacter().isAtHome())
         {
-            UIUtils.showMessageDialog("You can only sleep at home.");
+            UIUtils.showErrorLabel(errorLabel, "You can only sleep at home.");
             return;
         }
 
@@ -286,6 +288,15 @@ public class GameScreen extends AnimationTimer {
         sleepBtn.setOnMouseClicked(this::onSleepBtnClicked);
         buttonBox.getChildren().add(sleepBtn);
 
+        // Create error label at bottom of screen.
+        errorLabel = new Label("FOOBAR");
+        errorLabel.setFont(Font.font("Courier New", 18));
+        errorLabel.getStyleClass().add("error");
+        errorLabel.setLayoutX(290);
+        errorLabel.setLayoutY(650);
+        errorLabel.setVisible(false);
+        root.getChildren().add(errorLabel);
+
         // Pause menu button
         Button pauseMenuBtn = new Button("Pause Menu");
         pauseMenuBtn.setCursor(Cursor.HAND);
@@ -379,7 +390,7 @@ public class GameScreen extends AnimationTimer {
 
         if (!pausePane.isVisible()) {
             // Advance game
-            this.state.poll(root, now);
+            this.state.poll(root, now, errorLabel);
 
             // Update status label, energy bar and actions bar.
             updateStatusBox();
