@@ -5,14 +5,14 @@ import javafx.scene.image.Image;
 public enum CharacterName {
     IronMan, Batman, Spiderman,
     TonyStark, BruceWayne, PeterParker,
-    Ultron, Joker, GreenGoblin;
+    Ultron, Catwoman, GreenGoblin;
 
     public static boolean isVillain(CharacterName name) {
         switch (name)
         {
             case Ultron:
                 return true;
-            case Joker:
+            case Catwoman:
                 return true;
             case GreenGoblin:
                 return true;
@@ -54,7 +54,7 @@ public enum CharacterName {
         switch (name)
         {
             case Ultron: return "Ultron";
-            case Joker: return "Joker";
+            case Catwoman: return "Catwoman";
             case GreenGoblin: return "Green Goblin";
             case IronMan: return "Iron Man";
             case Batman: return "Batman";
@@ -123,7 +123,6 @@ public enum CharacterName {
         return 3;
     }
 
-
     public static String getDescription(CharacterName name)
     {
         switch (name)
@@ -165,12 +164,6 @@ public enum CharacterName {
 
     public static Image loadImage(CharacterName name)
     {
-        Image result = new Image("file:images/character_" + name.name().toLowerCase() + ".jpg");
-        if (result.isError())
-        {
-            UIUtils.showErrorDialog("Unable to load image for " + name.name(), "Error");
-            System.exit(1);
-        }
-        return result;
+        return UIUtils.loadImage("file:images/character_" + name.name().toLowerCase() + ".jpg");
     }
 }

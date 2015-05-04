@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -40,11 +41,16 @@ public class UIUtils {
                 title, JOptionPane.ERROR_MESSAGE);
     }
 
-    public static void showMessageDialog(String message)
+
+    public static Image loadImage(String path)
     {
-        JFrame frame = new JFrame("Message");
-        JOptionPane.showMessageDialog(frame, message,
-                "Message", JOptionPane.INFORMATION_MESSAGE);
+        Image result = new Image(path);
+        if (result.isError())
+        {
+            UIUtils.showErrorDialog("Unable to load image: " + path, "Image Error");
+            System.exit(1);
+        }
+        return result;
     }
 
     public static void showErrorLabel(Label errorLabel, String message)

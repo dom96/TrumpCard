@@ -38,6 +38,15 @@ public class CharacterSelection extends AnimationTimer {
     private Image backgroundHero;
 
     private Image characterUltron;
+    private Image characterIronman;
+    private Image characterBatman;
+    private Image characterSpiderman;
+    private Image characterTonyStark;
+    private Image characterBruceWayne;
+    private Image characterPeterParker;
+    private Image characterCatwoman;
+    private Image characterGreenGoblin;
+
 
     private CharacterName hoverSelection;
     private CharacterName currentSelection;
@@ -59,7 +68,15 @@ public class CharacterSelection extends AnimationTimer {
         backgroundVillain = new Image("file:images/character_selection_evil.png");
         backgroundHero = new Image("file:images/character_selection_good.png");
 
-        characterUltron = new Image("file:images/character_ultron.jpg");
+        characterUltron = CharacterName.loadImage(CharacterName.Ultron);
+        characterIronman = CharacterName.loadImage(CharacterName.IronMan);
+        characterBatman = CharacterName.loadImage(CharacterName.Batman);
+        characterSpiderman = CharacterName.loadImage(CharacterName.Spiderman);
+        characterTonyStark = CharacterName.loadImage(CharacterName.TonyStark);
+        characterBruceWayne = CharacterName.loadImage(CharacterName.BruceWayne);
+        characterPeterParker = CharacterName.loadImage(CharacterName.PeterParker);
+        characterCatwoman = CharacterName.loadImage(CharacterName.Catwoman);
+        characterGreenGoblin = CharacterName.loadImage(CharacterName.GreenGoblin);
 
         this.blackAndWhite = new ColorAdjust();
         this.blackAndWhite.setSaturation(-1);
@@ -120,7 +137,7 @@ public class CharacterSelection extends AnimationTimer {
 
         // Add character images.
         addCharacters(root, 20, 160, new CharacterName[]{CharacterName.Ultron,
-                CharacterName.Joker, CharacterName.GreenGoblin});
+                CharacterName.Catwoman, CharacterName.GreenGoblin});
         addCharacters(root, 440, 160, new CharacterName[]{CharacterName.TonyStark,
                 CharacterName.BruceWayne, CharacterName.PeterParker});
         addCharacters(root, 860, 160, new CharacterName[]{CharacterName.IronMan,
@@ -214,6 +231,33 @@ public class CharacterSelection extends AnimationTimer {
             // TODO: Other character images.
             switch (c)
             {
+                case Ultron:
+                    view = new ImageView(characterUltron);
+                    break;
+                case IronMan:
+                    view = new ImageView(characterIronman);
+                    break;
+                case Batman:
+                    view = new ImageView(characterBatman);
+                    break;
+                case Spiderman:
+                    view = new ImageView(characterSpiderman);
+                    break;
+                case TonyStark:
+                    view = new ImageView(characterTonyStark);
+                    break;
+                case BruceWayne:
+                    view = new ImageView(characterBruceWayne);
+                    break;
+                case PeterParker:
+                    view = new ImageView(characterPeterParker);
+                    break;
+                case Catwoman:
+                    view = new ImageView(characterCatwoman);
+                    break;
+                case GreenGoblin:
+                    view = new ImageView(characterGreenGoblin);
+                    break;
                 default:
                     view = new ImageView(characterUltron);
             }

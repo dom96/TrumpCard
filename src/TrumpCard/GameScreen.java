@@ -85,7 +85,8 @@ public class GameScreen extends AnimationTimer {
             String darkBlueStyle = "feature:all|element:all|invert_lightness:true|" +
                     "saturation:10|lightness:-30|gamma:0.5|hue:0x0043FF";
             String googleMapsUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" +
-                    URLEncoder.encode(characterHideout, "UTF-8") + "&zoom=14&size=485x190&scale=2&format=png" +
+                    URLEncoder.encode(state.getCharacter().getHideout(), "UTF-8") +
+                    "&zoom=14&size=485x190&scale=2&format=png" +
                     "&style=" + URLEncoder.encode(darkBlueStyle, "UTF-8");
 
             this.map = new Image(googleMapsUrl);
