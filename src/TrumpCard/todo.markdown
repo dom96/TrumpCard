@@ -15,6 +15,7 @@
 - [x] Score
 - [x] Message when trying to commit crime when not having enough energy.
 - [x] End of game condition
+- [ ] Make character stats affect the way energy is used.
 - [ ] Shop (Challenges CSC1012)
 - [ ] Difficulty levels
 - [ ] Other character images

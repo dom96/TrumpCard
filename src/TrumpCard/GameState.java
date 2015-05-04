@@ -150,7 +150,7 @@ public class GameState {
                     ageFactor = 30;
                     break;
                 case Medium:
-                    ageFactor = 3;
+                    ageFactor = 10;
                     break;
                 case Hard:
                     ageFactor = 0.3;

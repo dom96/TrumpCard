@@ -101,30 +101,43 @@ public class GameScreen extends AnimationTimer {
     private void updateStatusLabel()
     {
         double actions = state.getCharacter().getActions();
+        String status = "";
         if (actions <= 100)
         {
-            statusLabel.setText("Super hero");
+            status = "Super hero";
         }
 
         if (actions <= 90)
         {
-            statusLabel.setText("Hero");
+            status = "Hero";
         }
 
         if (actions <= 60)
         {
-            statusLabel.setText("Human");
+            status = "Human";
         }
 
         if (actions <= 40)
         {
-            statusLabel.setText("Villain");
+            status = "Villain";
         }
 
         if (actions <= 10)
         {
-            statusLabel.setText("Super villain");
+            status = "Super villain";
         }
+
+        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping)
+        {
+            status = status + " (Asleep)";
+            statusLabel.setFont(Font.font("Courier New", 12));
+        }
+        else
+        {
+            statusLabel.setFont(Font.font("Courier New", 16));
+        }
+
+        statusLabel.setText(status);
     }
 
     private void updateStatusBox()
