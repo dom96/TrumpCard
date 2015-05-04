@@ -170,7 +170,7 @@ public class GameScreen extends AnimationTimer {
     private void checkForEnd()
     {
         // Check if we should end the game.
-        if (state.getCharacter().getEnergy() != 0.0)
+        if (state.getCharacter().getEnergy() == 0.0)
         {
             pausePane.setVisible(true);
             pausePane.toFront();
