@@ -14,7 +14,7 @@
   - [x] Ignoring crimes
 - [x] Score
 - [x] Message when trying to commit crime when not having enough energy.
-- [ ] End of game condition
+- [x] End of game condition
 - [ ] Shop (Challenges CSC1012)
 - [ ] Difficulty levels
 - [ ] Other character images

@@ -63,6 +63,9 @@ public class GameScreen extends AnimationTimer {
     private boolean glowDecreasing;
 
     private Pane pausePane;
+    private VBox menuBox;
+    private VBox endGameBox;
+    private Label infoLbl; // Label showing information to user once game finishes.
 
     GameScreen(double width, double height, CharacterName name, String userName, String characterHideout)
     {
@@ -164,6 +167,21 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
+    private void checkForEnd()
+    {
+        // Check if we should end the game.
+        if (state.getCharacter().getEnergy() != 0.0)
+        {
+            pausePane.setVisible(true);
+            pausePane.toFront();
+            endGameBox.setVisible(true);
+            menuBox.setVisible(false);
+            state.pause();
+            infoLbl.setText("You finished with " +
+                    state.getCharacter().getScore() + " points.");
+        }
+    }
+
     private void onSleepBtnClicked(MouseEvent event)
     {
         if (!state.getCharacter().isAtHome())
@@ -188,6 +206,7 @@ public class GameScreen extends AnimationTimer {
     {
         pausePane.setVisible(true);
         pausePane.toFront();
+        endGameBox.setVisible(false);
         state.pause();
     }
 
@@ -304,7 +323,7 @@ public class GameScreen extends AnimationTimer {
         pauseMenuBtn.setOnMouseClicked(this::onPauseMenuBtnClicked);
         buttonBox.getChildren().add(pauseMenuBtn);
 
-        // Create pause pane
+        // Create pause pane, also includes the buttons which are shown once game ends.
         createPauseMenu();
     }
 
@@ -319,7 +338,8 @@ public class GameScreen extends AnimationTimer {
         pausePane.setLayoutY(0);
         root.getChildren().add(pausePane);
 
-        VBox menuBox = new VBox(10);
+        // Menu box
+        menuBox = new VBox(10);
         menuBox.setLayoutX(590);
         menuBox.setLayoutY(300);
         pausePane.getChildren().add(menuBox);
@@ -330,6 +350,32 @@ public class GameScreen extends AnimationTimer {
         resumeBtn.getStyleClass().add("resumeBtn");
         resumeBtn.setOnMouseClicked(this::onResumeBtnClicked);
         menuBox.getChildren().add(resumeBtn);
+
+        // End game box
+        endGameBox = new VBox(10);
+        endGameBox.setAlignment(Pos.CENTER);
+        endGameBox.setLayoutX(330);
+        endGameBox.setLayoutY(260);
+        pausePane.getChildren().add(endGameBox);
+
+        // More info label
+        Label infoMsgLbl = new Label("Your energy ran out!");
+        infoMsgLbl.setTextAlignment(TextAlignment.CENTER);
+        infoMsgLbl.setFont(Font.font("Courier New", 56));
+        endGameBox.getChildren().add(infoMsgLbl);
+
+        // Info label showing your score
+        infoLbl = new Label();
+        infoLbl.setTextAlignment(TextAlignment.CENTER);
+        infoLbl.setFont(Font.font("Courier New", 40));
+        endGameBox.getChildren().add(infoLbl);
+
+        // Main menu button
+        Button mainMenuBtn = new Button("Go to Main Menu");
+        mainMenuBtn.setCursor(Cursor.HAND);
+        mainMenuBtn.getStyleClass().add("resumeBtn");
+        mainMenuBtn.setOnMouseClicked(this::onResumeBtnClicked);
+        endGameBox.getChildren().add(mainMenuBtn);
     }
 
     @Override
@@ -400,6 +446,9 @@ public class GameScreen extends AnimationTimer {
 
             // Update buttons in crime boxes.
             updateCrimes();
+
+            // Check whether game ended.
+            checkForEnd();
         }
     }
 }
