@@ -12,6 +12,7 @@
   - [x] Sleeping
   - [x] Commiting crimes
   - [x] Ignoring crimes
+- [x] Score
 - [ ] Message when trying to commit crime when not having enough energy.
 - [ ] End of game condition
 - [ ] Shop (Challenges CSC1012)

@@ -10,6 +10,7 @@ import javafx.util.Duration;
 public class Character {
     protected double actions; // Percentage
     protected double energy; // Percentage
+    protected int score;
 
     protected Point2D pos; // Character position on the screen.
     protected Transition movement;
@@ -103,6 +104,14 @@ public class Character {
 
     public void setStatus(CharacterStatus status) {
         this.status = status;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public double getActions() {

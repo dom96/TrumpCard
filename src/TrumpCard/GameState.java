@@ -98,6 +98,10 @@ public class GameState {
         double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse() / 4);
         currentCharacter.setEnergy(newEnergy);
 
+        // Increase score.
+        int scoreBonus = crime.getEnergyUse() * 10;
+        currentCharacter.setScore(currentCharacter.getScore() + scoreBonus);
+
         crime.destroy(root);
     }
 
@@ -197,7 +201,7 @@ public class GameState {
                 break;
         }
         newEnergy = Math.max(0, newEnergy);
-        newEnergy = Math.min(100, newEnergy);
+        newEnergy = Math.min(99.9, newEnergy);
         currentCharacter.setEnergy(newEnergy);
     }
 

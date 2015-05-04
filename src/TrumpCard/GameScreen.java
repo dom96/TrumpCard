@@ -44,6 +44,8 @@ public class GameScreen extends AnimationTimer {
     private Label actionsBarLabel;
     private ProgressBar energyBar;
     private Label energyBarLabel;
+    private Label scoreLabel;
+
     private Button sleepBtn;
 
     private GameState state;
@@ -129,6 +131,7 @@ public class GameScreen extends AnimationTimer {
         double energy = state.getCharacter().getEnergy();
         energyBar.setProgress(energy / 100);
         energyBarLabel.setText(String.format("%04.1f%%", energy));
+        scoreLabel.setText(Integer.toString(state.getCharacter().getScore()));
     }
 
     private void updateLeftButtons()
@@ -258,6 +261,11 @@ public class GameScreen extends AnimationTimer {
         energyBar.setPrefHeight(20);
         energyBox.getChildren().add(energyBar);
         UIUtils.createBoldLabel(statusBox, "Energy: ", energyBox, statusFont);
+
+        // Score label
+        scoreLabel = new Label();
+        scoreLabel.setFont(Font.font("Courier New", 13));
+        UIUtils.createBoldLabel(statusBox, "Score: ", scoreLabel, statusFont);
 
         // Set text of statusLabel, actionsBar and energyBar.
         updateStatusBox();
