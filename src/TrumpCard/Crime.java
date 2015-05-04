@@ -51,8 +51,22 @@ public class Crime {
         return new Point2D(pos.getX() + 290, pos.getY() + 20);
     }
 
-    public int getEnergyUse() {
-        return info.energyUse;
+    /**
+     * Calculates the amount of energy that this crime will use.
+     * @return
+     */
+    public int getEnergyUse(GameState.Difficulty difficulty) {
+        switch (difficulty)
+        {
+            case Easy:
+                return info.energyUse / 4;
+            case Medium:
+                return info.energyUse / 2;
+            case Hard:
+                return info.energyUse;
+            default:
+                return info.energyUse;
+        }
     }
 
     public boolean isDestroyed() {
@@ -104,6 +118,12 @@ public class Crime {
         if (!enabled)
         {
             UIUtils.showErrorLabel(errorLabel, "Your character must be at the location of the crime.");
+            return;
+        }
+
+        if (getEnergyUse(state.getDifficulty()) > state.getCharacter().getEnergy())
+        {
+            UIUtils.showErrorLabel(errorLabel, "Your character does not have enough energy to perform this action.");
             return;
         }
 

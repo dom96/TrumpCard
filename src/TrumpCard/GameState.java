@@ -28,7 +28,7 @@ public class GameState {
     private long gameAge; // Time this game has been running in miliseconds.
     private long lastPoll;
 
-    Difficulty difficulty;
+    private Difficulty difficulty;
 
     GameState(Character character, Difficulty difficulty)
     {
@@ -56,6 +56,10 @@ public class GameState {
 
     public Image getCrimeIconHover() {
         return crimeIconHover;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 
     public void pause() {
@@ -95,12 +99,11 @@ public class GameState {
         currentCharacter.setActions(newActions);
 
         // Decrease energy.
-        // TODO: Adjust based on items/difficulty.
-        double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse() / 4);
+        double newEnergy = currentCharacter.getEnergy() - crime.getEnergyUse(difficulty);
         currentCharacter.setEnergy(newEnergy);
 
         // Increase score.
-        int scoreBonus = crime.getEnergyUse() * 10;
+        int scoreBonus = crime.getEnergyUse(difficulty) * 10;
         currentCharacter.setScore(currentCharacter.getScore() + scoreBonus);
 
         crime.destroy(root);
