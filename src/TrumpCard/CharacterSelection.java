@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
@@ -47,7 +48,6 @@ public class CharacterSelection extends AnimationTimer {
     private Image characterCatwoman;
     private Image characterGreenGoblin;
 
-
     private CharacterName hoverSelection;
     private CharacterName currentSelection;
     private boolean selectionLocked;
@@ -57,6 +57,12 @@ public class CharacterSelection extends AnimationTimer {
 
     private Button playBtn;
     private VBox inputControls;
+
+    private Label errorLbl;
+    private ComboBox<GameState.Difficulty> difficultyChoice;
+    private TextField addressField;
+    private TextField nameField;
+
 
     CharacterSelection(double width, double height)
     {
@@ -98,7 +104,7 @@ public class CharacterSelection extends AnimationTimer {
 
         // Create play button
         this.playBtn = UIUtils.createButton("CHOOSE", Font.font("Courier New", 25), "playBtn");
-        UIUtils.addAt(root, this.playBtn, width / 2 - 100, 600);
+        UIUtils.addAt(root, this.playBtn, width / 2 - 100, 630);
         this.playBtn.setOnAction(this::onPlayBtnClicked);
         this.playBtn.setVisible(false);
 
@@ -115,7 +121,7 @@ public class CharacterSelection extends AnimationTimer {
         nameLbl.setFont(Font.font("Courier New", 20));
         inputControls.getChildren().add(nameLbl);
 
-        TextField nameField = new TextField();
+        nameField = new TextField();
         nameField.setPromptText("e.g. Bob");
         inputControls.getChildren().add(nameField);
 
@@ -124,12 +130,23 @@ public class CharacterSelection extends AnimationTimer {
         addressLbl.setFont(Font.font("Courier New", 20));
         inputControls.getChildren().add(addressLbl);
 
-        TextField addressField = new TextField();
+        addressField = new TextField();
         addressField.setPromptText("e.g. BT71NN or London");
         inputControls.getChildren().add(addressField);
 
+        // -- Difficulty
+        Label difficultyLbl = new Label("Difficulty");
+        difficultyLbl.setFont(Font.font("Courier New", 20));
+        inputControls.getChildren().add(difficultyLbl);
+
+        difficultyChoice = new ComboBox<GameState.Difficulty>();
+        difficultyChoice.getItems().addAll(GameState.Difficulty.Easy, GameState.Difficulty.Medium,
+                GameState.Difficulty.Hard);
+        difficultyChoice.getSelectionModel().select(GameState.Difficulty.Medium);
+        inputControls.getChildren().add(difficultyChoice);
+
         // -- Error label
-        Label errorLbl = new Label();
+        errorLbl = new Label();
         errorLbl.getStyleClass().add("error");
         errorLbl.setFont(Font.font("Courier New", 13));
         errorLbl.setVisible(false);
@@ -153,9 +170,8 @@ public class CharacterSelection extends AnimationTimer {
         }
         else
         {
-            Label errorLbl = (Label)inputControls.getChildren().get(4);
-            String userName = ((TextField)inputControls.getChildren().get(1)).getText();
-            String characterHideout = ((TextField)inputControls.getChildren().get(3)).getText();
+            String userName = nameField.getText();
+            String characterHideout = addressField.getText();
 
             // Make sure the name is specified. Character hideout does not need to be specified.
             if (userName.isEmpty())
