@@ -17,8 +17,8 @@
 - [x] End of game condition
 - [ ] Make character stats affect the way energy is used.
 - [ ] Shop (Challenges CSC1012)
-- [ ] Difficulty levels
-- [ ] Other character images
+- [x] Difficulty levels
+- [x] Other character images
 - [x] Less intrusive error message.
 - [x] Pause game
 - [x] Better character movement.

@@ -108,22 +108,22 @@ public class GameScreen extends AnimationTimer {
             status = "Super hero";
         }
 
-        if (actions <= 90)
+        if (actions < 90)
         {
             status = "Hero";
         }
 
-        if (actions <= 60)
+        if (actions < 60)
         {
             status = "Human";
         }
 
-        if (actions <= 40)
+        if (actions < 40)
         {
             status = "Villain";
         }
 
-        if (actions <= 10)
+        if (actions < 10)
         {
             status = "Super villain";
         }
@@ -426,14 +426,26 @@ public class GameScreen extends AnimationTimer {
         blur.setHeight(50);
         blur.setIterations(3);
         graphicsContext.setEffect(blur);
-        graphicsContext.setFill(Color.web("#ff0000"));
+        // Set color under name badge based on the alignment of the character.
+        if (CharacterName.isVillain(state.getCharacter().getName()))
+        {
+            graphicsContext.setFill(Color.web("#ff0000"));
+        }
+        else if (CharacterName.isHuman(state.getCharacter().getName()))
+        {
+            graphicsContext.setFill(Color.web("#0059FF"));
+        }
+        else
+        {
+            graphicsContext.setFill(Color.web("#0AD300"));
+        }
         graphicsContext.fillRect(80, 370 + (20*glowIntensity), 130, 35);
 
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.setEffect(null);
         graphicsContext.setFont(Font.font("Courier New", 20));
         graphicsContext.setTextAlign(TextAlignment.CENTER);
-        graphicsContext.fillText(this.state.getCharacter().getFriendlyName(), 145, 425, 240);
+        graphicsContext.fillText(this.state.getCharacter().getUserName(), 145, 425, 240);
 
         // Draw character
         //graphicsContext.setEffect(new Glow(glowIntensity*0.4));

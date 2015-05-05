@@ -1,5 +1,6 @@
 package TrumpCard;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -8,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -161,6 +163,74 @@ public class GameState {
         return result;
     }
 
+    private Character toHero(Character character) {
+        switch (character.getName())
+        {
+            case TonyStark:
+            case Ultron:
+                character.setName(CharacterName.IronMan);
+                break;
+            case BruceWayne:
+            case Catwoman:
+                character.setName(CharacterName.Batman);
+                break;
+            case PeterParker:
+            case GreenGoblin:
+                character.setName(CharacterName.Spiderman);
+                break;
+            default:
+                throw new InvalidParameterException("Can't turn " + character.getName().name() + " into villain.");
+        }
+
+        return (Hero)character;
+    }
+
+    private Character toVillain(Character character) {
+        switch (character.getName())
+        {
+            case TonyStark:
+            case IronMan:
+                character.setName(CharacterName.Ultron);
+                break;
+            case BruceWayne:
+            case Batman:
+                character.setName(CharacterName.Catwoman);
+                break;
+            case PeterParker:
+            case Spiderman:
+                character.setName(CharacterName.GreenGoblin);
+                break;
+            default:
+                throw new InvalidParameterException("Can't turn " + character.getName().name() + " into hero.");
+        }
+
+        return (Villain)character;
+    }
+
+    private Character toHuman(Character character) {
+        switch (character.getName())
+        {
+            case Ultron:
+            case IronMan:
+                character.setName(CharacterName.TonyStark);
+                break;
+            case Catwoman:
+            case Batman:
+                character.setName(CharacterName.BruceWayne);
+                break;
+            case GreenGoblin:
+            case Spiderman:
+                character.setName(CharacterName.PeterParker);
+                break;
+            default:
+                throw new InvalidParameterException("Can't turn " + character.getName().name() + " into human.");
+        }
+
+
+
+        return character;
+    }
+
     private void updateCrimes(Group root, long now) {
         ArrayList<Crime> newCrimes = new ArrayList<Crime>();
         for (int i = 0; i < this.crimes.size(); i++)
@@ -207,6 +277,32 @@ public class GameState {
         newEnergy = Math.max(0, newEnergy);
         newEnergy = Math.min(99.9, newEnergy);
         currentCharacter.setEnergy(newEnergy);
+
+        // Check if character has turned into hero/human/villain.
+        if (currentCharacter.getActions() >= 60)
+        {
+            // Hero
+            if (!CharacterName.isHero(currentCharacter.getName()))
+            {
+                currentCharacter = toHero(currentCharacter);
+            }
+        }
+        else if (currentCharacter.getActions() >= 40)
+        {
+            // Human
+            if (!CharacterName.isHuman(currentCharacter.getName()))
+            {
+                currentCharacter = toHuman(currentCharacter);
+            }
+        }
+        else
+        {
+            // Villain
+            if (!CharacterName.isVillain(currentCharacter.getName()))
+            {
+                currentCharacter = toVillain(currentCharacter);
+            }
+        }
     }
 
     public void poll(Group root, long now, Label errorLabel) {

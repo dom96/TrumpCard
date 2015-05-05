@@ -126,6 +126,14 @@ public class Character {
         return name;
     }
 
+    public void setName(CharacterName name)
+    {
+        if (this.name != name) {
+            this.image = CharacterName.loadImage(name);
+        }
+        this.name = name;
+    }
+
     public String getUserName() {
         return userName;
     }
