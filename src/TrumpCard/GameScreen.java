@@ -16,6 +16,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -230,11 +231,36 @@ public class GameScreen extends AnimationTimer {
         state.resume();
     }
 
+    private void onKeyboardReleased(KeyEvent event)
+    {
+        switch (event.getCode())
+        {
+            case A:
+                double actions = state.getCharacter().getActions();
+                if (event.isControlDown())
+                {
+                    actions--;
+                }
+                else
+                {
+                    actions++;
+                }
+                state.getCharacter().setActions(actions);
+                break;
+            case C:
+                // Toggle generation of crimes.
+                state.pause();
+        }
+    }
+
     public void show(Stage stage)
     {
         this.root = new Group();
         stage.setScene(new Scene(root));
         stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
+
+        // Events on root.
+        root.setOnKeyReleased(this::onKeyboardReleased);
 
         // Create canvas to draw things onto.
         Canvas canvas = new Canvas(width, height);
