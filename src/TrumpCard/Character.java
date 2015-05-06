@@ -20,6 +20,7 @@ public class Character {
     protected String hideout;
 
     protected Image image;
+    protected boolean paused;
 
     protected CharacterStatus status; // Determines what character is doing.
 
@@ -77,6 +78,7 @@ public class Character {
     }
 
     public void pause() {
+        paused = true;
         if (movement != null && movement.getStatus() == Animation.Status.RUNNING)
         {
             movement.pause();
@@ -84,10 +86,15 @@ public class Character {
     }
 
     public void resume() {
+        paused = false;
         if (movement != null && movement.getStatus() == Animation.Status.PAUSED)
         {
             movement.play();
         }
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 
     public Point2D getHomePos() {

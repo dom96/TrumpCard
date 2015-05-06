@@ -249,7 +249,13 @@ public class GameScreen extends AnimationTimer {
                 break;
             case C:
                 // Toggle generation of crimes.
-                state.pause();
+                if (state.getCharacter().isPaused())
+                {
+                    state.resume();
+                }
+                else {
+                    state.pause();
+                }
         }
     }
 

@@ -6,4 +6,5 @@ public class Villain extends Character {
     {
         super(name, userName, hideout);
     }
+
 }

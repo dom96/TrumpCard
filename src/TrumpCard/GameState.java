@@ -182,7 +182,11 @@ public class GameState {
                 throw new InvalidParameterException("Can't turn " + character.getName().name() + " into villain.");
         }
 
-        return (Hero)character;
+        // I was going to create a new instance of Hero here. That would require me to copy all
+        // the fields from `character` manually though. I decided to simply keep what the player
+        // originally started with.
+
+        return character;
     }
 
     private Character toVillain(Character character) {
@@ -204,7 +208,7 @@ public class GameState {
                 throw new InvalidParameterException("Can't turn " + character.getName().name() + " into hero.");
         }
 
-        return (Villain)character;
+        return character;
     }
 
     private Character toHuman(Character character) {
@@ -225,7 +229,6 @@ public class GameState {
             default:
                 throw new InvalidParameterException("Can't turn " + character.getName().name() + " into human.");
         }
-
 
 
         return character;
@@ -307,7 +310,7 @@ public class GameState {
 
     public void poll(Group root, long now, Label errorLabel) {
         // Decide whether a new crime/opportunity should be generated. Check only every 2 seconds.
-        if (now - lastCrimeCheck >= 2e9) {
+        if (now - lastCrimeCheck >= 2e9 && !currentCharacter.isPaused()) {
             lastCrimeCheck = now;
             double likelihood = crimeLikelihood(now);
 
