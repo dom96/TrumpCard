@@ -126,7 +126,7 @@ public class GameScreen extends AnimationTimer {
             status = "Villain";
         }
 
-        if (actions < 10)
+        if (actions <= 10)
         {
             status = "Super villain";
         }

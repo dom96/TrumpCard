@@ -186,6 +186,10 @@ public class GameState {
                 break;
         }
         result += gameAge / ageFactor;
+
+        // Limit at 100%.
+        result = Math.min(result, 100);
+
         return result;
     }
 
@@ -306,6 +310,12 @@ public class GameState {
         newEnergy = Math.max(0, newEnergy);
         newEnergy = Math.min(99.9, newEnergy);
         currentCharacter.setEnergy(newEnergy);
+
+        // Clamp actions between 0 and 100.
+        double newActions = currentCharacter.getActions();
+        newActions = Math.max(0, newActions);
+        newActions = Math.min(99.0, newActions);
+        currentCharacter.setActions(newActions);
 
         // Check if character has turned into hero/human/villain.
         if (currentCharacter.getActions() >= 60)
