@@ -113,7 +113,7 @@ public class Crime {
         state.getCharacter().moveTo(getWindowPos());
     }
 
-    private void onCommitBtnClicked(MouseEvent event, GameState state, Group root, Label errorLabel)
+    private void onCommitFightBtnClicked(MouseEvent event, GameState state, Group root, Label errorLabel, boolean fight)
     {
         if (!enabled)
         {
@@ -127,7 +127,13 @@ public class Crime {
             return;
         }
 
-        state.commitCrime(this, root);
+        if (fight)
+        {
+            state.fightCrime(this, root);
+        }
+        else {
+            state.commitCrime(this, root);
+        }
     }
 
     private void onIgnoreBtnClicked(MouseEvent event, GameState state, Group root)
@@ -186,9 +192,10 @@ public class Crime {
 
         leftBtn = new Button("Commit");
         leftBtn.getStyleClass().addAll("commitBtn", "disabledBtn");
-        leftBtn.setOnMouseClicked(event -> onCommitBtnClicked(event, state, root, errorLabel));
+        leftBtn.setOnMouseClicked(event -> onCommitFightBtnClicked(event, state, root, errorLabel, false));
         rightBtn = new Button("Fight");
         rightBtn.getStyleClass().addAll("fightBtn", "disabledBtn");
+        rightBtn.setOnMouseClicked(event -> onCommitFightBtnClicked(event, state, root, errorLabel, true));
         ignoreBtn = new Button("Ignore");
         ignoreBtn.getStyleClass().addAll("ignoreBtn");
         ignoreBtn.setOnMouseClicked(event -> onIgnoreBtnClicked(event, state, root));

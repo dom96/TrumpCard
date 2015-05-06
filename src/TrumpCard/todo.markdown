@@ -12,6 +12,7 @@
   - [x] Sleeping
   - [x] Commiting crimes
   - [x] Ignoring crimes
+  - [x] Fighting crimes
 - [x] Score
 - [x] Message when trying to commit crime when not having enough energy.
 - [x] End of game condition

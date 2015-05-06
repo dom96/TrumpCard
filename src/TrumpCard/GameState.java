@@ -111,6 +111,22 @@ public class GameState {
         crime.destroy(root);
     }
 
+    public void fightCrime(Crime crime, Group root) {
+        // Increase the actions because we are doing a good thing.
+        double newActions = currentCharacter.getActions() + 1;
+        currentCharacter.setActions(newActions);
+
+        // Decrease energy.
+        double newEnergy = currentCharacter.getEnergy() - crime.getEnergyUse(difficulty);
+        currentCharacter.setEnergy(newEnergy);
+
+        // Increase score.
+        int scoreBonus = crime.getEnergyUse(difficulty) * 10;
+        currentCharacter.setScore(currentCharacter.getScore() + scoreBonus);
+
+        crime.destroy(root);
+    }
+
     public void ignoreCrime(Crime crime, Group root)
     {
         // Normalise actions towards human, i.e. increase if < 50, decrease if > 50.
