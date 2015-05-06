@@ -68,7 +68,8 @@ public class GameScreen extends AnimationTimer {
     private VBox endGameBox;
     private Label infoLbl; // Label showing information to user once game finishes.
 
-    GameScreen(double width, double height, CharacterName name, String userName, String characterHideout)
+    GameScreen(double width, double height, CharacterName name, String userName, String characterHideout,
+               GameState.Difficulty difficulty)
     {
         this.width = width;
         this.height = height;
@@ -79,7 +80,7 @@ public class GameScreen extends AnimationTimer {
 
         // TODO: Difficulty
         this.state = new GameState(new Character(name, userName,
-                characterHideout.isEmpty() ? "Belfast" : characterHideout), GameState.Difficulty.Hard);
+                characterHideout.isEmpty() ? "Belfast" : characterHideout), difficulty);
 
         try
         {

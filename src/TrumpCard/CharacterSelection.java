@@ -172,6 +172,7 @@ public class CharacterSelection extends AnimationTimer {
         {
             String userName = nameField.getText();
             String characterHideout = addressField.getText();
+            GameState.Difficulty difficulty = difficultyChoice.getValue();
 
             // Make sure the name is specified. Character hideout does not need to be specified.
             if (userName.isEmpty())
@@ -182,7 +183,7 @@ public class CharacterSelection extends AnimationTimer {
             }
 
             // If the required data is valid we can move onto the game screen.
-            GameScreen game = new GameScreen(width, height, currentSelection, userName, characterHideout);
+            GameScreen game = new GameScreen(width, height, currentSelection, userName, characterHideout, difficulty);
             game.show(stage);
             game.start();
         }

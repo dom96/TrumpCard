@@ -154,28 +154,38 @@ public class GameState {
         // -- But increase with the amount of time since the last crime was generated.
 
         double result = (MAX_CRIMES - crimeNumber);
-        if (crimeNumber == 0) {
-            result += 40;
+
+        long secsSinceLastCrime = (now - this.lastCrimeGen) / (long) 1e9;
+        // Scale to 100% crime likelihood by the time 60 seconds elapsed since the last crime gen.
+        result += secsSinceLastCrime * 1.67;
+        // Add some likelihood based on number of crimes present.
+        switch (difficulty)
+        {
+            case Easy:
+                result += 2 / ((crimeNumber * 2) + 1);
+                break;
+            case Medium:
+                result += 5 / ((crimeNumber * 2) + 1);
+                break;
+            case Hard:
+                result += 10 / ((crimeNumber * 2) + 1);
+                break;
         }
-        else {
-            long secsSinceLastCrime = (now - this.lastCrimeGen) / (long) 1e9;
-            result += secsSinceLastCrime * (crimeNumber / 25.0);
-            // Make game progressively harder by increasing the likelihood throughout the game.
-            double ageFactor = 30;
-            switch (difficulty)
-            {
-                case Easy:
-                    ageFactor = 30;
-                    break;
-                case Medium:
-                    ageFactor = 10;
-                    break;
-                case Hard:
-                    ageFactor = 0.3;
-                    break;
-            }
-            result += gameAge / 1000 / ageFactor;
+        // Make game progressively harder by increasing the likelihood throughout the game.
+        double ageFactor = 10000;
+        switch (difficulty)
+        {
+            case Easy:
+                ageFactor = 10000;
+                break;
+            case Medium:
+                ageFactor = 7500;
+                break;
+            case Hard:
+                ageFactor = 5000;
+                break;
         }
+        result += gameAge / ageFactor;
         return result;
     }
 
@@ -329,6 +339,11 @@ public class GameState {
         if (now - lastCrimeCheck >= 2e9 && !currentCharacter.isPaused()) {
             lastCrimeCheck = now;
             double likelihood = crimeLikelihood(now);
+            // Always generate a crime at the beginning of the game.
+            if (lastCrimeGen == 0)
+            {
+                likelihood = 100;
+            }
 
             Random rand = new Random();
             double randDouble = rand.nextDouble();
