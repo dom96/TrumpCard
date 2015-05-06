@@ -46,6 +46,7 @@ public class GameScreen extends AnimationTimer {
     private ProgressBar energyBar;
     private Label energyBarLabel;
     private Label scoreLabel;
+    private Label crimeLikelihoodLabel;
 
     private Button sleepBtn;
 
@@ -143,16 +144,22 @@ public class GameScreen extends AnimationTimer {
         statusLabel.setText(status);
     }
 
-    private void updateStatusBox()
+    private void updateStatusBox(long now)
     {
         updateStatusLabel();
+
         double actions = state.getCharacter().getActions();
         actionsBar.setProgress(actions / 100);
         actionsBarLabel.setText(String.format("%04.1f%%", actions));
+
         double energy = state.getCharacter().getEnergy();
         energyBar.setProgress(energy / 100);
         energyBarLabel.setText(String.format("%04.1f%%", energy));
+
         scoreLabel.setText(Integer.toString(state.getCharacter().getScore()));
+
+        double crimeLikelihood = state.crimeLikelihood(now);
+        crimeLikelihoodLabel.setText(String.format("%04.1f%%", crimeLikelihood));
     }
 
     private void updateLeftButtons()
@@ -335,13 +342,18 @@ public class GameScreen extends AnimationTimer {
         scoreLabel.setFont(Font.font("Courier New", 13));
         UIUtils.createBoldLabel(statusBox, "Score: ", scoreLabel, statusFont);
 
+        // Crime likelihood label
+        crimeLikelihoodLabel = new Label();
+        crimeLikelihoodLabel.setFont(Font.font("Courier New", 13));
+        UIUtils.createBoldLabel(statusBox, "Crime: ", crimeLikelihoodLabel, statusFont);
+
         // Set text of statusLabel, actionsBar and energyBar.
-        updateStatusBox();
+        updateStatusBox(0);
 
         // Create buttons below status box
         VBox buttonBox = new VBox(5);
         buttonBox.setLayoutX(20);
-        buttonBox.setLayoutY(550);
+        buttonBox.setLayoutY(580);
         root.getChildren().add(buttonBox);
 
         // Sleep button
@@ -498,7 +510,7 @@ public class GameScreen extends AnimationTimer {
             this.state.poll(root, now, errorLabel);
 
             // Update status label, energy bar and actions bar.
-            updateStatusBox();
+            updateStatusBox(now);
 
             // Update buttons on the left of the screen.
             updateLeftButtons();

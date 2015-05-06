@@ -147,7 +147,7 @@ public class GameState {
     /**
      * Likelihood of a crime being generated as a percentage. 100% doesn't guarantee that one will be generated!
      */
-    private double crimeLikelihood(long now)
+    public double crimeLikelihood(long now)
     {
         int crimeNumber = this.crimes.size();
         // -- Likelihood that a new crime will be generated should decrease with the amount of crimes on the map.
