@@ -162,6 +162,27 @@ public enum CharacterName {
         return "";
     }
 
+    public boolean isRelatedTo(CharacterName name)
+    {
+        switch (this)
+        {
+            case Spiderman:
+            case GreenGoblin:
+            case PeterParker:
+                return name == Spiderman || name == PeterParker || name == GreenGoblin;
+            case Ultron:
+            case TonyStark:
+            case IronMan:
+                return name == IronMan || name == Ultron || name == TonyStark;
+            case Catwoman:
+            case BruceWayne:
+            case Batman:
+                return name == Batman || name == Catwoman || name == BruceWayne;
+            default:
+                return false;
+        }
+    }
+
     public static Image loadImage(CharacterName name)
     {
         return UIUtils.loadImage("file:images/character_" + name.name().toLowerCase() + ".jpg");

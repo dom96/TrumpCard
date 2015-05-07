@@ -95,10 +95,32 @@
     -fx-background-color: #009102;
 }
 
-.crimeBox .ignoreBtn {
+.crimeBox .ignoreBtn, .buyBtn {
     -fx-background-color: #005489;
 }
 
-.crimeBox .ignoreBtn:hover {
+.crimeBox .ignoreBtn:hover, .buyBtn:hover {
     -fx-background-color: #005E99;
+}
+
+.buyBtn {
+     -fx-text-fill: white;
+     -fx-min-width: 150;
+     -fx-font-size: 16;
+}
+
+.shopItem:hover {
+    -fx-border-color: #FF6E00;
+    -fx-border-width: 2;
+}
+
+.shopCategoryBtn {
+     -fx-text-fill: white;
+     -fx-min-width: 200;
+     -fx-font-size: 18;
+     -fx-background-color: #00A813;
+}
+
+.shopCategoryBtn:hover, .shopCategorySelected {
+     -fx-background-color: #A50005;
 }

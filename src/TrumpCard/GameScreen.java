@@ -18,10 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Box;
@@ -66,8 +63,11 @@ public class GameScreen extends AnimationTimer {
 
     private Pane pausePane;
     private VBox menuBox;
+    // Controls associated with the end of the game.
     private VBox endGameBox;
     private Label infoLbl; // Label showing information to user once game finishes.
+    // Controls associated with the shop.
+    private Shop shop;
 
     GameScreen(double width, double height, CharacterName name, String userName, String characterHideout,
                GameState.Difficulty difficulty)
@@ -82,6 +82,8 @@ public class GameScreen extends AnimationTimer {
         // TODO: Difficulty
         this.state = new GameState(new Character(name, userName,
                 characterHideout.isEmpty() ? "Belfast" : characterHideout), difficulty);
+
+        this.shop = new Shop(state);
 
         try
         {
@@ -205,6 +207,15 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
+    private void showPausePane() {
+        pausePane.setVisible(true);
+        pausePane.toFront();
+        endGameBox.setVisible(false);
+        menuBox.setVisible(false);
+        shop.getShopBox().setVisible(false);
+        state.pause();
+    }
+
     private void onSleepBtnClicked(MouseEvent event)
     {
         if (!state.getCharacter().isAtHome())
@@ -227,10 +238,8 @@ public class GameScreen extends AnimationTimer {
 
     private void onPauseMenuBtnClicked(MouseEvent event)
     {
-        pausePane.setVisible(true);
-        pausePane.toFront();
-        endGameBox.setVisible(false);
-        state.pause();
+        showPausePane();
+        menuBox.setVisible(true);
     }
 
     private void onResumeBtnClicked(MouseEvent event)
@@ -264,6 +273,21 @@ public class GameScreen extends AnimationTimer {
                 else {
                     state.pause();
                 }
+                break;
+            case ESCAPE:
+                // Toggle pause menu.
+                if (pausePane.isVisible())
+                {
+                    onResumeBtnClicked(null);
+                }
+                else
+                {
+                    onPauseMenuBtnClicked(null);
+                }
+            case S:
+                // Shop
+                showPausePane();
+                shop.getShopBox().setVisible(true);
         }
     }
 
@@ -410,6 +434,7 @@ public class GameScreen extends AnimationTimer {
         resumeBtn.setOnMouseClicked(this::onResumeBtnClicked);
         menuBox.getChildren().add(resumeBtn);
 
+        // Controls associated with the end of the game.
         // End game box
         endGameBox = new VBox(10);
         endGameBox.setAlignment(Pos.CENTER);
@@ -435,6 +460,9 @@ public class GameScreen extends AnimationTimer {
         mainMenuBtn.getStyleClass().add("resumeBtn");
         mainMenuBtn.setOnMouseClicked(this::onResumeBtnClicked);
         endGameBox.getChildren().add(mainMenuBtn);
+
+        // Initialise shop controls.
+        shop.create(pausePane);
     }
 
     @Override
