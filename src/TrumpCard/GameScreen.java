@@ -580,7 +580,13 @@ public class GameScreen extends AnimationTimer {
         // as if the character enters that landmark.
         if (!state.getCharacter().isAtHome() && state.getCrimeAtCharacterPos() == null && !state.isCharacterAtShop()) {
             final Point2D characterPos = state.getCharacter().getPos();
-            graphicsContext.drawImage(this.characterIcon, characterPos.getX(), characterPos.getY(), 30, 32);
+            Image icon = characterIcon;
+            // Check if clothing item is changing this.
+            if (state.getCharacter().getClothing().length() > 0)
+            {
+                icon = UIUtils.loadImage("file:images/character_" + state.getCharacter().getClothing() + ".png");
+            }
+            graphicsContext.drawImage(icon, characterPos.getX(), characterPos.getY(), 30, 32);
         }
 
         if (!pausePane.isVisible()) {

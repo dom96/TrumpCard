@@ -62,6 +62,7 @@ public class Character {
         pos = getHomePos();
 
         items = new ArrayList<Item>();
+        clothing = "";
     }
 
     public void addItem(Item item) {
@@ -89,6 +90,10 @@ public class Character {
             actions += food.getActionPoints();
         }
 
+    }
+
+    public String getClothing() {
+        return clothing;
     }
 
     public boolean hasItem(Item item) {
