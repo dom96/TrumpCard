@@ -548,11 +548,11 @@ public class GameScreen extends AnimationTimer {
         blur.setIterations(3);
         graphicsContext.setEffect(blur);
         // Set color under name badge based on the alignment of the character.
-        if (CharacterName.isVillain(state.getCharacter().getName()))
+        if (state.getCharacter().getName().isVillain())
         {
             graphicsContext.setFill(Color.web("#ff0000"));
         }
-        else if (CharacterName.isHuman(state.getCharacter().getName()))
+        else if (state.getCharacter().getName().isHuman())
         {
             graphicsContext.setFill(Color.web("#0059FF"));
         }

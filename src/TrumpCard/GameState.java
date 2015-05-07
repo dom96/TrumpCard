@@ -262,7 +262,6 @@ public class GameState {
                 throw new InvalidParameterException("Can't turn " + character.getName().name() + " into human.");
         }
 
-
         return character;
     }
 
@@ -339,7 +338,7 @@ public class GameState {
         if (currentCharacter.getActions() >= 60)
         {
             // Hero
-            if (!CharacterName.isHero(currentCharacter.getName()))
+            if (!currentCharacter.getName().isHero())
             {
                 currentCharacter = toHero(currentCharacter);
             }
@@ -347,7 +346,7 @@ public class GameState {
         else if (currentCharacter.getActions() >= 40)
         {
             // Human
-            if (!CharacterName.isHuman(currentCharacter.getName()))
+            if (!currentCharacter.getName().isHuman())
             {
                 currentCharacter = toHuman(currentCharacter);
             }
@@ -355,7 +354,7 @@ public class GameState {
         else
         {
             // Villain
-            if (!CharacterName.isVillain(currentCharacter.getName()))
+            if (!currentCharacter.getName().isVillain())
             {
                 currentCharacter = toVillain(currentCharacter);
             }

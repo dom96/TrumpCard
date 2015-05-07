@@ -7,8 +7,8 @@ public enum CharacterName {
     TonyStark, BruceWayne, PeterParker,
     Ultron, Catwoman, GreenGoblin;
 
-    public static boolean isVillain(CharacterName name) {
-        switch (name)
+    public boolean isVillain() {
+        switch (this)
         {
             case Ultron:
                 return true;
@@ -21,8 +21,8 @@ public enum CharacterName {
         }
     }
 
-    public static boolean isHero(CharacterName name) {
-        switch (name)
+    public boolean isHero() {
+        switch (this)
         {
             case IronMan:
                 return true;
@@ -35,8 +35,8 @@ public enum CharacterName {
         }
     }
 
-    public static boolean isHuman(CharacterName name) {
-        switch (name)
+    public boolean isHuman() {
+        switch (this)
         {
             case TonyStark:
                 return true;
@@ -49,9 +49,9 @@ public enum CharacterName {
         }
     }
 
-    public static String getFriendlyName(CharacterName name)
+    public String getFriendlyName()
     {
-        switch (name)
+        switch (this)
         {
             case Ultron: return "Ultron";
             case Catwoman: return "Catwoman";
@@ -66,28 +66,28 @@ public enum CharacterName {
         return "";
     }
 
-    public static String getAlignment(CharacterName name)
+    public String getAlignment()
     {
-        if (isHuman(name))
+        if (this.isHuman())
         {
             return "Neutral";
         }
 
-        if (isVillain(name))
+        if (this.isVillain())
         {
             return "Evil";
         }
 
-        if (isHero(name))
+        if (this.isHero())
         {
             return "Good";
         }
         return "Neutral";
     }
 
-    public static int getStrength(CharacterName name)
+    public int getStrength()
     {
-        switch (name)
+        switch (this)
         {
             case Ultron: return 6;
             case IronMan: return 6;
@@ -97,9 +97,9 @@ public enum CharacterName {
         return 3;
     }
 
-    public static int getIntelligence(CharacterName name)
+    public int getIntelligence()
     {
-        switch (name)
+        switch (this)
         {
             case Ultron: return 4;
             case IronMan: return 6;
@@ -111,9 +111,9 @@ public enum CharacterName {
         return 3;
     }
 
-    public static int getDurability(CharacterName name)
+    public int getDurability()
     {
-        switch (name)
+        switch (this)
         {
             case Ultron: return 7;
             case IronMan: return 6;
@@ -123,9 +123,9 @@ public enum CharacterName {
         return 3;
     }
 
-    public static String getDescription(CharacterName name)
+    public String getDescription()
     {
-        switch (name)
+        switch (this)
         {
             case Ultron:
                 return "Ultron-1 was constructed by Dr. Hank Pym\n" +
@@ -183,8 +183,8 @@ public enum CharacterName {
         }
     }
 
-    public static Image loadImage(CharacterName name)
+    public Image loadImage()
     {
-        return UIUtils.loadImage("file:images/character_" + name.name().toLowerCase() + ".jpg");
+        return UIUtils.loadImage("file:images/character_" + this.name().toLowerCase() + ".jpg");
     }
 }

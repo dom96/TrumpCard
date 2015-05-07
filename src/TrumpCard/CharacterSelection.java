@@ -74,15 +74,15 @@ public class CharacterSelection extends AnimationTimer {
         backgroundVillain = new Image("file:images/character_selection_evil.png");
         backgroundHero = new Image("file:images/character_selection_good.png");
 
-        characterUltron = CharacterName.loadImage(CharacterName.Ultron);
-        characterIronman = CharacterName.loadImage(CharacterName.IronMan);
-        characterBatman = CharacterName.loadImage(CharacterName.Batman);
-        characterSpiderman = CharacterName.loadImage(CharacterName.Spiderman);
-        characterTonyStark = CharacterName.loadImage(CharacterName.TonyStark);
-        characterBruceWayne = CharacterName.loadImage(CharacterName.BruceWayne);
-        characterPeterParker = CharacterName.loadImage(CharacterName.PeterParker);
-        characterCatwoman = CharacterName.loadImage(CharacterName.Catwoman);
-        characterGreenGoblin = CharacterName.loadImage(CharacterName.GreenGoblin);
+        characterUltron = CharacterName.Ultron.loadImage();
+        characterIronman = CharacterName.IronMan.loadImage();
+        characterBatman = CharacterName.Batman.loadImage();
+        characterSpiderman = CharacterName.Spiderman.loadImage();
+        characterTonyStark = CharacterName.TonyStark.loadImage();
+        characterBruceWayne = CharacterName.BruceWayne.loadImage();
+        characterPeterParker = CharacterName.PeterParker.loadImage();
+        characterCatwoman = CharacterName.Catwoman.loadImage();
+        characterGreenGoblin = CharacterName.GreenGoblin.loadImage();
 
         this.blackAndWhite = new ColorAdjust();
         this.blackAndWhite.setSaturation(-1);
@@ -295,17 +295,17 @@ public class CharacterSelection extends AnimationTimer {
 
     private ImagePattern setBackground(CharacterName selection)
     {
-        if (CharacterName.isVillain(selection))
+        if (selection.isVillain())
         {
             return new ImagePattern(backgroundVillain);
         }
 
-        if (CharacterName.isHuman(selection))
+        if (selection.isHuman())
         {
             return new ImagePattern(backgroundNeutral);
         }
 
-        if (CharacterName.isHero(selection))
+        if (selection.isHero())
         {
             return new ImagePattern(backgroundHero);
         }
@@ -315,8 +315,8 @@ public class CharacterSelection extends AnimationTimer {
 
     private void drawInfo(CharacterName selection)
     {
-        String alignment = CharacterName.getAlignment(selection);
-        String name = CharacterName.getFriendlyName(selection);
+        String alignment = selection.getAlignment();
+        String name = selection.getFriendlyName();
 
         graphicsContext.setFont(Font.font("Courier New", 20));
         graphicsContext.setTextAlign(TextAlignment.CENTER);
@@ -326,14 +326,14 @@ public class CharacterSelection extends AnimationTimer {
         if (!selectionLocked) {
             graphicsContext.setFont(Font.font("Courier New", 18));
             graphicsContext.setTextAlign(TextAlignment.LEFT);
-            graphicsContext.fillText(CharacterName.getDescription(selection),
+            graphicsContext.fillText(selection.getDescription(),
                     20, 410);
 
-            graphicsContext.fillText("Strength: " + CharacterName.getStrength(selection),
+            graphicsContext.fillText("Strength: " + selection.getStrength(),
                     width / 2 - 140, 410);
-            graphicsContext.fillText("Intelligence: " + CharacterName.getIntelligence(selection),
+            graphicsContext.fillText("Intelligence: " + selection.getIntelligence(),
                     width / 2 - 140, 430);
-            graphicsContext.fillText("Durability: " + CharacterName.getDurability(selection),
+            graphicsContext.fillText("Durability: " + selection.getDurability(),
                     width / 2 - 140, 450);
         }
     }

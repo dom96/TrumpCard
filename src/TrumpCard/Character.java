@@ -39,17 +39,17 @@ public class Character {
         this.userName = userName;
         this.hideout = hideout;
 
-        this.image = CharacterName.loadImage(this.name);
+        this.image = this.name.loadImage();
 
-        if (CharacterName.isVillain(name))
+        if (name.isVillain())
         {
             this.actions = 25.0;
         }
-        if (CharacterName.isHuman(name))
+        if (name.isHuman())
         {
             this.actions = 50.0;
         }
-        if (CharacterName.isHero(name))
+        if (name.isHero())
         {
             this.actions = 75.0;
         }
@@ -61,9 +61,9 @@ public class Character {
         // Put character in the middle of the map.
         pos = getHomePos();
 
-        strength = CharacterName.getStrength(name);
-        intelligence = CharacterName.getIntelligence(name);
-        durability = CharacterName.getDurability(name);
+        strength = name.getStrength();
+        intelligence = name.getIntelligence();
+        durability = name.getDurability();
 
         items = new ArrayList<Item>();
         clothing = "";
@@ -208,7 +208,7 @@ public class Character {
     public void setName(CharacterName name)
     {
         if (this.name != name) {
-            this.image = CharacterName.loadImage(name);
+            this.image = name.loadImage();
         }
         this.name = name;
     }
@@ -234,7 +234,7 @@ public class Character {
     }
 
     public String getFriendlyName() {
-        return CharacterName.getFriendlyName(name);
+        return name.getFriendlyName();
     }
 
     public Point2D getPos() {

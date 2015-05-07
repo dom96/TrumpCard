@@ -20,7 +20,7 @@
   - [x] Durability affects how fast the energy depletes.
   - [x] Intelligence affects amount of energy used to commit/fight crimes.
   - [x] Strength affects how fast the character moves.
-- [ ] Shop (Challenges CSC1012)
+- [x] Shop (Challenges CSC1012)
   - [x] Batmobile (make character faster, higher strength?) - batman (Gadget)
   - [x] Energy drink - batman (Food)
   - [x] Catnip (more durability therefore less energy use) - catwoman (Food)
@@ -40,8 +40,9 @@
 - [x] Pause game
 - [x] Better character movement.
 - [ ] Add more crime descriptions.
+- [ ] Finish character descriptions, stats
 - [ ] Add some unique fields to Hero and Villain 
-- [ ] Make methods in CharacterName non-static.
+- [x] Make methods in CharacterName non-static.
 
 ## Additional features
 

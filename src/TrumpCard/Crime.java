@@ -200,15 +200,15 @@ public class Crime {
         ignoreBtn.getStyleClass().addAll("ignoreBtn");
         ignoreBtn.setOnMouseClicked(event -> onIgnoreBtnClicked(event, state, root));
 
-        if (CharacterName.isVillain(state.getCharacter().getName()))
+        if (state.getCharacter().getName().isVillain())
         {
             buttonBox.getChildren().addAll(leftBtn, ignoreBtn);
         }
-        else if (CharacterName.isHuman(state.getCharacter().getName()))
+        else if (state.getCharacter().getName().isHuman())
         {
             buttonBox.getChildren().addAll(leftBtn, rightBtn, ignoreBtn);
         }
-        else if (CharacterName.isHero(state.getCharacter().getName()))
+        else if (state.getCharacter().getName().isHero())
         {
             buttonBox.getChildren().addAll(rightBtn, ignoreBtn);
         }

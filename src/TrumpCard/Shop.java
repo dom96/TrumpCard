@@ -198,7 +198,7 @@ public class Shop {
 
         for (CharacterName name : names)
         {
-            Image img = CharacterName.loadImage(name);
+            Image img = name.loadImage();
             ImageView imgView = new ImageView(img);
             imgView.setPreserveRatio(true);
             imgView.setFitHeight(64);
