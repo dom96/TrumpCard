@@ -58,7 +58,7 @@ public class Shop {
                         "Jarvis will assist Iron Man and gain you 5 extra durability points.", 0, 0, 5),
                 new Gadget("Internet Access", UIUtils.loadImage("file:images/item_internetaccess.png"), 20, CharacterName.Ultron,
                         "Getting the ability to access the internet will give Ultron a boost of " +
-                                "2 points in intelligence.", 0, 2, 0),
+                                "2 points in intelligence which will allow you to commit/fight crimes using less energy.", 0, 2, 0),
                 new Gadget("Batmobile", UIUtils.loadImage("file:images/item_batmobile.png"), 30, CharacterName.Batman,
                         "The Batmobile will allow Batman to move faster by giving it 3 extra strength points.", 3, 0, 0),
                 new Gadget("Catwoman's whip", UIUtils.loadImage("file:images/item_whip.png"), 10, CharacterName.Catwoman,

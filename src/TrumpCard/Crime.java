@@ -59,11 +59,11 @@ public class Crime {
         switch (difficulty)
         {
             case Easy:
-                return info.energyUse / 4;
-            case Medium:
                 return info.energyUse / 2;
-            case Hard:
+            case Medium:
                 return info.energyUse;
+            case Hard:
+                return info.energyUse * 2;
             default:
                 return info.energyUse;
         }

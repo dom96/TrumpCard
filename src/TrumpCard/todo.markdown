@@ -16,7 +16,10 @@
 - [x] Score
 - [x] Message when trying to commit crime when not having enough energy.
 - [x] End of game condition
-- [ ] Make character stats affect the way energy is used!!!!!
+- [x] Make character stats affect the way energy is used!!!!!
+  - [x] Durability affects how fast the energy depletes.
+  - [x] Intelligence affects amount of energy used to commit/fight crimes.
+  - [x] Strength affects how fast the character moves.
 - [ ] Shop (Challenges CSC1012)
   - [x] Batmobile (make character faster, higher strength?) - batman (Gadget)
   - [x] Energy drink - batman (Food)

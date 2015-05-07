@@ -61,6 +61,10 @@ public class Character {
         // Put character in the middle of the map.
         pos = getHomePos();
 
+        strength = CharacterName.getStrength(name);
+        intelligence = CharacterName.getIntelligence(name);
+        durability = CharacterName.getDurability(name);
+
         items = new ArrayList<Item>();
         clothing = "";
     }
@@ -101,9 +105,18 @@ public class Character {
     }
 
     public void moveTo(Point2D newPos) {
+        // Make sure there isn't already a movement happening.
+        if (movement != null)
+        {
+            movement.stop();
+            movement = null;
+        }
+
         double distance = pos.distance(newPos);
-        // TODO: Tweak this based on difficulty.
-        double timeToDest = distance * 5;
+        // Calculate how long the movement should take based on distance.
+        // The higher the strength the lower the time should be.
+        double timeToDest = distance * 5 * (6.0 / strength);
+        // Create a brand new Transition animation which will update the Character icon's Position smoothly.
         movement = new Transition() {
             private double fromX, fromY;
 

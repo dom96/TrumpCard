@@ -101,7 +101,8 @@ public class GameState {
         currentCharacter.setActions(newActions);
 
         // Decrease energy.
-        double newEnergy = currentCharacter.getEnergy() - crime.getEnergyUse(difficulty);
+        double intelligenceFactor = currentCharacter.getIntelligence() / 4.0f;
+        double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse(difficulty) / intelligenceFactor);
         currentCharacter.setEnergy(newEnergy);
 
         // Increase score.
@@ -117,7 +118,8 @@ public class GameState {
         currentCharacter.setActions(newActions);
 
         // Decrease energy.
-        double newEnergy = currentCharacter.getEnergy() - crime.getEnergyUse(difficulty);
+        double intelligenceFactor = currentCharacter.getIntelligence() / 4.0f;
+        double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse(difficulty) / intelligenceFactor);
         currentCharacter.setEnergy(newEnergy);
 
         // Increase score.
@@ -286,21 +288,37 @@ public class GameState {
     }
 
     private void updateCharacter(long now) {
-        // Only update the character stats every 200 miliseconds.
-        if (now - lastCharacterUpdate < 200e6)
+        // Only update the character stats every set amount of miliseconds, depending on difficulty.
+        double miliseconds = 200e6;
+        switch (difficulty)
+        {
+            case Easy:
+                miliseconds = 200e6;
+                break;
+            case Medium:
+                miliseconds = 150e6;
+                break;
+            case Hard:
+                miliseconds = 90e6;
+                break;
+        }
+        // Check if that amount of miliseconds has elapsed since last update.
+        if (now - lastCharacterUpdate < miliseconds)
         {
             return;
         }
+
         lastCharacterUpdate = now;
         double newEnergy = currentCharacter.getEnergy();
+        double durabilityFactor = (currentCharacter.getDurability() / 6.0f);
         switch (currentCharacter.getStatus()) {
             case Moving:
                 // When the character is moving energy depletes faster.
-                newEnergy -= 0.5;
+                newEnergy -= currentCharacter.getStrength() / (6.0f * durabilityFactor);
                 break;
             case Still:
                 // Some energy depletes.
-                newEnergy -= 0.1;
+                newEnergy -= 0.1 / durabilityFactor;
                 break;
             case Sleeping:
                 // Energy is restored when sleeping.
