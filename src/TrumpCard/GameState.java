@@ -107,6 +107,13 @@ public class GameState implements java.io.Serializable {
         int scoreBonus = crime.getEnergyUse(difficulty) * 10;
         currentCharacter.setScore(currentCharacter.getScore() + scoreBonus);
 
+        // Increase evilness.
+        if (currentCharacter instanceof Villain)
+        {
+            ((Villain) currentCharacter).increaseEvil(scoreBonus);
+            ((Villain) currentCharacter).addCrimeCommitted(crime);
+        }
+
         crime.destroy(root);
     }
 
@@ -123,6 +130,13 @@ public class GameState implements java.io.Serializable {
         // Increase score.
         int scoreBonus = crime.getEnergyUse(difficulty) * 10;
         currentCharacter.setScore(currentCharacter.getScore() + scoreBonus);
+
+        // Increase goodness.
+        if (currentCharacter instanceof Hero)
+        {
+            ((Hero) currentCharacter).increaseGood(scoreBonus);
+            ((Hero) currentCharacter).addCrimeFought(crime);
+        }
 
         crime.destroy(root);
     }

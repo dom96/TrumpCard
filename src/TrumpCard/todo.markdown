@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Sound effects
+- [x] Sound effects
 - [x] Escape menu
 - [x] Ability to save the game
 - [x] Ability to load the game
@@ -41,7 +41,7 @@
 - [x] Better character movement.
 - [ ] Add more crime descriptions.
 - [ ] Finish character descriptions, stats
-- [ ] Add some unique fields to Hero and Villain 
+- [x] Add some unique fields to Hero and Villain.
 - [x] Make methods in CharacterName non-static.
 
 ## Additional features
