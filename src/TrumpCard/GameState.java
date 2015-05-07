@@ -379,6 +379,14 @@ public class GameState {
         lastPoll = now;
     }
 
+    public Point2D getShopPos() {
+        return new Point2D(295, 25);
+    }
+
+    public boolean isCharacterAtShop() {
+        return currentCharacter.getPos().equals(getShopPos());
+    }
+
     public enum Difficulty {
         Easy, Medium, Hard
     }

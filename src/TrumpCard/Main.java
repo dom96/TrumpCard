@@ -35,7 +35,7 @@ public class Main extends Application {
 
         // TODO: Testing
         GameScreen game = new GameScreen(screenWidth, screenHeight, CharacterName.Ultron, "Dom", "Belfast",
-                GameState.Difficulty.Easy);
+                GameState.Difficulty.Hard);
         game.show(primaryStage);
         game.start();
 

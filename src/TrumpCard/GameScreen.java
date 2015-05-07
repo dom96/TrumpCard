@@ -46,6 +46,7 @@ public class GameScreen extends AnimationTimer {
     private Label crimeLikelihoodLabel;
 
     private Button sleepBtn;
+    private Button shopBtn;
 
     private Label errorLabel; // Shown at bottom of screen if user tries to do something forbidden.
 
@@ -56,6 +57,7 @@ public class GameScreen extends AnimationTimer {
     private Image map;
     private Image characterIcon;
     private Image homeIcon;
+    private Image shopIcon;
 
     private long time;
     private double glowIntensity;
@@ -75,9 +77,10 @@ public class GameScreen extends AnimationTimer {
         this.width = width;
         this.height = height;
 
-        this.background = new Image("file:images/background2.jpg");
-        this.characterIcon = new Image("file:images/character.png");
-        this.homeIcon = new Image("file:images/home.png");
+        this.background = UIUtils.loadImage("file:images/background2.jpg");
+        this.characterIcon = UIUtils.loadImage("file:images/character.png");
+        this.homeIcon = UIUtils.loadImage("file:images/home.png");
+        this.shopIcon = UIUtils.loadImage("file:images/shop.png");
 
         // TODO: Difficulty
         this.state = new GameState(new Character(name, userName,
@@ -175,6 +178,16 @@ public class GameScreen extends AnimationTimer {
         {
             sleepBtn.getStyleClass().add("disabledBtn");
         }
+
+        // Check whether we can shop.
+        if (state.isCharacterAtShop())
+        {
+            shopBtn.getStyleClass().remove("disabledBtn");
+        }
+        else if (!shopBtn.getStyleClass().contains("disabledBtn"))
+        {
+            shopBtn.getStyleClass().add("disabledBtn");
+        }
     }
 
     private void updateCrimes()
@@ -197,11 +210,8 @@ public class GameScreen extends AnimationTimer {
         // Check if we should end the game.
         if (state.getCharacter().getEnergy() == 0.0)
         {
-            pausePane.setVisible(true);
-            pausePane.toFront();
+            showPausePane();
             endGameBox.setVisible(true);
-            menuBox.setVisible(false);
-            state.pause();
             infoLbl.setText("You finished with " +
                     state.getCharacter().getScore() + " points.");
         }
@@ -234,6 +244,17 @@ public class GameScreen extends AnimationTimer {
             state.getCharacter().setStatus(Character.CharacterStatus.Sleeping);
             sleepBtn.setText("Wake up");
         }
+    }
+
+    private void onShopBtnClicked(MouseEvent event)
+    {
+        if (!state.isCharacterAtShop())
+        {
+            UIUtils.showErrorLabel(errorLabel, "Your character is not at the shop.");
+            return;
+        }
+
+        shop.showShop(this, pausePane);
     }
 
     private void onPauseMenuBtnClicked(MouseEvent event)
@@ -290,6 +311,17 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
+    private void onShopIconClicked(MouseEvent event)
+    {
+        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping)
+        {
+            UIUtils.showErrorLabel(errorLabel, "Cannot move whilst sleeping.");
+            return;
+        }
+
+        state.getCharacter().moveTo(state.getShopPos());
+    }
+
     public void show(Stage stage)
     {
         this.root = new Group();
@@ -315,12 +347,22 @@ public class GameScreen extends AnimationTimer {
                 event -> state.getCharacter().moveTo(state.getCharacter().getHomePos()));
         root.getChildren().add(homeImage);
 
+        // Create shop icon on map
+        ImageView shopImage = new ImageView(shopIcon);
+        shopImage.setFitWidth(30);
+        shopImage.setFitHeight(28.4);
+        shopImage.setLayoutX(295);
+        shopImage.setLayoutY(25);
+        shopImage.setCursor(Cursor.HAND);
+        shopImage.setOnMouseClicked(this::onShopIconClicked);
+        root.getChildren().add(shopImage);
+
         // Create widgets for showing the status
         TilePane statusBox = new TilePane();
         statusBox.setTileAlignment(Pos.CENTER_LEFT);
         statusBox.setPrefColumns(2);
         statusBox.setLayoutX(20);
-        statusBox.setLayoutY(450);
+        statusBox.setLayoutY(440);
         statusBox.setVgap(5);
         statusBox.setHgap(-70);
         statusBox.getStyleClass().add("statusBox");
@@ -376,7 +418,7 @@ public class GameScreen extends AnimationTimer {
         // Create buttons below status box
         VBox buttonBox = new VBox(5);
         buttonBox.setLayoutX(20);
-        buttonBox.setLayoutY(580);
+        buttonBox.setLayoutY(570);
         root.getChildren().add(buttonBox);
 
         // Sleep button
@@ -388,6 +430,13 @@ public class GameScreen extends AnimationTimer {
         sleepBtn.getStyleClass().add("sleepBtn");
         sleepBtn.setOnMouseClicked(this::onSleepBtnClicked);
         buttonBox.getChildren().add(sleepBtn);
+
+        // Shop button
+        shopBtn = new Button("Shop");
+        shopBtn.setCursor(Cursor.HAND);
+        shopBtn.getStyleClass().addAll("sleepBtn", "disabledBtn");
+        shopBtn.setOnMouseClicked(this::onShopBtnClicked);
+        buttonBox.getChildren().add(shopBtn);
 
         // Create error label at bottom of screen.
         errorLabel = new Label("FOOBAR");
@@ -527,7 +576,9 @@ public class GameScreen extends AnimationTimer {
         graphicsContext.drawImage(this.map, 290, 20, 970, 380);
 
         // Draw character on map
-        if (!state.getCharacter().isAtHome() && state.getCrimeAtCharacterPos() == null) {
+        // We only draw it if it's not at the same position as the hideout, a crime or the shop. This way it looks
+        // as if the character enters that landmark.
+        if (!state.getCharacter().isAtHome() && state.getCrimeAtCharacterPos() == null && !state.isCharacterAtShop()) {
             final Point2D characterPos = state.getCharacter().getPos();
             graphicsContext.drawImage(this.characterIcon, characterPos.getX(), characterPos.getY(), 30, 32);
         }

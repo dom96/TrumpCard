@@ -74,7 +74,7 @@ public class Shop {
                         "Your character's energy will be recharged by 30% thanks to this coffee.", 0, 0, 0, 30, 0),
                 new Food("Electricity", UIUtils.loadImage("file:images/item_electricity.png"), 20, CharacterName.Ultron,
                         "The electricity will give your character a well needed kick, it will decrease your action" +
-                                " points turning you more evil.", 0, 0, 0, 0, 5),
+                                " points turning you more evil.", 0, 0, 0, 0, -5),
                 new Food("Energy Drink", UIUtils.loadImage("file:images/item_energydrink.png"), 60, CharacterName.Batman,
                         "This energy drink will provide a refreshing energy boost for your character.", 0, 0, 0, 45, 0),
                 new Food("Catnip", UIUtils.loadImage("file:images/item_catnip.png"), 25, CharacterName.Catwoman,

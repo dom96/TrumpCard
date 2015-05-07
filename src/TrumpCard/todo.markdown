@@ -1,7 +1,7 @@
 # TODO
 
 - [ ] Sound effects
-- [ ] Escape menu
+- [x] Escape menu
 - [ ] Ability to save the game
 - [ ] Ability to load the game
 - [x] Basic gameplay
@@ -16,20 +16,21 @@
 - [x] Score
 - [x] Message when trying to commit crime when not having enough energy.
 - [x] End of game condition
-- [ ] Make character stats affect the way energy is used.
+- [ ] Make character stats affect the way energy is used!!!!!
 - [ ] Shop (Challenges CSC1012)
-  - [ ] Batmobile (make character faster, higher strength?) - batman (Gadget)
-  - [ ] Energy drink - batman (Food)
-  - [ ] Catnip (more durability therefore less energy use) - catwoman (Food)
-  - [ ] Catwoman's whip (increase strength) - catwoman (Gadget)
-  - [ ] Coffee (more energy) - iron man (Food)
-  - [ ] Access to internet (increase in intelligence) - ultron (Gadget)
-  - [ ] Jarvis (increase in durability) - Iron man (Gadget)
-  - [ ] Electricity (decrease action points) - Ultron (Food)
-  - [ ] Kiss from mary jane (decrease intelligence, increase strength) - Spiderman (Food)
-  - [ ] Goblin glider (increase strength) - Green Goblin (Gadget)
-  - [ ] Spider suit (increase durability) - Spiderman (gadget)
-  - [ ] Goblin Serum (increase durability) - Green goblin (food)
+  - [x] Batmobile (make character faster, higher strength?) - batman (Gadget)
+  - [x] Energy drink - batman (Food)
+  - [x] Catnip (more durability therefore less energy use) - catwoman (Food)
+  - [x] Catwoman's whip (increase strength) - catwoman (Gadget)
+  - [x] Coffee (more energy) - iron man (Food)
+  - [x] Access to internet (increase in intelligence) - ultron (Gadget)
+  - [x] Jarvis (increase in durability) - Iron man (Gadget)
+  - [x] Electricity (decrease action points) - Ultron (Food)
+  - [x] Kiss from mary jane (decrease intelligence, increase strength) - Spiderman (Food)
+  - [x] Goblin glider (increase strength) - Green Goblin (Gadget)
+  - [x] Spider suit (increase durability) - Spiderman (gadget)
+  - [x] Goblin Serum (increase durability) - Green goblin (food)
+  - [x] Shop location on map
 - [x] Difficulty levels
 - [x] Other character images
 - [x] Less intrusive error message.

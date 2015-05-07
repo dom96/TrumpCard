@@ -59,7 +59,7 @@
      -fx-text-fill: white;
      -fx-background-color: #009102;
      -fx-min-width: 250;
-     -fx-font-size: 18;
+     -fx-font-size: 15;
 }
 
 .sleepBtn:hover, .resumeBtn:hover, .crimeBox .fightBtn:hover {
@@ -78,7 +78,7 @@
      -fx-text-fill: white;
      -fx-background-color: #8E0002;
      -fx-min-width: 250;
-     -fx-font-size: 18;
+     -fx-font-size: 15;
 }
 
 .pauseMenuBtn:hover, .crimeBox .commitBtn:hover {
