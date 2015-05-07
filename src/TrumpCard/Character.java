@@ -13,20 +13,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
 
 
-public class Character {
+public class Character implements java.io.Serializable {
     protected double actions; // Percentage
     protected double energy; // Percentage
     protected int score;
 
-    protected Point2D pos; // Character position on the screen.
-    protected Transition movement;
+    protected transient Point2D pos; // Character position on the screen.
+    protected transient Transition movement;
 
     protected CharacterName name;
     protected String userName;
     protected String hideout;
 
-    protected Image image;
-    protected boolean paused;
+    protected transient Image image;
+    protected transient boolean paused;
 
     protected CharacterStatus status; // Determines what character is doing.
 
@@ -71,6 +71,14 @@ public class Character {
 
         items = new ArrayList<Item>();
         clothing = "";
+    }
+
+    /**
+     * Resets the fields which are not initialised after deserialization.
+     */
+    public void reset() {
+        this.setPos(getHomePos());
+        this.image = name.loadImage();
     }
 
     public void addItem(Item item) {
@@ -243,6 +251,10 @@ public class Character {
 
     public Point2D getPos() {
         return pos;
+    }
+
+    public void setPos(Point2D pos) {
+        this.pos = pos;
     }
 
     public enum CharacterStatus {

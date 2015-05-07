@@ -2,8 +2,8 @@
 
 - [ ] Sound effects
 - [x] Escape menu
-- [ ] Ability to save the game
-- [ ] Ability to load the game
+- [x] Ability to save the game
+- [x] Ability to load the game
 - [x] Basic gameplay
   - [x] Character hideout
   - [x] Movement from hideout to crime locations

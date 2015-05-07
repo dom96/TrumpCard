@@ -314,6 +314,14 @@ public class GameScreen extends AnimationTimer {
                 // Save game state
                 state.save();
                 break;
+            case L:
+                // Load game state
+                for (Crime c : state.getCrimes())
+                {
+                    c.destroy(root);
+                }
+                state = GameState.load();
+                break;
         }
     }
 

@@ -1,42 +1,31 @@
 package TrumpCard;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
-import javafx.util.Duration;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameState {
+public class GameState implements java.io.Serializable {
     private Character currentCharacter;
-    private ArrayList<Crime> crimes;
+    private transient ArrayList<Crime> crimes;
 
-    private long lastCrimeGen; // Time when last crime was generated.
-    private long lastCrimeCheck; // Time when it was last checked whether crime should be generated.
+    private transient long lastCrimeGen; // Time when last crime was generated.
+    private transient long lastCrimeCheck; // Time when it was last checked whether crime should be generated.
 
-    private long lastCharacterUpdate; // Last time character stats were updated.
+    private transient long lastCharacterUpdate; // Last time character stats were updated.
 
-    private final int MAX_CRIMES = 4; // Max amount of crimes at the same time.
+    private transient final int MAX_CRIMES = 4; // Max amount of crimes at the same time.
 
-    private Image crimeIcon;
-    private Image crimeIconHover;
+    private transient Image crimeIcon;
+    private transient Image crimeIconHover;
 
     private long gameAge; // Time this game has been running in miliseconds.
-    private long lastPoll;
+    private transient long lastPoll;
 
     private Difficulty difficulty;
 
@@ -412,47 +401,47 @@ public class GameState {
         return currentCharacter.getPos().equals(getShopPos());
     }
 
-    private String toXML() throws ParserConfigurationException, TransformerException {
-        DocumentBuilderFactory doc = DocumentBuilderFactory.newInstance();
-
-        Document dom = doc.newDocumentBuilder().newDocument();
-        // Create root element.
-        Element root = dom.createElement("state");
-
-        // TODO: Character
-
-        Element gameAgeNode = dom.createElement("gameAge");
-        gameAgeNode.appendChild(dom.createTextNode(Long.toString(gameAge)));
-        root.appendChild(gameAgeNode);
-
-        Element difficultyNode = dom.createElement("difficulty");
-        difficultyNode.appendChild(dom.createTextNode(Integer.toString(difficulty.ordinal())));
-        root.appendChild(difficultyNode);
-
-        dom.appendChild(root);
-
-        // Convert to a string.
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        StringWriter buffer = new StringWriter();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        transformer.transform(new DOMSource(dom),
-                new StreamResult(buffer));
-        return buffer.toString();
-    }
-
     public void save()
     {
-        PrintWriter out;
         try
         {
-            out = new PrintWriter("./test.save");
-            out.write(toXML());
+            FileOutputStream fileOut = new FileOutputStream("./test.save");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
             out.close();
+            fileOut.close();
         }
-        catch (Exception i)
+        catch (IOException i)
         {
-            UIUtils.showErrorDialog("Unable to save: " + i.getMessage(), "Error saving");
+            UIUtils.showErrorDialog("Could not save game: " + i.getMessage(), "Error saving");
         }
+    }
+
+    public static GameState load()
+    {
+        GameState result = null;
+        try
+        {
+            FileInputStream fileInputStream = new FileInputStream("./test.save");
+            ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);
+            result = (GameState)inputStream.readObject();
+            inputStream.close();
+            fileInputStream.close();
+
+            // Re-initialise some fields which we lost.
+            result.crimes = new ArrayList<Crime>();
+            result.getCharacter().reset();
+
+        }
+        catch (IOException i)
+        {
+            UIUtils.showErrorDialog("Cannot load save: " + i.getMessage(), "Error loading");
+        }
+        catch (ClassNotFoundException c)
+        {
+            UIUtils.showErrorDialog("Cannot not find GameState class: " + c.getMessage(), "Error loading");
+        }
+        return result;
     }
 
     public enum Difficulty {

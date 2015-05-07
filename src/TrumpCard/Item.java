@@ -2,7 +2,7 @@ package TrumpCard;
 
 import javafx.scene.image.Image;
 
-public abstract class Item {
+public abstract class Item implements java.io.Serializable {
     protected String name;
     protected Image image;
     protected int price;
