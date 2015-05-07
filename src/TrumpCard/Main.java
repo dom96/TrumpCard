@@ -30,14 +30,14 @@ public class Main extends Application {
         }
 
 
-        /*MainMenu mainMenu = new MainMenu(screenWidth, screenHeight, primaryStage);
-        mainMenu.start();*/
+        MainMenu mainMenu = new MainMenu(screenWidth, screenHeight, primaryStage);
+        mainMenu.start();
 
         // TODO: Testing
-        GameScreen game = new GameScreen(screenWidth, screenHeight, CharacterName.Batman, "Dom", "Belfast",
+        /*GameScreen game = new GameScreen(screenWidth, screenHeight, CharacterName.Batman, "Dom", "Belfast",
                 GameState.Difficulty.Easy);
         game.show(primaryStage);
-        game.start();
+        game.start();*/
 
         primaryStage.show();
     }

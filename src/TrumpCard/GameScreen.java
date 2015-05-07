@@ -19,6 +19,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Box;
@@ -28,6 +30,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -71,6 +74,8 @@ public class GameScreen extends AnimationTimer {
     // Controls associated with the shop.
     private Shop shop;
 
+    private MediaPlayer music;
+
     GameScreen(double width, double height, CharacterName name, String userName, String characterHideout,
                GameState.Difficulty difficulty)
     {
@@ -82,7 +87,6 @@ public class GameScreen extends AnimationTimer {
         this.homeIcon = UIUtils.loadImage("file:images/home.png");
         this.shopIcon = UIUtils.loadImage("file:images/shop.png");
 
-        // TODO: Difficulty
         this.state = new GameState(new Character(name, userName,
                 characterHideout.isEmpty() ? "Belfast" : characterHideout), difficulty);
 
@@ -105,6 +109,12 @@ public class GameScreen extends AnimationTimer {
             UIUtils.showErrorDialog("Could not load image from Google Maps.", "Error");
             System.exit(1);
         }
+
+        // Music
+        music = new MediaPlayer(new Media(
+                new File("sounds/Samus Aran - The Bounty of a Brain.mp3").toURI().toString()));
+        music.setVolume(0.3);
+        music.play();
     }
 
     private void updateStatusLabel()

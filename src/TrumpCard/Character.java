@@ -4,12 +4,16 @@ import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -36,6 +40,9 @@ public class Character implements java.io.Serializable {
     protected int intelligence;
 
     protected String clothing; // Color to make the player on map.
+
+    protected String walkingSound;
+    private AudioClip walkClip;
 
     Character(CharacterName name, String userName, String hideout)
     {
@@ -71,6 +78,8 @@ public class Character implements java.io.Serializable {
 
         items = new ArrayList<Item>();
         clothing = "";
+
+        walkingSound = new File("sounds/walk.wav").toURI().toString();
     }
 
     /**
@@ -131,7 +140,6 @@ public class Character implements java.io.Serializable {
         // Create a brand new Transition animation which will update the Character icon's Position smoothly.
         movement = new Transition() {
             private double fromX, fromY;
-
             {
                 setCycleDuration(Duration.millis(timeToDest));
                 fromX = pos.getX();
@@ -145,8 +153,15 @@ public class Character implements java.io.Serializable {
             }
         };
         status = CharacterStatus.Moving;
-        movement.setOnFinished(event -> status = CharacterStatus.Still);
+        movement.setOnFinished(event -> {
+            status = CharacterStatus.Still;
+            walkClip.stop();
+        });
         movement.play();
+        walkClip = new AudioClip(walkingSound);
+        walkClip.setCycleCount(AudioClip.INDEFINITE);
+        walkClip.play();
+
     }
 
     public void pause() {

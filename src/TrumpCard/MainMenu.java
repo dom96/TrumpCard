@@ -9,11 +9,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 
 public class MainMenu extends AnimationTimer {
@@ -27,6 +33,7 @@ public class MainMenu extends AnimationTimer {
     private Image titleRight;
     private Font titleFont;
     private Font menuFont;
+
     MainMenu(double width, double height, Stage stage)
     {
         this.stage = stage;
@@ -62,10 +69,12 @@ public class MainMenu extends AnimationTimer {
 
         Button startBtn = UIUtils.createButton("START", this.menuFont, "menuBtn");
         startBtn.setOnAction(this::onStartBtnAction);
+        startBtn.setOnMouseEntered(this::onMouseEnter);
         vb.getChildren().add(startBtn);
 
         Button exitBtn = UIUtils.createButton("EXIT", this.menuFont, "menuBtn");
         exitBtn.setOnAction(this::onExitBtnAction);
+        exitBtn.setOnMouseEntered(this::onMouseEnter);
         vb.getChildren().add(exitBtn);
         root.getChildren().add(vb);
     }
@@ -74,11 +83,15 @@ public class MainMenu extends AnimationTimer {
         CharacterSelection cs = new CharacterSelection(width, height);
         cs.show(stage);
         cs.start();
-
     }
 
     private void onExitBtnAction(ActionEvent event) {
         System.exit(0);
+    }
+
+    private void onMouseEnter(MouseEvent event) {
+        AudioClip clip = new AudioClip(new File("sounds/hover.wav").toURI().toString());
+        clip.play();
     }
 
     @Override

@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 
 import java.io.*;
 import java.security.InvalidParameterException;
@@ -378,6 +379,11 @@ public class GameState implements java.io.Serializable {
                 crime.show(this, root, errorLabel);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;
+
+                // Play sound effect.
+                AudioClip crimeAlert = new AudioClip(
+                        new File("sounds/alert.wav").toURI().toString());
+                crimeAlert.play();
             }
         }
         // Move crime boxes and check crimes for expiry.
