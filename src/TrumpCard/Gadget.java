@@ -15,4 +15,16 @@ public class Gadget extends Item {
         this.intelligence = intelligence;
         this.durability = durability;
     }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getDurability() {
+        return durability;
+    }
 }

@@ -207,7 +207,7 @@ public class GameScreen extends AnimationTimer {
         }
     }
 
-    private void showPausePane() {
+    public void showPausePane() {
         pausePane.setVisible(true);
         pausePane.toFront();
         endGameBox.setVisible(false);
@@ -286,8 +286,7 @@ public class GameScreen extends AnimationTimer {
                 }
             case S:
                 // Shop
-                showPausePane();
-                shop.getShopBox().setVisible(true);
+                shop.showShop(this, pausePane);
         }
     }
 

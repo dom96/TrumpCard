@@ -6,6 +6,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 
 public class Character {
     protected double actions; // Percentage
@@ -23,6 +25,13 @@ public class Character {
     protected boolean paused;
 
     protected CharacterStatus status; // Determines what character is doing.
+
+    protected ArrayList<Item> items; // The items the player purchased.
+    protected int strength;
+    protected int durability;
+    protected int intelligence;
+
+    protected String clothing; // Color to make the player on map.
 
     Character(CharacterName name, String userName, String hideout)
     {
@@ -51,6 +60,39 @@ public class Character {
 
         // Put character in the middle of the map.
         pos = getHomePos();
+
+        items = new ArrayList<Item>();
+    }
+
+    public void addItem(Item item) {
+        if (item instanceof Clothing)
+        {
+            items.add(item);
+            clothing = ((Clothing) item).getCharacterColor();
+        }
+        else if (item instanceof Gadget)
+        {
+            items.add(item);
+            Gadget gadget = (Gadget) item;
+            strength += gadget.getStrength();
+            durability += gadget.getDurability();
+            intelligence += gadget.getIntelligence();
+        }
+        else if (item instanceof Food)
+        {
+            // We don't add Food items to the list of Items because they can be re-bought.
+            Food food = (Food) item;
+            strength += food.getStrength();
+            durability += food.getDurability();
+            intelligence += food.getIntelligence();
+            energy += food.getEnergy();
+            actions += food.getActionPoints();
+        }
+
+    }
+
+    public boolean hasItem(Item item) {
+        return items.contains(item);
     }
 
     public void moveTo(Point2D newPos) {
@@ -91,6 +133,18 @@ public class Character {
         {
             movement.play();
         }
+    }
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
     }
 
     public boolean isPaused() {

@@ -1,3 +1,11 @@
+.button:focused {
+    /* Get rid of annoying border-bottom change when button is focused.
+       http://www.jensd.de/wordpress/?p=1245
+    */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
 .menuBtn {
     -fx-text-fill: white;
     -fx-background-color: rgba(92, 92, 92, 0.6);
@@ -114,13 +122,22 @@
     -fx-border-width: 2;
 }
 
+.boughtItem {
+    -fx-border-color: #009102;
+    -fx-border-width: 2;
+}
+
 .shopCategoryBtn {
      -fx-text-fill: white;
-     -fx-min-width: 200;
+     -fx-min-width: 150;
      -fx-font-size: 18;
      -fx-background-color: #00A813;
 }
 
 .shopCategoryBtn:hover, .shopCategorySelected {
      -fx-background-color: #A50005;
+}
+
+.shopPane {
+    -fx-background-color: rgba(0, 0, 0, 0.98) !important;
 }

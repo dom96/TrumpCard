@@ -19,4 +19,24 @@ public class Food extends Item {
         this.energy = energy;
         this.actionPoints = actionPoints;
     }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public int getActionPoints() {
+        return actionPoints;
+    }
 }

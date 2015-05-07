@@ -14,10 +14,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+import java.util.ArrayList;
+
 public class Shop {
     private GameState state;
 
     private VBox shopBox;
+    private GridPane itemsPane;
+    private Label scoreLbl;
     private Label itemDescriptionLbl;
     private Label errorLabel;
     private Button buyButton;
@@ -28,8 +32,12 @@ public class Shop {
 
     private ColorAdjust blackAndWhite;
 
-    Shop(GameState state)
-    {
+    private ArrayList<HBox> itemControls;
+    private Item currentSelection;
+
+    private Item[] currentCategory;
+
+    Shop(GameState state) {
         clothingItems = new Item[]{
                 new Clothing("Iron armour", UIUtils.loadImage("file:images/item_ironarmour.png"), 25, CharacterName.IronMan,
                         "Iron Man's red armour will turn your character icon on the screen red.", "red"),
@@ -71,7 +79,7 @@ public class Shop {
                         "This energy drink will provide a refreshing energy boost for your character.", 0, 0, 0, 45, 0),
                 new Food("Catnip", UIUtils.loadImage("file:images/item_catnip.png"), 25, CharacterName.Catwoman,
                         "This catnip will make your character go nuts, especially if your character is Catwoman. It" +
-                    " will give you an additional 3 durability, making your character use less energy.", 0, 0, 3, 0, 0),
+                                " will give you an additional 3 durability, making your character use less energy.", 0, 0, 3, 0, 0),
                 new Food("Kiss from Mary Jane", UIUtils.loadImage("file:images/item_kissmaryjane.png"), 5, CharacterName.Spiderman,
                         "This kiss will make you stronger, but at what cost.", 1, -3, 0, 0, 0),
                 new Food("Goblin Serum", UIUtils.loadImage("file:images/item_serum.png"), 30, CharacterName.Batman,
@@ -82,9 +90,11 @@ public class Shop {
 
         blackAndWhite = new ColorAdjust();
         blackAndWhite.setSaturation(-1);
+
+        itemControls = new ArrayList<HBox>();
     }
 
-    private void onItemMouseEnter(MouseEvent event, Item item)
+    private void showItemDesc(Item item)
     {
         String text = item.getName() + "\n";
         text += "Price: " + item.getPrice() + " points\n";
@@ -93,23 +103,91 @@ public class Shop {
 
         // Reset any old errors.
         errorLabel.setText("");
+        if (!buyButton.getStyleClass().contains("disabledBtn")) {
+            buyButton.getStyleClass().add("disabledBtn");
+        }
         // Check if this character can buy this item.
         if (!item.getEligibleCharacter().isRelatedTo(state.getCharacter().getName()))
         {
             // Not eligible to buy so set error label to notify user.
             errorLabel.setText(state.getCharacter().getFriendlyName() + " cannot buy this item.");
         }
+        // Check if item has already been bought.
+        else if (state.getCharacter().hasItem(item))
+        {
+            errorLabel.setText("This item is already in your inventory.");
+        }
         // Check if the player has enough funds to buy this item.
         else if (item.getPrice() > state.getCharacter().getScore())
         {
             errorLabel.setText("You need more points to buy this item.");
         }
+        else
+        {
+            buyButton.getStyleClass().remove("disabledBtn");
+        }
+    }
+
+    private void onItemMouseEnter(MouseEvent event, Item item)
+    {
+        showItemDesc(item);
+    }
+
+    private void resetItemDesc() {
+        if (currentSelection != null)
+        {
+            showItemDesc(currentSelection);
+        }
+        else {
+            itemDescriptionLbl.setText("");
+            errorLabel.setText("");
+        }
     }
 
     private void onItemMouseLeave(MouseEvent event, Item item)
     {
-        itemDescriptionLbl.setText("");
-        errorLabel.setText("");
+        resetItemDesc();
+    }
+
+    private void onItemMouseClicked(MouseEvent event, Item item, HBox itemPane)
+    {
+        currentSelection = item;
+        for (HBox itemControl : itemControls)
+        {
+            if (itemControl == itemPane)
+            {
+                itemControl.getStyleClass().add("shopCategorySelected");
+            }
+            else
+            {
+                itemControl.getStyleClass().remove("shopCategorySelected");
+            }
+        }
+    }
+
+    private void onBackBtnClicked(MouseEvent event, Pane pausePane)
+    {
+        pausePane.getStyleClass().remove("shopPane");
+        pausePane.getStyleClass().add("pausePane");
+        pausePane.setVisible(false);
+        state.resume();
+    }
+
+    private void onBuyBtnClicked(MouseEvent event, GridPane itemsPane)
+    {
+        // Ensure the selected item can be bought.
+        if (buyButton.getStyleClass().contains("disabledBtn") || currentSelection == null)
+        {
+            return;
+        }
+
+        // Take away price from player's Score.
+        state.getCharacter().setScore(state.getCharacter().getScore() - currentSelection.getPrice());
+
+        state.getCharacter().addItem(currentSelection);
+
+        // Refresh items.
+        addItemButtons(itemsPane, currentCategory);
     }
 
     private HBox createCharacterHBox(CharacterName[] names) {
@@ -133,23 +211,35 @@ public class Shop {
 
     private void addItemButtons(GridPane itemsPane, Item[] items)
     {
+        currentCategory = items;
         // This method will be used when switching categories so children need to be cleared first.
         itemsPane.getChildren().clear();
+        // Clear selection.
+        itemControls.clear();
+        currentSelection = null;
+        resetItemDesc();
         // Add items to GridPane.
         for (int i = 0; i < 6; i++) {
             Item item = items[i];
 
             // Create a pane to hold the ImageView (so that we can get a border)
-            Pane borderPane = new Pane();
-            borderPane.setPrefWidth(130);
-            borderPane.setPrefHeight(130);
+            HBox borderPane = new HBox();
+            borderPane.setAlignment(Pos.CENTER);
+            borderPane.setPrefWidth(132);
+            borderPane.setPrefHeight(132);
             borderPane.getStyleClass().add("shopItem");
+            // Check if item is already owned by character.
+            if (state.getCharacter().hasItem(item))
+            {
+                borderPane.getStyleClass().add("boughtItem");
+            }
 
             ImageView item1 = new ImageView(items[i].getImage());
             item1.setPreserveRatio(true);
             item1.setFitWidth(128);
             item1.setOnMouseEntered(event -> onItemMouseEnter(event, item));
             item1.setOnMouseExited(event -> onItemMouseLeave(event, item));
+            item1.setOnMouseClicked(event -> onItemMouseClicked(event, item, borderPane));
 
             // Check if item applies to the current character.
             if (!item.getEligibleCharacter().isRelatedTo(state.getCharacter().getName()))
@@ -160,6 +250,7 @@ public class Shop {
             borderPane.getChildren().add(item1);
 
             itemsPane.add(borderPane, i % 2 == 0 ? 1 : 2, (int) Math.floor(i / 2));
+            itemControls.add(borderPane);
         }
 
         // Add character images to show which items correspond to which characters.
@@ -200,46 +291,82 @@ public class Shop {
         }
         foodBtn.setOnMouseClicked(event -> addItemButtons(itemsPane, foodItems));
         itemsPane.add(foodBtn, 3, 2);
+
+        // Tell the user how much points they have.
+        scoreLbl.setText("You have " + state.getCharacter().getScore() + " points to spend.");
     }
 
     public void create(Pane pausePane)
     {
+        // TODO: For testing
+        state.getCharacter().setScore(25);
+
         // Controls associated with the shop.
-        shopBox = new VBox(10);
+        shopBox = new VBox(5);
+        shopBox.setLayoutX(300);
         shopBox.setAlignment(Pos.CENTER);
         pausePane.getChildren().add(shopBox);
         shopBox.setVisible(false);
 
         Label shopTextLbl = new Label("Shop");
         shopTextLbl.setTextAlignment(TextAlignment.CENTER);
-        shopTextLbl.setFont(Font.font("HAGANE", 50));
+        shopTextLbl.setFont(Font.font("HAGANE", 46));
         shopBox.getChildren().add(shopTextLbl);
 
-        GridPane itemsPane = new GridPane();
-        itemsPane.setHgap(20);
-        itemsPane.setVgap(20);
-        addItemButtons(itemsPane, clothingItems);
+        itemsPane = new GridPane();
+        itemsPane.setAlignment(Pos.CENTER);
+        itemsPane.setHgap(10);
+        itemsPane.setVgap(10);
         shopBox.getChildren().add(itemsPane);
 
+        // This label will display the amount of score left.
+        scoreLbl = new Label();
+        scoreLbl.setFont(Font.font("Courier New", 16));
+        scoreLbl.setTextAlignment(TextAlignment.CENTER);
+        shopBox.getChildren().add(scoreLbl);
+
+        // This label will display a description of the item selected.
         itemDescriptionLbl = new Label();
-        itemDescriptionLbl.setPrefWidth(400);
+        itemDescriptionLbl.setPrefWidth(600);
         itemDescriptionLbl.setMinHeight(100);
         itemDescriptionLbl.setWrapText(true);
-        itemDescriptionLbl.setFont(Font.font("Courier New", 16));
+        itemDescriptionLbl.setFont(Font.font("Courier New", 15));
         shopBox.getChildren().add(itemDescriptionLbl);
 
+        // This label will display reasons why the user can't buy an item.
         errorLabel = new Label();
         errorLabel.getStyleClass().add("error");
-        errorLabel.setFont(Font.font("Courier New", 16));
+        errorLabel.setFont(Font.font("Courier New", 15));
         shopBox.getChildren().add(errorLabel);
 
+        HBox bottomButtons = new HBox(5);
+        bottomButtons.setAlignment(Pos.CENTER);
+        shopBox.getChildren().add(bottomButtons);
+
+        Button backButton = new Button("Back");
+        backButton.setOnMouseClicked(event -> onBackBtnClicked(event, pausePane));
+        backButton.getStyleClass().add("buyBtn");
+        bottomButtons.getChildren().add(backButton);
+
         buyButton = new Button("Buy");
-        buyButton.getStyleClass().add("buyBtn");
-        shopBox.getChildren().add(buyButton);
+        buyButton.getStyleClass().addAll("buyBtn", "disabledBtn");
+        buyButton.setOnMouseClicked(event -> onBuyBtnClicked(event, itemsPane));
+        bottomButtons.getChildren().add(buyButton);
+
     }
 
     public VBox getShopBox() {
         return shopBox;
+    }
+
+    public void showShop(GameScreen screen, Pane pausePane)
+    {
+        pausePane.getStyleClass().add("shopPane");
+        pausePane.getStyleClass().remove("pausePane");
+        screen.showPausePane();
+        shopBox.setVisible(true);
+
+        addItemButtons(itemsPane, gadgetItems);
     }
 
 }

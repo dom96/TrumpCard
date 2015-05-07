@@ -9,4 +9,8 @@ public class Clothing extends Item {
         super(name, image, price, eligibleCharacter, description);
         this.characterColor = characterColor;
     }
+
+    public String getCharacterColor() {
+        return characterColor;
+    }
 }
