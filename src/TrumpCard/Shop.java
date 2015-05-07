@@ -188,6 +188,9 @@ public class Shop {
 
         // Refresh items.
         addItemButtons(itemsPane, currentCategory);
+
+        // Reset button.
+        buyButton.getStyleClass().add("disabledBtn");
     }
 
     private HBox createCharacterHBox(CharacterName[] names) {
