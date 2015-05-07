@@ -8,7 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -402,6 +410,49 @@ public class GameState {
 
     public boolean isCharacterAtShop() {
         return currentCharacter.getPos().equals(getShopPos());
+    }
+
+    private String toXML() throws ParserConfigurationException, TransformerException {
+        DocumentBuilderFactory doc = DocumentBuilderFactory.newInstance();
+
+        Document dom = doc.newDocumentBuilder().newDocument();
+        // Create root element.
+        Element root = dom.createElement("state");
+
+        // TODO: Character
+
+        Element gameAgeNode = dom.createElement("gameAge");
+        gameAgeNode.appendChild(dom.createTextNode(Long.toString(gameAge)));
+        root.appendChild(gameAgeNode);
+
+        Element difficultyNode = dom.createElement("difficulty");
+        difficultyNode.appendChild(dom.createTextNode(Integer.toString(difficulty.ordinal())));
+        root.appendChild(difficultyNode);
+
+        dom.appendChild(root);
+
+        // Convert to a string.
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        StringWriter buffer = new StringWriter();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.transform(new DOMSource(dom),
+                new StreamResult(buffer));
+        return buffer.toString();
+    }
+
+    public void save()
+    {
+        PrintWriter out;
+        try
+        {
+            out = new PrintWriter("./test.save");
+            out.write(toXML());
+            out.close();
+        }
+        catch (Exception i)
+        {
+            UIUtils.showErrorDialog("Unable to save: " + i.getMessage(), "Error saving");
+        }
     }
 
     public enum Difficulty {

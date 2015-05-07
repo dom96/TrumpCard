@@ -305,9 +305,15 @@ public class GameScreen extends AnimationTimer {
                 {
                     onPauseMenuBtnClicked(null);
                 }
+                break;
             case S:
                 // Shop
                 shop.showShop(this, pausePane);
+                break;
+            case P:
+                // Save game state
+                state.save();
+                break;
         }
     }
 
