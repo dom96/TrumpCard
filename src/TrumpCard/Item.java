@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 public abstract class Item implements java.io.Serializable {
     protected String name;
-    protected Image image;
+    protected transient Image image;
     protected int price;
     protected CharacterName eligibleCharacter;
     protected String description;

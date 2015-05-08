@@ -304,19 +304,25 @@ public class GameState implements java.io.Serializable {
 
     private void updateCharacter(long now) {
         // Only update the character stats every set amount of miliseconds, depending on difficulty.
-        double miliseconds = 200e6;
+        double miliseconds = 500e6;
         switch (difficulty)
         {
             case Easy:
-                miliseconds = 200e6;
+                miliseconds = 500e6;
                 break;
             case Medium:
-                miliseconds = 150e6;
+                miliseconds = 300e6;
                 break;
             case Hard:
-                miliseconds = 90e6;
+                miliseconds = 200e6;
                 break;
         }
+        // When sleeping, we restore energy much faster.
+        if (currentCharacter.getStatus() == Character.CharacterStatus.Sleeping)
+        {
+            miliseconds = 100e6;
+        }
+
         // Check if that amount of miliseconds has elapsed since last update.
         if (now - lastCharacterUpdate < miliseconds)
         {
@@ -337,9 +343,10 @@ public class GameState implements java.io.Serializable {
                 break;
             case Sleeping:
                 // Energy is restored when sleeping.
-                newEnergy += 0.6;
+                newEnergy += 1;
                 break;
         }
+        // Clamp energy between 0 and 100.
         newEnergy = Math.max(0, newEnergy);
         newEnergy = Math.min(99.9, newEnergy);
         currentCharacter.setEnergy(newEnergy);
@@ -437,6 +444,7 @@ public class GameState implements java.io.Serializable {
         }
         catch (IOException i)
         {
+            i.printStackTrace();
             UIUtils.showErrorDialog("Could not save game: " + i.getMessage(), "Error saving");
         }
     }

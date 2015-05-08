@@ -42,7 +42,7 @@ public class Character implements java.io.Serializable {
     protected String clothing; // Color to make the player on map.
 
     protected String walkingSound;
-    private AudioClip walkClip;
+    private transient AudioClip walkClip;
 
     Character(CharacterName name, String userName, String hideout)
     {
