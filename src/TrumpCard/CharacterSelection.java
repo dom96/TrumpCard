@@ -112,6 +112,7 @@ public class CharacterSelection extends AnimationTimer {
         this.stage = stage;
         stage.setScene(new Scene(root));
         stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
+        stage.getScene().setOnKeyReleased(this::onKeyboardReleased);
 
         // Create canvas to draw things onto.
         Canvas canvas = new Canvas(width, height);
