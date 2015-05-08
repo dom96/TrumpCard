@@ -101,6 +101,7 @@ public class MainMenu extends AnimationTimer {
     }
 
     private void onMouseEnter(MouseEvent event) {
+        // Hover button sound effect.
         AudioClip clip = new AudioClip(new File("sounds/hover.wav").toURI().toString());
         clip.play();
     }

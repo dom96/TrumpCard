@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -24,6 +25,7 @@ import javafx.stage.Stage;
 
 import javafx.scene.input.MouseEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class CharacterSelection extends AnimationTimer {
@@ -238,6 +240,10 @@ public class CharacterSelection extends AnimationTimer {
         view.setEffect(null);
 
         hoverSelection = character;
+
+        // Hover button sound effect.
+        AudioClip clip = new AudioClip(new File("sounds/hover.wav").toURI().toString());
+        clip.play();
     }
 
     private void onCharacterImageMouseExit(MouseEvent ev, CharacterName character)
