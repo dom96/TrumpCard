@@ -105,9 +105,8 @@ public class GameScreen extends AnimationTimer {
         }
         catch (IOException exception)
         {
-            // TODO: Use an offline map instead and show a warning.
-            UIUtils.showErrorDialog("Could not load image from Google Maps.", "Error");
-            System.exit(1);
+            UIUtils.showErrorDialog("Could not load image from Google Maps. Using offline map.", "Error");
+            this.map = UIUtils.loadImage("file:images/staticmap.png");
         }
 
         // Music
