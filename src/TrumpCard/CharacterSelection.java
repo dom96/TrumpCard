@@ -351,12 +351,12 @@ public class CharacterSelection extends AnimationTimer {
             graphicsContext.fillText(selection.getDescription(),
                     20, 410);
 
-            graphicsContext.fillText("Strength: " + selection.getStrength(),
+            graphicsContext.fillText("Strength: " + selection.getStrength() + "\n    Affects movement speed",
                     width / 2 - 140, 410);
-            graphicsContext.fillText("Intelligence: " + selection.getIntelligence(),
-                    width / 2 - 140, 430);
-            graphicsContext.fillText("Durability: " + selection.getDurability(),
-                    width / 2 - 140, 450);
+            graphicsContext.fillText("Intelligence: " + selection.getIntelligence() + "\n    Affects amount of energy used to fight/commit crimes",
+                    width / 2 - 140, 460);
+            graphicsContext.fillText("Durability: " + selection.getDurability() + "\n    Affects how fast energy depletes",
+                    width / 2 - 140, 510);
         }
     }
 
