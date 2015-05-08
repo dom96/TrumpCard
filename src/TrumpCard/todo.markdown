@@ -44,7 +44,7 @@
 - [x] Add some unique fields to Hero and Villain.
 - [x] Make methods in CharacterName non-static.
 - [x] Music continues playing after death
-- [ ] When game is reloaded, crimes don't appear.
+- [x] When game is reloaded, crimes don't appear.
 - [x] While walking, if you die, the walking sound will continue.
 
 ## Additional features

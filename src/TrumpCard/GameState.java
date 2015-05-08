@@ -35,8 +35,8 @@ public class GameState implements java.io.Serializable {
         this.currentCharacter = character;
         this.crimes = new ArrayList<Crime>();
 
-        crimeIcon = new Image("file:images/crime32.png");
-        crimeIconHover = new Image("file:images/crime32_hover.png");
+        crimeIcon = UIUtils.loadImage("file:images/crime32.png");
+        crimeIconHover = UIUtils.loadImage("file:images/crime32_hover.png");
 
         this.difficulty = difficulty;
     }
@@ -451,7 +451,8 @@ public class GameState implements java.io.Serializable {
             // Re-initialise some fields which we lost.
             result.crimes = new ArrayList<Crime>();
             result.getCharacter().reset();
-
+            result.crimeIcon = UIUtils.loadImage("file:images/crime32.png");
+            result.crimeIconHover = UIUtils.loadImage("file:images/crime32_hover.png");
         }
         catch (IOException i)
         {

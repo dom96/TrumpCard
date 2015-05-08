@@ -131,6 +131,10 @@ public class Character implements java.io.Serializable {
         {
             movement.stop();
             movement = null;
+            if (walkClip != null)
+            {
+                walkClip.stop();
+            }
         }
 
         double distance = pos.distance(newPos);
