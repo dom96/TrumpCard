@@ -235,8 +235,11 @@ public class CharacterSelection extends AnimationTimer {
 
         // Play character specific sound
         String fileName = "pick_" + character.name().toLowerCase() + ".mp3";
-        AudioClip clip = new AudioClip(new File("sounds/" + fileName).toURI().toString());
-        clip.play();
+        File fullFilename = new File("sounds/" + fileName);
+        if (fullFilename.exists()) {
+            AudioClip clip = new AudioClip(fullFilename.toURI().toString());
+            clip.play();
+        }
     }
 
     private void onCharacterImageMouseEnter(MouseEvent ev, CharacterName character)

@@ -302,9 +302,6 @@ public class Shop {
 
     public void create(Pane pausePane)
     {
-        // TODO: For testing
-        state.getCharacter().setScore(25);
-
         // Controls associated with the shop.
         shopBox = new VBox(5);
         shopBox.setLayoutX(300);

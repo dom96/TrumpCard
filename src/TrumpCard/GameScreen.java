@@ -461,7 +461,13 @@ public class GameScreen extends AnimationTimer {
         ImageView sleepIcon = new ImageView(new Image("file:images/sleep.png"));
         sleepIcon.setPreserveRatio(true);
         sleepIcon.setFitWidth(30);
-        sleepBtn = new Button("Sleep", sleepIcon);
+        String sleepBtnText = "Sleep";
+        // In case the game was reloaded from a state where the player was sleeping.
+        if (state.getCharacter().getStatus() == Character.CharacterStatus.Sleeping)
+        {
+            sleepBtnText = "Wake up";
+        }
+        sleepBtn = new Button(sleepBtnText, sleepIcon);
         sleepBtn.setCursor(Cursor.HAND);
         sleepBtn.getStyleClass().add("sleepBtn");
         sleepBtn.setOnMouseClicked(this::onSleepBtnClicked);
