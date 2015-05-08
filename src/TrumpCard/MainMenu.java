@@ -118,7 +118,7 @@ public class MainMenu extends AnimationTimer {
         graphicsContext.fillText("TRUMP\nCARDS", width / 2, 70);
 
         // Draw title screen images on the left and right of the screen.
-        graphicsContext.drawImage(titleLeft, -100, 0, 404, 640);
-        graphicsContext.drawImage(titleRight, width - 290, 0, 404, 640);
+        graphicsContext.drawImage(titleLeft, -100, 0, 455, 720);
+        graphicsContext.drawImage(titleRight, width - 350, 0, 455, 720);
     }
 }
