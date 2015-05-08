@@ -574,6 +574,7 @@ public class GameScreen extends AnimationTimer {
 
     @Override
     public void handle(long now) {
+        // Animate gradient below name.
         if (now - time >= 50000000)
         {
             if (glowDecreasing)
@@ -663,6 +664,20 @@ public class GameScreen extends AnimationTimer {
 
             // Check whether game ended.
             checkForEnd();
+
+            // Make sure music is playing
+            if (music.getStatus() == MediaPlayer.Status.PAUSED)
+            {
+                music.play();
+            }
+        }
+        else
+        {
+            // Make sure music is paused
+            if (music.getStatus() == MediaPlayer.Status.PLAYING)
+            {
+                music.pause();
+            }
         }
     }
 }

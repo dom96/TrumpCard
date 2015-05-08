@@ -158,6 +158,7 @@ public class Character implements java.io.Serializable {
             walkClip.stop();
         });
         movement.play();
+        // Play walking sound.
         walkClip = new AudioClip(walkingSound);
         walkClip.setCycleCount(AudioClip.INDEFINITE);
         walkClip.play();
@@ -169,6 +170,7 @@ public class Character implements java.io.Serializable {
         if (movement != null && movement.getStatus() == Animation.Status.RUNNING)
         {
             movement.pause();
+            walkClip.stop();
         }
     }
 
@@ -177,6 +179,7 @@ public class Character implements java.io.Serializable {
         if (movement != null && movement.getStatus() == Animation.Status.PAUSED)
         {
             movement.play();
+            walkClip.play();
         }
     }
 

@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
@@ -90,9 +91,24 @@ public class CharacterSelection extends AnimationTimer {
         this.characterBtns = new ArrayList<ImageView>();
     }
 
+    private void onKeyboardReleased(KeyEvent event)
+    {
+        switch (event.getCode())
+        {
+            case ESCAPE:
+                // Go back to main menu.
+                MainMenu mainMenu = new MainMenu(1280, 720, stage);
+                mainMenu.start();
+                break;
+        }
+    }
+
     public void show(Stage stage)
     {
         Group root = new Group();
+
+        root.setOnKeyReleased(this::onKeyboardReleased);
+
         this.stage = stage;
         stage.setScene(new Scene(root));
         stage.getScene().getStylesheets().add("TrumpCard/css/style.css");
@@ -245,7 +261,6 @@ public class CharacterSelection extends AnimationTimer {
         for (CharacterName c : characters)
         {
             ImageView view;
-            // TODO: Other character images.
             switch (c)
             {
                 case Ultron:
