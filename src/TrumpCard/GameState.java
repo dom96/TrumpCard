@@ -93,14 +93,19 @@ public class GameState implements java.io.Serializable {
         return null;
     }
 
+    public double calculateEnergyUse(Crime crime)
+    {
+        double intelligenceFactor = currentCharacter.getIntelligence() / 4.0f;
+        return (crime.getEnergyUse(difficulty) / intelligenceFactor);
+    }
+
     public void commitCrime(Crime crime, Group root) {
         // Decrease the actions because we are doing an evil thing.
         double newActions = currentCharacter.getActions() - 1;
         currentCharacter.setActions(newActions);
 
         // Decrease energy.
-        double intelligenceFactor = currentCharacter.getIntelligence() / 4.0f;
-        double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse(difficulty) / intelligenceFactor);
+        double newEnergy = currentCharacter.getEnergy() - calculateEnergyUse(crime);
         currentCharacter.setEnergy(newEnergy);
 
         // Increase score.
@@ -123,8 +128,7 @@ public class GameState implements java.io.Serializable {
         currentCharacter.setActions(newActions);
 
         // Decrease energy.
-        double intelligenceFactor = currentCharacter.getIntelligence() / 4.0f;
-        double newEnergy = currentCharacter.getEnergy() - (crime.getEnergyUse(difficulty) / intelligenceFactor);
+        double newEnergy = currentCharacter.getEnergy() - calculateEnergyUse(crime);
         currentCharacter.setEnergy(newEnergy);
 
         // Increase score.
@@ -389,7 +393,7 @@ public class GameState implements java.io.Serializable {
             System.out.println(likelihood + "%" + ", " + randDouble);
 
             if (randDouble < likelihood / 100.f && this.crimes.size() < MAX_CRIMES) {
-                Crime crime = Crime.genCrime();
+                Crime crime = Crime.genCrime(this);
                 crime.show(this, root, errorLabel);
                 this.crimes.add(crime);
                 this.lastCrimeGen = now;

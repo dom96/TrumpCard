@@ -22,8 +22,9 @@ import javafx.util.Duration;
 import java.util.Random;
 
 public class Crime {
+    private GameState state; // Pointer back to our Game State.
     private CrimeInfo info;
-    private int countdown;
+    private int countdown; // Amount of time left until this crime expires.
     private Point2D pos; // Coordinates of this crime on the map.
     private double expiresTimer;
     private boolean enabled;
@@ -40,11 +41,13 @@ public class Crime {
 
     private Label expiresInDesc;
 
-    Crime(CrimeInfo info, Point2D pos) {
+    Crime(CrimeInfo info, Point2D pos, GameState state) {
         this.info = info;
         this.pos = pos;
 
         this.countdown = 10;
+
+        this.state = state;
     }
 
     public Point2D getWindowPos() {
@@ -177,7 +180,7 @@ public class Crime {
 
         Font crimeFieldsFont = Font.font("Courier New", 13);
 
-        Label energyUseDesc = new Label(Integer.toString(info.getEnergyUse()));
+        Label energyUseDesc = new Label(String.format("%.2f", state.calculateEnergyUse(this)));
         energyUseDesc.setFont(crimeFieldsFont);
         UIUtils.createBoldLabel(crimeFieldsBox, "Energy Use: ", energyUseDesc, crimeFieldsFont);
 
@@ -322,11 +325,11 @@ public class Crime {
 
     };
 
-    public static Crime genCrime() {
+    public static Crime genCrime(GameState state) {
         Random rand = new Random();
         CrimeInfo info = crimes[rand.nextInt(crimes.length)];
         // TODO: Use Google's Places API to determine better locations for these.
-        return new Crime(info, new Point2D(rand.nextInt(940), rand.nextInt(340)));
+        return new Crime(info, new Point2D(rand.nextInt(940), rand.nextInt(340)), state);
     }
 
 }
