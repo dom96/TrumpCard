@@ -42,15 +42,16 @@ public class Shop {
                 new Clothing("Iron armour", UIUtils.loadImage("file:images/item_ironarmour.png"), 25, CharacterName.IronMan,
                         "Iron Man's red armour will turn your character icon on the screen red.", "red"),
                 new Clothing("Blue scepter", UIUtils.loadImage("file:images/item_bluescepter.png"), 25, CharacterName.IronMan,
-                        "", "blue"),
+                        "This shiny weapon will turn your character icon blue.", "blue"),
                 new Clothing("Black cloak", UIUtils.loadImage("file:images/item_blackcloak.png"), 25, CharacterName.Batman,
-                        "", "black"),
+                        "This special Black cloak will disguise you in a unique black character icon.", "black"),
                 new Clothing("Golden boots", UIUtils.loadImage("file:images/item_goldenboots.png"), 25, CharacterName.Batman,
-                        "", "gold"),
+                        "These golden boots will be everyone's favourite fashion accessory, turning your character's" +
+                                "icon gold.", "gold"),
                 new Clothing("Red cloak", UIUtils.loadImage("file:images/item_redcloak.png"), 25, CharacterName.Spiderman,
-                        "", "red"),
+                        "This cloak will turn your character's icon red.", "red"),
                 new Clothing("Viper's tears", UIUtils.loadImage("file:images/item_bluecloak.png"), 25, CharacterName.Spiderman,
-                        "", "blue")
+                        "Tears, just like water, are blue. Viper's tears will dye your cloak blue.", "blue")
         };
 
         gadgetItems = new Item[]{
