@@ -93,6 +93,9 @@ public enum CharacterName {
             case IronMan: return 6;
             case GreenGoblin: return 4;
             case Spiderman: return 4;
+            case Catwoman: return 3;
+            case Batman: return 7;
+            case PeterParker: return 7;
         }
         return 3;
     }
@@ -105,7 +108,9 @@ public enum CharacterName {
             case IronMan: return 6;
             case GreenGoblin: return 4;
             case Spiderman: return 4;
-
+            case Catwoman: return 3;
+            case Batman: return 5;
+            case BruceWayne: return 7;
 
         }
         return 3;
@@ -119,6 +124,9 @@ public enum CharacterName {
             case IronMan: return 6;
             case GreenGoblin: return 4;
             case Spiderman: return 3;
+            case Catwoman: return 5;
+            case Batman: return 6;
+            case TonyStark: return 7;
         }
         return 3;
     }
@@ -183,8 +191,7 @@ public enum CharacterName {
         }
     }
 
-    public Image loadImage()
-    {
+    public Image loadImage() {
         return UIUtils.loadImage("file:images/character_" + this.name().toLowerCase() + ".jpg");
     }
 }

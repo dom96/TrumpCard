@@ -232,6 +232,11 @@ public class CharacterSelection extends AnimationTimer {
         // Show play button so the user can move to the next stage.
         // At this point the button text is "CHOOSE".
         this.playBtn.setVisible(true);
+
+        // Play character specific sound
+        String fileName = "pick_" + character.name().toLowerCase() + ".mp3";
+        AudioClip clip = new AudioClip(new File("sounds/" + fileName).toURI().toString());
+        clip.play();
     }
 
     private void onCharacterImageMouseEnter(MouseEvent ev, CharacterName character)
