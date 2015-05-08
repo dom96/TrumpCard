@@ -117,6 +117,18 @@ public class GameScreen extends AnimationTimer {
         music.play();
     }
 
+    /**
+     * Load game from saved file.
+     */
+    public static GameScreen loadFromFile(double width, double height)
+    {
+        GameState state = GameState.load();
+        GameScreen result = new GameScreen(width, height, state.getCharacter().getName(),
+                state.getCharacter().getUserName(), state.getCharacter().getHideout(), state.getDifficulty());
+        result.state = state;
+        return result;
+    }
+
     private void updateStatusLabel()
     {
         double actions = state.getCharacter().getActions();
@@ -463,7 +475,7 @@ public class GameScreen extends AnimationTimer {
         buttonBox.getChildren().add(shopBtn);
 
         // Create error label at bottom of screen.
-        errorLabel = new Label("FOOBAR");
+        errorLabel = new Label("");
         errorLabel.setFont(Font.font("Courier New", 18));
         errorLabel.getStyleClass().add("error");
         errorLabel.setLayoutX(290);
@@ -479,10 +491,10 @@ public class GameScreen extends AnimationTimer {
         buttonBox.getChildren().add(pauseMenuBtn);
 
         // Create pause pane, also includes the buttons which are shown once game ends.
-        createPauseMenu();
+        createPauseMenu(stage);
     }
 
-    private void createPauseMenu() {
+    private void createPauseMenu(Stage stage) {
         // Create the pane which will darken the whole screen.
         pausePane = new Pane();
         pausePane.setMinWidth(width);
@@ -506,6 +518,26 @@ public class GameScreen extends AnimationTimer {
         resumeBtn.setOnMouseClicked(this::onResumeBtnClicked);
         menuBox.getChildren().add(resumeBtn);
 
+        // Save game button
+        Button saveBtn = new Button("Save Game");
+        saveBtn.setCursor(Cursor.HAND);
+        saveBtn.getStyleClass().add("resumeBtn");
+        saveBtn.setOnMouseClicked(event -> {
+            state.save();
+            onResumeBtnClicked(event);
+        });
+        menuBox.getChildren().add(saveBtn);
+
+        // Main menu
+        Button mainMenuBtn = new Button("Go to Main Menu");
+        mainMenuBtn.setCursor(Cursor.HAND);
+        mainMenuBtn.getStyleClass().add("resumeBtn");
+        mainMenuBtn.setOnMouseClicked(event -> {
+            MainMenu mainMenu = new MainMenu(1280, 720, stage);
+            mainMenu.start();
+        });
+        menuBox.getChildren().add(mainMenuBtn);
+
         // Controls associated with the end of the game.
         // End game box
         endGameBox = new VBox(10);
@@ -527,11 +559,14 @@ public class GameScreen extends AnimationTimer {
         endGameBox.getChildren().add(infoLbl);
 
         // Main menu button
-        Button mainMenuBtn = new Button("Go to Main Menu");
-        mainMenuBtn.setCursor(Cursor.HAND);
-        mainMenuBtn.getStyleClass().add("resumeBtn");
-        mainMenuBtn.setOnMouseClicked(this::onResumeBtnClicked);
-        endGameBox.getChildren().add(mainMenuBtn);
+        Button mainMenuBtn1 = new Button("Go to Main Menu");
+        mainMenuBtn1.setCursor(Cursor.HAND);
+        mainMenuBtn1.getStyleClass().add("resumeBtn");
+        mainMenuBtn1.setOnMouseClicked(event -> {
+            MainMenu mainMenu = new MainMenu(1280, 720, stage);
+            mainMenu.start();
+        });
+        endGameBox.getChildren().add(mainMenuBtn1);
 
         // Initialise shop controls.
         shop.create(pausePane);

@@ -49,7 +49,7 @@ public class Shop {
                         "", "gold"),
                 new Clothing("Red cloak", UIUtils.loadImage("file:images/item_redcloak.png"), 25, CharacterName.Spiderman,
                         "", "red"),
-                new Clothing("Viper's tears", UIUtils.loadImage("file:images/item_bluecloak.png"), 25, CharacterName.Batman,
+                new Clothing("Viper's tears", UIUtils.loadImage("file:images/item_bluecloak.png"), 25, CharacterName.Spiderman,
                         "", "blue")
         };
 
@@ -82,7 +82,7 @@ public class Shop {
                                 " will give you an additional 3 durability, making your character use less energy.", 0, 0, 3, 0, 0),
                 new Food("Kiss from Mary Jane", UIUtils.loadImage("file:images/item_kissmaryjane.png"), 5, CharacterName.Spiderman,
                         "This kiss will make you stronger, but at what cost.", 1, -3, 0, 0, 0),
-                new Food("Goblin Serum", UIUtils.loadImage("file:images/item_serum.png"), 30, CharacterName.Batman,
+                new Food("Goblin Serum", UIUtils.loadImage("file:images/item_serum.png"), 30, CharacterName.GreenGoblin,
                         "This goblin serum will increase your durability.", 0, 0, 4, 0, 0)
         };
 

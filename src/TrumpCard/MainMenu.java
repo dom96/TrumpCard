@@ -72,6 +72,11 @@ public class MainMenu extends AnimationTimer {
         startBtn.setOnMouseEntered(this::onMouseEnter);
         vb.getChildren().add(startBtn);
 
+        Button loadBtn = UIUtils.createButton("LOAD", this.menuFont, "menuBtn");
+        loadBtn.setOnAction(this::onLoadBtnAction);
+        loadBtn.setOnMouseEntered(this::onMouseEnter);
+        vb.getChildren().add(loadBtn);
+
         Button exitBtn = UIUtils.createButton("EXIT", this.menuFont, "menuBtn");
         exitBtn.setOnAction(this::onExitBtnAction);
         exitBtn.setOnMouseEntered(this::onMouseEnter);
@@ -83,6 +88,12 @@ public class MainMenu extends AnimationTimer {
         CharacterSelection cs = new CharacterSelection(width, height);
         cs.show(stage);
         cs.start();
+    }
+
+    private void onLoadBtnAction(ActionEvent event) {
+        GameScreen game = GameScreen.loadFromFile(width, height);
+        game.show(stage);
+        game.start();
     }
 
     private void onExitBtnAction(ActionEvent event) {
