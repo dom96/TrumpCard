@@ -40,7 +40,7 @@
 - [x] Pause game
 - [x] Better character movement.
 - [ ] Add more crime descriptions.
-- [ ] Finish character descriptions, stats
+- [x] Finish character descriptions, stats
 - [x] Add some unique fields to Hero and Villain.
 - [x] Make methods in CharacterName non-static.
 - [x] Music continues playing after death

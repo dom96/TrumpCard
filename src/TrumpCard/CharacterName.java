@@ -166,6 +166,26 @@ public enum CharacterName {
                         "He instead creates a powered suit of \n" +
                         "armor to save his life and escape captivity.\n" +
                         "Thus creating the Iron Man.";
+            case Catwoman:
+                return "Catwoman is a relatively weak villain.\n" +
+                        "Her intelligence and strength are low\n" +
+                        "so her abilities to commit crimes are\n" +
+                        "limited. Her main adversary is Batman.";
+            case GreenGoblin:
+                return "The Green Goblin is extremely evil. He\n" +
+                        "lost his humanity a long time ago. He\n" +
+                        "will do anything to hurt Spiderman.\n" +
+                        "His skills leave him balanced on all\n" +
+                        " levels.";
+            case Spiderman:
+                return "After being bitten by a scientifically\n" +
+                        "engineered spider. Spiderman became a\n" +
+                        "spider himself. He must now save the\n" +
+                        "city from the Green Goblin.";
+            case Batman:
+                return "After his parents death. Batman must\n" +
+                        "fight the criminals in his home town\n" +
+                        "to prevent evil from spreading.";
         }
         return "";
     }
