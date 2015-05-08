@@ -122,7 +122,15 @@ public class Character implements java.io.Serializable {
     }
 
     public boolean hasItem(Item item) {
-        return items.contains(item);
+        // Check if it contains item with the same name.
+        for (Item i : items)
+        {
+            if (i.getName().equals(item.name))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void moveTo(Point2D newPos) {

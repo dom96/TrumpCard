@@ -126,6 +126,7 @@ public class GameScreen extends AnimationTimer {
         GameScreen result = new GameScreen(width, height, state.getCharacter().getName(),
                 state.getCharacter().getUserName(), state.getCharacter().getHideout(), state.getDifficulty());
         result.state = state;
+        result.shop = new Shop(state);
         return result;
     }
 
